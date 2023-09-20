@@ -14,15 +14,15 @@ export default function Navbar() {
   const bottom = ["Jeans", "Sweatpants", "Shorts"];
   const outerwear = ["Jacket", "Hoodie"];
   return (
-    <div className="bg-white w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <div className="bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" class="flex items-center">
+        <a href="#" className="flex items-center">
           <Image src={logo} width={200} height={30} />
         </a>
 
         {/* Start Menu Web View */}
 
-        <ul className="menu menu-horizontal text-primary font-semibold">
+        <ul className="menu menu-horizontal text-primary font-semibold max-lg:hidden">
           <li tabIndex={0}>
             <details>
               <summary>Top</summary>
@@ -72,11 +72,11 @@ export default function Navbar() {
 
         {/* End Menu Web View  */}
 
-        <div class="invisible md:visible relative flex flex-nowrap items-center justify-between max-auto ">
+        <div className="relative flex items-center justify-between max-auto max-lg:hidden">
           {/* Start Search Button */}
-          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -84,18 +84,18 @@ export default function Navbar() {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
               />
             </svg>
-            <span class="sr-only">Search icon</span>
+            <span className="sr-only">Search icon</span>
           </div>
           <input
             type="text"
             id="search-navbar"
-            class="block w-full p-2 pl-10 text-sm rounded-md border border-primary"
+            className="block w-full p-2 pl-10 text-sm rounded-md border border-primary"
             placeholder="Search..."
           />
           {/* End Search Button */}
@@ -160,9 +160,81 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          {/* End Button Profile */}
         </div>
+        {/* End Button Profile */}
       </div>
+
+      {/* Start Toggle Navbar */}
+      <div className="dropdown lg:hidden">
+        <label tabIndex={0} className="btn btn-ghost btn-circle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h7"
+            />
+          </svg>
+        </label>
+        {/* ----------------- */}
+        <ul
+          tabIndex={0}
+          className="menu menu-md bg-base-100 rounded-lg max-w-lg dropdown-content -translate-x-72 mt-3 z-[1] p-2 w-80"
+        >
+          <li tabIndex={0}>
+            <details>
+              <summary>Top</summary>
+              <ul className="p-2 text-black">
+                {/* mapping from category -1  */}
+                {top.map((subcategory, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <a>{subcategory}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </li>
+          <li tabIndex={0}>
+            <details>
+              <summary>Bottom</summary>
+              <ul className="p-2 text-black">
+                {/* mapping from category -1  */}
+                {bottom.map((subcategory, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <a>{subcategory}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </li>
+          <li tabIndex={0}>
+            <details>
+              <summary>Outerwear</summary>
+              <ul className="p-2 text-black">
+                {/* mapping from category -1  */}
+                {outerwear.map((subcategory, index) => {
+                  return (
+                    <li key={index + 1}>
+                      <a>{subcategory}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
+      {/* End Toggle Navbar */}
     </div>
   );
 }
