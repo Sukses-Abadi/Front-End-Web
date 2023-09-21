@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
         <nav>
           <Navbar />
         </nav>
-        <main className=" p-5 items-center">{children}</main>
+        <main className=" mx-auto ">{children}</main>
       </body>
     </html>
   );

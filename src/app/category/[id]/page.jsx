@@ -23,10 +23,12 @@ export default async function Page(req) {
     }
   );
   return (
-    <div className=" p-5 flex flex-wrap gap-4">
-      {data.products?.map((product, index) => {
-        return <Card key={product.id} {...product} />;
-      })}
+    <div className="flex justify-center items-center">
+      <section className="mx-auto flex flex-wrap flex-inline items-center justify-center">
+        {data.products?.map((product, index) => {
+          return <Card key={product.id} {...product} />;
+        })}
+      </section>
     </div>
   );
 }
@@ -35,7 +37,6 @@ export async function generateStaticParams() {
   const { data } = await fetchData("api/category", "GET", {
     cache: "no-store",
   });
-  console.log(data);
   return data.map((product) => ({
     id: product.id.toString(),
   }));
