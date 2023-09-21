@@ -19,7 +19,7 @@ export default async function Navbar() {
           href="/"
           className="btn btn-ghost normal-case text-xl hidden md:flex"
         >
-          <Image src={logo} width={200} height={30} />
+          <Image alt="Coolest Brand ver!" src={logo} width={200} height={30} />
         </Link>
 
         {/* Start Menu Web View */}
@@ -27,7 +27,7 @@ export default async function Navbar() {
         <ul className="menu menu-horizontal text-primary font-semibold max-lg:hidden">
           {category.map((category, index) => {
             return (
-              <li key={category.id}>
+              <li className=" z-[10]" key={category.id}>
                 <details>
                   <summary>{category.name}</summary>
                   <ul className="p-2">
@@ -38,7 +38,7 @@ export default async function Navbar() {
                     {category.SubCategory.map((subcategory, index) => {
                       const slug = slugify(subcategory.name);
                       return (
-                        <li key={subcategory.id}>
+                        <li className="w-60" key={subcategory.id}>
                           <Link href={`/sub/${subcategory.id}`}>
                             {subcategory.name}
                           </Link>
@@ -54,8 +54,8 @@ export default async function Navbar() {
 
         {/* End Menu Web View  */}
 
-        <div className="relative flex items-center justify-between max-auto max-lg:hidden">
-          {/* Start Search Button */}
+        {/* Start Search Button */}
+        <div className="relative flex items-center justify-between max-auto lg:hidden">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
               className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -105,7 +105,7 @@ export default async function Navbar() {
             </label>
             <div
               tabIndex={0}
-              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
+              className="mt-3 z-[10] card card-compact dropdown-content w-52 bg-base-100 shadow"
             >
               <div className="card-body">
                 <span className="font-bold text-lg">8 Items</span>
@@ -129,7 +129,7 @@ export default async function Navbar() {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[10] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
                 <Link href="/user" className="justify-between">
@@ -143,15 +143,38 @@ export default async function Navbar() {
             </ul>
           </div>
         </div>
-        {/* End Button Profile */}
       </div>
+      {/* End Button Profile */}
 
       {/* Start Toggle Navbar */}
-      <div className="dropdown align-middle lg:hidden">
-        <label tabIndex={0} className="btn btn-ghost btn-circle">
+      <div className="drawer-side">
+        <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
+        <ul className="menu p-4 w-80 min-h-full bg-base-200">
+          {/* Sidebar content here */}
+          {category.map((category, index) => {
+            return (
+              <li key={category.id}>
+                <Link href={`/category/${category.id}`}>{category.name}</Link>
+                {category.SubCategory.map((subcategory, index) => {
+                  return (
+                    <ul key={subcategory.id}>
+                      <Link href={`/sub/${subcategory.id}`}>
+                        {subcategory.name}
+                      </Link>
+                    </ul>
+                  );
+                })}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="dropdown dropdown-left items-center lg:hidden">
+        <label tabIndex={0} className="btn btn-ghost btn-circle align-middle ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="h-5 w-5 align-middle"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -167,21 +190,23 @@ export default async function Navbar() {
         {/* ----------------- */}
         <ul
           tabIndex={0}
-          className="menu menu-md bg-base-100 rounded-lg max-w-lg dropdown-content -translate-x-72 mt-3 z-[1] p-2 w-80"
+          className="menu menu-md bg-base-100 rounded-lg max-w-lg dropdown-content  mt-3  z-[10] p-2 w-60"
         >
           {category.map((category, index) => {
             return (
               <li key={category.id}>
                 <Link href={`/category/${category.id}`}>{category.name}</Link>
-                {category.SubCategory.map((subcategory, index) => {
-                  return (
-                    <ul key={subcategory.id}>
-                      <Link href={`/sub/${subcategory.id}`}>
-                        {subcategory.name}
-                      </Link>
-                    </ul>
-                  );
-                })}
+                <ul>
+                  {category.SubCategory.map((subcategory, index) => {
+                    return (
+                      <li key={subcategory.id}>
+                        <Link href={`/sub/${subcategory.id}`}>
+                          {subcategory.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
             );
           })}

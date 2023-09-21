@@ -18,6 +18,7 @@ export default async function Home() {
   return (
     <>
       <Carousel />
+      <div className="m-5"></div>
       <Container>
         {products.map((product) => {
           return <Card key={product.id} product={product} />;
