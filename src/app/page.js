@@ -1,28 +1,28 @@
-"use client";
-
+import Card from "@/components/home/card";
 import Carousel from "@/components/home/carousel";
+import Container from "@/components/home/container.grid";
 import fetchData from "@/fetch";
-import { useEffect } from "react";
 
-export default function Home() {
-  const fetchProduct = async () => {
-    try {
-      const response = await fetchData("api/products", {
-        method: "GET",
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export default async function Home() {
+  async function fetchProduct() {
+    const { data } = await fetchData("api/products?limit=8", "GET", {
+      cache: "no-store",
+    });
 
-  useEffect(() => {
-    fetchProduct();
-  });
+    return data.products;
+  }
+
+  const products = await fetchProduct();
+  // console.log(products);
 
   return (
     <>
       <Carousel />
+      <Container>
+        {products.map((product) => {
+          return <Card key={product.id} product={product} />;
+        })}
+      </Container>
       <h2 className=" bg-base-100 text-6xl">HOMEPAGE!</h2>
     </>
   );
