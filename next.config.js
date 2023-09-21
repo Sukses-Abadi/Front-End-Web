@@ -10,6 +10,13 @@ module.exports = {
         port: "5000",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
+        port: "",
+        pathname: "**",
+      },
+
     ],
   },
 };

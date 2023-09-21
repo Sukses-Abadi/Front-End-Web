@@ -1,19 +1,20 @@
+
+import fetchData from "@/lib/fetch";
+import slugify from "@/lib/slugify";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import logo from "./assets/logo.svg";
 
-export default function Navbar() {
-  const top = [
-    "T-shirt Long Sleeve",
-    "T-shirt Short Sleeve",
-    "Sweater",
-    "Shirt Long Sleeve",
-    "Shirt Short Sleeve",
-  ];
-  const bottom = ["Jeans", "Sweatpants", "Shorts"];
-  const outerwear = ["Jacket", "Hoodie"];
+export default async function Navbar() {
+  const { data } = await fetchData("api/category", "GET", {
+    cache: "no-store",
+  });
+  const category = data;
+
   return (
+    
     <div className="bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="#" className="flex items-center">
@@ -235,6 +236,8 @@ export default function Navbar() {
         </ul>
       </div>
       {/* End Toggle Navbar */}
+
+
     </div>
   );
 }
