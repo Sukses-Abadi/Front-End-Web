@@ -1,4 +1,3 @@
-
 import Card from "@/components/home/card";
 import Carousel from "@/components/home/carousel";
 import Container from "@/components/home/container.grid";
@@ -27,3 +26,4 @@ export default async function Home() {
       <h2 className=" bg-base-100 text-6xl">HOMEPAGE!</h2>
     </>
   );
+}

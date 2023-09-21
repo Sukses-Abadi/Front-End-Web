@@ -1,4 +1,3 @@
-
 import fetchData from "@/lib/fetch";
 import slugify from "@/lib/slugify";
 
@@ -14,61 +13,43 @@ export default async function Navbar() {
   const category = data;
 
   return (
-    
     <div className="bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" className="flex items-center">
+        <Link
+          href="/"
+          className="btn btn-ghost normal-case text-xl hidden md:flex"
+        >
           <Image src={logo} width={200} height={30} />
-        </a>
+        </Link>
 
         {/* Start Menu Web View */}
 
         <ul className="menu menu-horizontal text-primary font-semibold max-lg:hidden">
-          <li tabIndex={0}>
-            <details>
-              <summary>Top</summary>
-              <ul className="p-2 text-black">
-                {/* mapping from category -1  */}
-                {top.map((subcategory, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <a>{subcategory}</a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Bottom</summary>
-              <ul className="p-2 text-black">
-                {/* mapping from category -1  */}
-                {bottom.map((subcategory, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <a>{subcategory}</a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Outerwear</summary>
-              <ul className="p-2 text-black">
-                {/* mapping from category -1  */}
-                {outerwear.map((subcategory, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <a>{subcategory}</a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </li>
+          {category.map((category, index) => {
+            return (
+              <li key={category.id}>
+                <details>
+                  <summary>{category.name}</summary>
+                  <ul className="p-2">
+                    {/* {category.SubCategory.map((subcategory, index) =>
+                      console.log(subcategory)
+                    )} */}
+                    {/* mapping from category.subcategory  */}
+                    {category.SubCategory.map((subcategory, index) => {
+                      const slug = slugify(subcategory.name);
+                      return (
+                        <li key={subcategory.id}>
+                          <Link href={`/sub/${subcategory.id}`}>
+                            {subcategory.name}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </details>
+              </li>
+            );
+          })}
         </ul>
 
         {/* End Menu Web View  */}
@@ -188,56 +169,25 @@ export default async function Navbar() {
           tabIndex={0}
           className="menu menu-md bg-base-100 rounded-lg max-w-lg dropdown-content -translate-x-72 mt-3 z-[1] p-2 w-80"
         >
-          <li tabIndex={0}>
-            <details>
-              <summary>Top</summary>
-              <ul className="p-2 text-black">
-                {/* mapping from category -1  */}
-                {top.map((subcategory, index) => {
+          {category.map((category, index) => {
+            return (
+              <li key={category.id}>
+                <Link href={`/category/${category.id}`}>{category.name}</Link>
+                {category.SubCategory.map((subcategory, index) => {
                   return (
-                    <li key={index + 1}>
-                      <a>{subcategory}</a>
-                    </li>
+                    <ul key={subcategory.id}>
+                      <Link href={`/sub/${subcategory.id}`}>
+                        {subcategory.name}
+                      </Link>
+                    </ul>
                   );
                 })}
-              </ul>
-            </details>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Bottom</summary>
-              <ul className="p-2 text-black">
-                {/* mapping from category -1  */}
-                {bottom.map((subcategory, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <a>{subcategory}</a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Outerwear</summary>
-              <ul className="p-2 text-black">
-                {/* mapping from category -1  */}
-                {outerwear.map((subcategory, index) => {
-                  return (
-                    <li key={index + 1}>
-                      <a>{subcategory}</a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </li>
+              </li>
+            );
+          })}
         </ul>
       </div>
       {/* End Toggle Navbar */}
-
-
     </div>
   );
 }
