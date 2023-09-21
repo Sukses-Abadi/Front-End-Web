@@ -13,7 +13,7 @@ export default async function Navbar() {
   const category = data;
 
   return (
-    <div className="bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <div className="flex bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           href="/"
@@ -147,7 +147,7 @@ export default async function Navbar() {
       </div>
 
       {/* Start Toggle Navbar */}
-      <div className="dropdown lg:hidden">
+      <div className="dropdown align-middle lg:hidden">
         <label tabIndex={0} className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
