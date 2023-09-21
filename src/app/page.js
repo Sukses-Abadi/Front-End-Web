@@ -1,14 +1,29 @@
-"use client";
-import fetchData from "@/lib/fetch";
-import Image from "next/image";
 
-export default function Home() {
-  const handleClick = async () => {
-    const response = await fetchData("api/products", "GET");
-    console.log(response);
-    console.log(`clicked`);
-    return response;
-  };
+import Card from "@/components/home/card";
+import Carousel from "@/components/home/carousel";
+import Container from "@/components/home/container.grid";
+import fetchData from "@/fetch";
 
-  return <main className=" bg-base-100 text-6xl p-5 m-2">HomePage</main>;
-}
+export default async function Home() {
+  async function fetchProduct() {
+    const { data } = await fetchData("api/products?limit=8", "GET", {
+      cache: "no-store",
+    });
+
+    return data.products;
+  }
+
+  const products = await fetchProduct();
+  // console.log(products);
+
+  return (
+    <>
+      <Carousel />
+      <Container>
+        {products.map((product) => {
+          return <Card key={product.id} product={product} />;
+        })}
+      </Container>
+      <h2 className=" bg-base-100 text-6xl">HOMEPAGE!</h2>
+    </>
+  );

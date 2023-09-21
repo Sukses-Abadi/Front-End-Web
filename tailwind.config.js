@@ -4,6 +4,7 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/assets/*",
   ],
   theme: {
     extend: {
@@ -23,7 +24,7 @@ module.exports = {
 
           secondary: "#DF6B67",
 
-          accent: "#E9AC6C",
+          accent: "#1D5B79",
 
           neutral: "#568995",
 
