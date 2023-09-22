@@ -1,8 +1,11 @@
 "use client";
 import { baseUrl } from "@/lib/constant";
+import fetchWithToken from "@/lib/fetchWithToken";
+import useAuthStore from "@/zustand/userStore";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function Sizes(props) {
   const { sizes } = props;
@@ -11,7 +14,7 @@ export function Sizes(props) {
   const [price, setPrice] = useState(null);
   const sizeArray = Object.keys(sizes);
   const [count, setCount] = useState(1);
-
+  const { refresh, setRefresh, token } = useAuthStore();
   const increment = () => {
     setCount(count + 1);
   };
@@ -23,7 +26,7 @@ export function Sizes(props) {
   };
 
   const handleColor = (product_details_id, price) => {
-    console.log(product_details_id);
+    // console.log(product_details_id);
     setPrice(price);
     setSelectedProduct(product_details_id);
   };
@@ -40,28 +43,32 @@ export function Sizes(props) {
         price: price,
       },
     };
-
+    if (!selectedProduct) {
+      toast.error(`Please choose size and color`);
+    }
     try {
-      const response = await fetch(`${baseUrl}/api/cart`, {
+      const response = await fetchWithToken("api/cart", token, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
-          authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTY5NTMxMzMyMiwiZXhwIjoxNjk1MzE2OTIyfQ.AWlg0XJEh4qavmcqH0BefHsvKlKqMxZIIbl_YApj4rI",
+          "Content-Type": "application/json", // Adjust content type if needed
         },
         body: JSON.stringify(data),
+        cache: "no-store",
       });
 
-      if (response.ok) {
+      if (response.status === "success") {
         // Cart item was successfully added
-        console.log("Item added to cart!");
+        toast.success(response.message);
+        setRefresh();
       } else {
         // Handle error if request was not successful
         console.error("Error adding item to cart");
       }
     } catch (error) {
+      toast.error(`Please choose size and color`);
       console.error("Error:", error);
     }
+    setCount(1);
   };
 
   const colorList = [];
@@ -103,18 +110,16 @@ export function Sizes(props) {
                 colorList.push(element.color);
               }
               return (
-                <>
-                  <button
-                    onClick={() => handleColor(element.id, element.price)}
-                    key={element.id}
-                    className={`h-5 w-5 border-2 rounded-full ${
-                      selectedProduct === element.id
-                        ? "border-blue-500"
-                        : "border-gray-500"
-                    } bg-${element.color}-600 mr-2 focus:outline-none`}
-                    style={{ backgroundColor: element.color }}
-                  ></button>
-                </>
+                <button
+                  key={element.id}
+                  onClick={() => handleColor(element.id, element.price)}
+                  className={`h-5 w-5 border-2 rounded-full ${
+                    selectedProduct === element.id
+                      ? "border-blue-500"
+                      : "border-gray-500"
+                  } bg-${element.color}-600 mr-2 focus:outline-none`}
+                  style={{ backgroundColor: element.color }}
+                ></button>
               );
             })
           : null}

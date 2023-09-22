@@ -34,7 +34,7 @@ export default function Card(props) {
           <div className="max-h-[17rem] carousel carousel-vertical">
             <Link href={`/product/${product.slug}`}>
               {productGallery.map((element) => (
-                <div className="carousel-item h-auto">
+                <div key={element.id} className="carousel-item h-auto">
                   <Image
                     className="object-contain object-center"
                     src={`http://localhost:5000/${element.photo}`}
