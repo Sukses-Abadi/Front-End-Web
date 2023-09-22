@@ -25,10 +25,22 @@ export default function Card(props) {
     );
   }
 
+  const productColor = productDetails.map((element) => {
+    return element.color;
+  });
+  const arrayColor = productColor;
+  const uniqueColor = [...new Set(arrayColor)];
+
+  const productSize = productDetails.map((element) => {
+    return element.size;
+  });
+  const arraySize = productSize;
+  const uniqueSize = [...new Set(arraySize)];
+
   return (
     <>
       {/* Start Card */}
-      <div className="w-full bg-white border border-gray-200 rounded-lg shadow">
+      <div className="mt-5 w-full bg-white border border-gray-200 rounded-lg shadow">
         {/* Start Carousel  */}
         <div className="container mx-auto p-3">
           <div className="max-h-[17rem] carousel carousel-vertical">
@@ -50,17 +62,27 @@ export default function Card(props) {
 
         {/* End Carousel */}
         <div className="px-5 pb-5">
-          <h1 className="text-sm font-normal text-primary opacity-60">
-            {product.Category.name}
-          </h1>
-          <a href="#">
-            <h5 className="text-lg font-semibold tracking-tight text-primary">
-              {product.name}
-            </h5>
-          </a>
+          <div className="space-y-1.5">
+            <h1 className="text-sm font-normal text-primary opacity-60">
+              {product.Category.name}
+            </h1>
+            <a href="#">
+              <h5 className="text-xl font-semibold tracking-tight text-primary">
+                {product.name}
+              </h5>
+            </a>
+
+            <h1 className="text-sm font-normal text-primary opacity-70">
+              Color: {uniqueColor.join(" ")}
+            </h1>
+
+            <h1 className="text-sm font-normal text-primary opacity-70">
+              Size: {uniqueSize.join(" ")}
+            </h1>
+          </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-lg font-normal font-sans text-primary">
+            <span className="text-lg font-semibold font-sans text-secondary">
               {convertToRupiah(cheapestPrice)}
             </span>
             <a
