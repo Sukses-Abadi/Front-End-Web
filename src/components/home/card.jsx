@@ -40,7 +40,7 @@ export default function Card(props) {
   return (
     <>
       {/* Start Card */}
-      <div className="w-full bg-white border border-gray-200 rounded-lg shadow">
+      <div className="mt-5 w-full bg-white border border-gray-200 rounded-lg shadow">
         {/* Start Carousel  */}
         <div className="container mx-auto p-3">
           <div className="max-h-[17rem] carousel carousel-vertical">
