@@ -1,4 +1,3 @@
-import Footer from "@/components/home/footer";
 import Card from "@/components/home/card";
 import Carousel from "@/components/home/carousel";
 import Container from "@/components/home/container.grid";
@@ -25,7 +24,6 @@ export default async function Home() {
           return <Card key={product.id} product={product} />;
         })}
       </Container>
-      <Footer />
     </>
   );
 }
