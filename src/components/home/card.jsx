@@ -40,7 +40,7 @@ export default function Card(props) {
   return (
     <>
       {/* Start Card */}
-      <div className="mt-5 w-full bg-white border border-gray-200 rounded-lg shadow">
+      <div className="w-full bg-white border border-gray-200 rounded-lg shadow">
         {/* Start Carousel  */}
         <div className="container mx-auto p-3">
           <div className="max-h-[17rem] carousel carousel-vertical">
@@ -66,11 +66,11 @@ export default function Card(props) {
             <h1 className="text-sm font-normal text-primary opacity-60">
               {product.Category.name}
             </h1>
-            <a href="#">
+            <Link href={`/product/${product.slug}`}>
               <h5 className="text-xl font-semibold tracking-tight text-primary">
                 {product.name}
               </h5>
-            </a>
+            </Link>
 
             <h1 className="text-sm font-normal text-primary opacity-70">
               Color: {uniqueColor.join(" ")}
@@ -81,16 +81,10 @@ export default function Card(props) {
             </h1>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="pt-3 flex items-center justify-between">
             <span className="text-lg font-semibold font-sans text-secondary">
               {convertToRupiah(cheapestPrice)}
             </span>
-            <a
-              href="#"
-              className="text-white bg-accent hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-            >
-              Add to cart
-            </a>
           </div>
         </div>
       </div>

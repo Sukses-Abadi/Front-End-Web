@@ -10,7 +10,7 @@ export default async function Footer() {
 
   return (
     <>
-      <footer className="mt-32 footer p-10 bg-primary text-base-content">
+      <footer className="mt-24 footer p-10 bg-primary text-base-content">
         <aside>
           <Image src={logo} width={250} height={50} className="fill-current" />
           <p className="text-white text-md pt-2">
