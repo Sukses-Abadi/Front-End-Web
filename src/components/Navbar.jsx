@@ -35,7 +35,7 @@ export default async function Navbar() {
     }
   }
   return (
-    <div className="flex bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <nav className="flex bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           href="/"
@@ -167,6 +167,6 @@ export default async function Navbar() {
         </ul>
       </div>
       {/* End Toggle Navbar */}
-    </div>
+    </nav>
   );
 }
