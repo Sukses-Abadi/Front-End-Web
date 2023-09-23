@@ -6,7 +6,7 @@ import { baseUrl } from "@/lib/constant";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getCookies, setCookie, deleteCookie, getCookie } from "cookies-next";
-import useAuthStore from "@/zustand/userStore";
+import { useAuthStore } from "@/zustand";
 
 export default function Page() {
   const { token, setToken, isLoggedIn, login, logout } = useAuthStore();

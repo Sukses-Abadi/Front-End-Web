@@ -1,7 +1,7 @@
 "use client";
 import { baseUrl } from "@/lib/constant";
 import fetchWithToken from "@/lib/fetchWithToken";
-import useAuthStore from "@/zustand/userStore";
+import { useAuthStore } from "@/zustand";
 
 import { deleteCookie, getCookie, getCookies } from "cookies-next";
 import Image from "next/image";
@@ -85,10 +85,10 @@ export default function Page() {
           body: JSON.stringify({ quantity }),
         }
       );
-      setRefresh();
-      if (response.status === 200) {
+      if (response.status === "success") {
         // Quantity updated successfully
         setQuantity(quantity);
+        setRefresh();
       } else {
         // Handle error
       }
@@ -106,7 +106,7 @@ export default function Page() {
           : cartItem
       )
     );
-    updateCartItemQuantity(item.id, item.quantity);
+    updateCartItemQuantity(item.id, item.quantity + 1);
   };
 
   const handleDecrement = (item) => {
@@ -118,7 +118,7 @@ export default function Page() {
             : cartItem
         )
       );
-      updateCartItemQuantity(item.id, item.quantity);
+      updateCartItemQuantity(item.id, item.quantity - 1);
     }
   };
 
@@ -136,6 +136,8 @@ export default function Page() {
       updateCartItemQuantity(item.id, newQuantity);
     }
   };
+
+  const handleSubmit = () => {};
   if (!cart) return;
 
   return (
@@ -248,17 +250,17 @@ export default function Page() {
 
             {/* continue Shopping */}
             <div className="w-full">
-              {quantity ? (
+              {/* {quantity ? (
                 <button
                   onClick={handleSubmit}
-                  class="group relative h-10 w-44 overflow-hidden rounded-lg bg-white text-lg shadow p-2"
+                  className="group relative h-10 w-44 overflow-hidden rounded-lg bg-white text-lg shadow p-2"
                 >
-                  <div class="absolute inset-0 w-3 bg-green-400 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                  <span class="relative text-sm text-black group-hover:text-white">
+                  <div className="absolute inset-0 w-3 bg-green-400 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                  <span className="relative text-sm text-black group-hover:text-white">
                     Apply Changes
                   </span>
                 </button>
-              ) : null}
+              ) : null} */}
 
               <Link
                 href="/"

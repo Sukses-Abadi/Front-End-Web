@@ -73,7 +73,17 @@ export default function Card(props) {
             </Link>
 
             <h1 className="text-sm font-normal text-primary opacity-70">
-              Color: {uniqueColor.join(" ")}
+              Color:{" "}
+              <div className="flex flex-inline">
+                {" "}
+                {uniqueColor.map((color) => (
+                  <div
+                    key={color}
+                    className={`h-4 w-4 border-2 border-gray-700 rounded-full mr-1 focus:outline-none`}
+                    style={{ backgroundColor: color }}
+                  ></div>
+                ))}
+              </div>
             </h1>
 
             <h1 className="text-sm font-normal text-primary opacity-70">

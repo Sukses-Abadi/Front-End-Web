@@ -10,4 +10,9 @@ const useAuthStore = create((set) => ({
   setRefresh: () => set((state) => ({ refresh: !state.refresh })),
 }));
 
-export default useAuthStore;
+const useUserStore = create((set) => ({
+  user: null,
+  setUser: (newUser) => set({ user: newUser }),
+}));
+
+export { useUserStore, useAuthStore };

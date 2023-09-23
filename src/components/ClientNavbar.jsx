@@ -1,6 +1,7 @@
 "use client";
 import fetchWithToken from "@/lib/fetchWithToken";
-import useAuthStore from "@/zustand/userStore";
+import { useAuthStore, useUserStore } from "@/zustand";
+
 import { deleteCookie, getCookie, getCookies } from "cookies-next";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +13,7 @@ export default function ClientNavbar(props) {
   const router = useRouter();
   const { refresh, setRefresh, token, setToken, isLoggedIn, login, logout } =
     useAuthStore();
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUserStore();
 
   useEffect(() => {
     const fetchCart = async (token) => {
