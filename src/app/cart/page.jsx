@@ -11,12 +11,19 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import OrderDetails from "./components/OrderDetails";
 
+export async function generateMetadata() {
+  return {
+    title: `SA Apparel `,
+    description: `Collection of  in SA. Apparel`,
+  };
+}
+
 export default function Page() {
   const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore(); // Assuming you have a logout function
   const router = useRouter();
   const [cartProduct, setCartProduct] = useState([]);
   const [cart, setCart] = useState(null);
-  const [quantity, setQuantity] = useState();
+  // const [quantity, setQuantity] = useState();
   const [rerender, setRerender] = useState(false);
   useEffect(() => {
     const getData = async () => {
@@ -86,8 +93,8 @@ export default function Page() {
         }
       );
       if (response.status === "success") {
-        // Quantity updated successfully
-        setQuantity(quantity);
+        // // Quantity updated successfully
+        // setQuantity(quantity);
         setRefresh();
       } else {
         // Handle error
