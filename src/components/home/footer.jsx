@@ -23,7 +23,7 @@ export default async function Footer() {
           <header className="footer-title text-white opacity-100">
             SHOP BY COLLECTION
           </header>
-          <ul class="list-none">
+          <ul className="list-none">
             {category.map((category, index) => {
               return (
                 <li key={category.id} className="pb-2 text-white font-light">

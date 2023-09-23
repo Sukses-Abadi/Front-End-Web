@@ -6,13 +6,27 @@ import { useRouter } from "next/navigation";
 
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import AddressForm from "./AddressForm";
+import fetchData from "@/lib/fetch";
 
 export default function OrderDetails() {
+  const courierOption = [
+    { name: "Jalur Nugraha Ekakurir (JNE)", id: "jne" },
+    { name: "TIKI", id: "tiki" },
+    { name: "POS Indonesia", id: "pos" },
+  ];
   const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
   const router = useRouter();
-  const [cartProduct, setCartProduct] = useState([]);
+  const [bankArray, setBankArray] = useState([]);
   const [cart, setCart] = useState(null);
   const { user, setUser } = useUserStore();
+  const [address, setAddress] = useState(null);
+  const [courier, setCourier] = useState(null);
+  const [shippingMethodArray, setShippingMethodArray] = useState(null);
+  const [shippingMethod, setShippingMethod] = useState(null);
+  const [shippingCost, setShippingCost] = useState(null);
+  const [body, setBody] = useState(null);
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -23,6 +37,14 @@ export default function OrderDetails() {
             cache: "no-store",
           }
         );
+        const bankData = await fetchWithToken(
+          "api/bank-accounts",
+          getCookie("accessToken"),
+          {
+            cache: "no-store",
+          }
+        );
+
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
@@ -30,8 +52,8 @@ export default function OrderDetails() {
         } else if (data.status === "success") {
           const cart = data.data;
           setCart(cart);
-          const items = cart.CartProduct;
-          setCartProduct(items);
+          const banks = bankData.data;
+          setBankArray(banks);
         } else {
           toast.error("An error occurred. Please try again later.");
         }
@@ -44,11 +66,97 @@ export default function OrderDetails() {
     if (isLoggedIn) {
       getData();
     }
-  }, [token, router, isLoggedIn, logout, refresh]);
+  }, [
+    token,
+    router,
+    isLoggedIn,
+    logout,
+    refresh,
+    address,
+    courier,
+    // setShippingCost,
+  ]);
+
   if (!cart) return;
 
-  const handleAddAddress = () => {};
-  console.log(user);
+  const handleSelectAddress = (address_id) => {
+    console.log(address_id + " selected");
+    setAddress(address_id);
+  };
+
+  const handleClickCourier = async (courier) => {
+    const body = {
+      destination: address,
+      weight: cart.total_weight,
+      courier: courier,
+    };
+    console.log(body);
+    const response = await fetchWithToken(
+      "api/rajaongkir",
+      getCookie(`accessToken`),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    setShippingMethodArray(response.data);
+    setCourier(courier);
+
+    const data = await fetchWithToken("api/cart", getCookie("accessToken"), {
+      cache: "no-store",
+    });
+    setCart(data.data);
+  };
+
+  const handleClickShippingCostAndMethod = async (
+    shipping_method,
+    shipping_cost
+  ) => {
+    setShippingCost(shipping_cost);
+    setShippingMethod(shipping_method);
+  };
+
+  const handleClickBankAccount = async (id) => {
+    const body = {
+      shipping_method: shippingMethod,
+      shipping_cost: shippingCost,
+      address_id: address,
+      courier: courier,
+      bank_account_id: id,
+      total_price: cart.total_price,
+      total_payment: cart.total_payment + shippingCost,
+      total_weight: cart.total_weight,
+      product_order_attributes: cart.CartProduct,
+    };
+    setBody(body);
+    console.log(body);
+  };
+  const handleCreateOrder = async () => {
+    const response = await fetchWithToken(
+      "api/order",
+      getCookie(`accessToken`),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    console.log(response);
+
+    if (response.status === "success") {
+      router.push("/order");
+      setRefresh();
+      console.log(`order created`);
+    } else {
+      toast.error("Please fill all the credentials");
+    }
+  };
+
   return (
     <div id="summary" className="lg:w-1/4 px-8 py-10  ">
       <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
@@ -63,26 +171,136 @@ export default function OrderDetails() {
         <select
           className="block p-2 text-gray-600 w-full text-sm"
           placeholder="Select Address"
+          defaultValue={"DEFAULT"}
         >
-          <option onClick={handleAddAddress}> Add Address</option>
+          <option value="DEFAULT" disabled>
+            Choose shipping address
+          </option>
+          <option
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
+            {" "}
+            Add Address
+          </option>
+
           {user.address.map((address) => {
-            <option>
-              <span>{address.name}</span>
-              <br />
-              {address.street}, {address.City.name}, {address.zip_code}{" "}
-            </option>;
+            return (
+              <option
+                onClick={() => handleSelectAddress(address.id)}
+                value={address.id}
+                key={address.id}
+              >
+                {address.name}, {address.street}, {address.city.name},{" "}
+                {address.zip_code}{" "}
+              </option>
+            );
           })}
         </select>
       </div>
-      <div>
-        <label className="font-medium inline-block mb-3 text-sm uppercase">
-          Shipping
-        </label>
-        <select className="block p-2 text-gray-600 w-full text-sm">
-          <option>Standard shipping - $10.00</option>
-        </select>
-      </div>
-      <div className="py-10">
+      {/* modal add address */}
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box">
+          <div method="dialog">
+            {/* <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button> */}
+            <AddressForm />
+          </div>
+        </div>
+      </dialog>
+
+      {address ? (
+        <div>
+          <label
+            defaultValue={"DEFAULT"}
+            className="font-medium inline-block mb-3 text-sm uppercase"
+          >
+            Courier
+          </label>
+          <select
+            defaultValue={"DEFAULT"}
+            className="block p-2 text-gray-600 w-full text-sm"
+          >
+            <option value="DEFAULT">Choose courier service</option>
+            {courierOption.map((element) => (
+              <option
+                key={element.id}
+                onClick={() => handleClickCourier(element.id)}
+                value={element.id}
+              >
+                {element.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : null}
+
+      {courier ? (
+        <div className="my-3">
+          <label
+            defaultValue={"DEFAULT"}
+            className="font-medium inline-block mb-3 text-sm uppercase"
+          >
+            Shipping method
+          </label>
+          <select
+            defaultValue={"DEFAULT"}
+            className="block p-2 text-gray-600 w-full text-sm"
+          >
+            <option value="DEFAULT">Choose shipping method</option>
+            {shippingMethodArray.map((element) => {
+              const cost = element.cost[0];
+              return (
+                <option
+                  key={element.service}
+                  onClick={() =>
+                    handleClickShippingCostAndMethod(
+                      element.service,
+                      cost.value
+                    )
+                  }
+                  value={element.service}
+                >
+                  {element.service}| {element.description}, Cost: {cost.value}{" "}
+                  {cost.etd} days
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      ) : (
+        "loading..."
+      )}
+
+      {shippingMethod ? (
+        <div className="my-3">
+          <label
+            defaultValue={"DEFAULT"}
+            className="font-medium inline-block mb-3 text-sm uppercase"
+          >
+            Transfer method
+          </label>
+          <select
+            defaultValue={"DEFAULT"}
+            className="block p-2 text-gray-600 w-full text-sm"
+          >
+            <option value="DEFAULT">Choose shipping method</option>
+            {bankArray.map((element) => {
+              return (
+                <option
+                  key={element.id}
+                  onClick={() => handleClickBankAccount(element.id)}
+                  value={element.id}
+                >
+                  {element.bank_name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      ) : null}
+
+      {/* <div className="py-10">
         <label
           htmlFor="promo"
           className="font-semibold inline-block mb-3 text-sm uppercase"
@@ -98,13 +316,21 @@ export default function OrderDetails() {
       </div>
       <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">
         Apply
-      </button>
+      </button> */}
       <div className="border-t mt-8">
         <div className="flex font-semibold justify-between py-6 text-sm uppercase">
           <span>Total cost</span>
-          <span>$600</span>
+          <span>
+            Rp.{" "}
+            {shippingCost
+              ? cart.total_payment + shippingCost
+              : cart.total_payment}
+          </span>
         </div>
-        <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
+        <button
+          onClick={() => handleCreateOrder()}
+          className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
+        >
           Checkout
         </button>
       </div>

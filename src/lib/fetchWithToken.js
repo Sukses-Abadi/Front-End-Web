@@ -15,9 +15,12 @@ const fetchWithToken = async (path, token, options = {}) => {
     });
     // console.log("response.ok <<<<<<<<<<<<<<<<<<<", response.ok);
     if (!response.ok) {
-      deleteCookie(`accessToken`);
+      console.log(response);
     }
     const data = await response.json();
+    if (data.error === "Unauthorized") {
+      deleteCookie(`accessToken`);
+    }
 
     return data;
   } catch (error) {
