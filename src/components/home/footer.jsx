@@ -12,7 +12,13 @@ export default async function Footer() {
     <>
       <footer className="mt-24 footer p-10 bg-primary text-base-content">
         <aside>
-          <Image src={logo} width={250} height={50} className="fill-current" />
+          <Image
+            alt="logo"
+            src={logo}
+            width={250}
+            height={50}
+            className="fill-current"
+          />
           <p className="text-white text-md pt-2">
             Sukses Abadi is a fashion retail product for men.
             <br />
@@ -23,7 +29,7 @@ export default async function Footer() {
           <header className="footer-title text-white opacity-100">
             SHOP BY COLLECTION
           </header>
-          <ul class="list-none">
+          <ul className="list-none">
             {category.map((category, index) => {
               return (
                 <li key={category.id} className="pb-2 text-white font-light">
