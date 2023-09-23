@@ -79,7 +79,7 @@ export default function Card(props) {
                 {uniqueColor.map((color) => (
                   <div
                     key={color}
-                    className={`h-4 w-4 border-2 border-gray-700 rounded-full mr-1 focus:outline-none`}
+                    className={`h-4 w-4 border-2 border-gray-700 rounded-full m-1 focus:outline-none`}
                     style={{ backgroundColor: color }}
                   ></div>
                 ))}
