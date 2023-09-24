@@ -8,22 +8,24 @@ import { redirect } from "next/navigation";
 import IconTable from "./components/IconTable";
 
 export default async function page() {
-  const token = cookies().get("accessToken").value;
-  const response = await fetchWithToken(`api/order`, token, {
+  const token = cookies().get("accessToken");
+  if (!token) redirect("/");
+  const response = await fetchWithToken(`api/order`, token.value, {
     method: "GET",
+
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   });
   if (response.error === "Unauthorized") {
     redirect("/");
   }
   const orders = response.data.orders;
-  const products = orders[0].orderProducts;
 
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-screen min-h-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
+      <div className="min-w-screen min-h-screen flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
         <div className="w-full lg:w-5/6">
           <div className="bg-white shadow-md rounded my-6">
             <table className="min-w-max w-full table-auto">
@@ -32,7 +34,9 @@ export default async function page() {
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left">Bank Info</th>
                   <th className="py-3 px-6 text-left">Price</th>
-                  <th className="py-3 px-6 text-center">Product</th>
+                  <th className="py-3 px-6 text-center hidden md:flex">
+                    Product
+                  </th>
                   <th className="py-3 px-6 text-center">Status</th>
                   <th className="py-3 px-6 text-center">Actions</th>
                 </tr>
@@ -49,7 +53,7 @@ export default async function page() {
                       className="border-b border-gray-200 hover:bg-gray-100"
                     >
                       {/* BANK */}
-                      <td className="py-3 px-6 text-left whitespace-nowrap">
+                      <td className="py-3 px-6 text-left whitetext-xs md:text-mdspace-nowrap text-xs md:text-md">
                         <div className="flex items-center">
                           <span className="font-medium">
                             {bank.bank_name}
@@ -59,21 +63,21 @@ export default async function page() {
                         </div>
                       </td>
 
-                      <td className="py-3 px-6 text-left">
+                      <td className="py-3 px-6 text-left text-xs md:text-md">
                         <div className="flex items-center">
                           <div className="mr-2"></div>
                           <span>Rp. {order.total_payment}</span>
                         </div>
                       </td>
                       {/* PRODUCT */}
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-3 px-6 text-center hidden md:flex text-xs md:text-md">
                         <div className="flex items-center justify-center">
                           {orderedProducts.map((orderedProduct) => {
                             const productDetails =
                               orderedProduct.ProductDetails;
                             const product = productDetails.product;
                             const photos = product.productGalleries;
-
+                            // console.log(orderedProduct);
                             return (
                               <Link
                                 key={orderedProduct.id}
@@ -88,6 +92,7 @@ export default async function page() {
                                   height={100}
                                 />
                                 <span className=" text-bold">
+                                  {productDetails.id}
                                   {productDetails.size}
                                 </span>
                                 <br />
@@ -105,7 +110,7 @@ export default async function page() {
 
                       <td className="py-3 px-6 text-center">
                         <span
-                          className="bg-purple-200 font-semibold text-gray-700 py-1 px-3 rounded-full text-xs"
+                          className="bg-purple-200 font-semibold text-gray-700 py-1 px-3 rounded-full text-[10px]"
                           style={{
                             backgroundColor:
                               order.status === "waiting"

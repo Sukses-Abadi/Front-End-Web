@@ -74,7 +74,7 @@ export default function OrderDetails() {
     refresh,
     address,
     courier,
-    // setShippingCost,
+    setShippingCost,
   ]);
 
   if (!cart) return;
@@ -90,7 +90,7 @@ export default function OrderDetails() {
       weight: cart.total_weight,
       courier: courier,
     };
-    console.log(body);
+
     const response = await fetchWithToken(
       "api/rajaongkir",
       getCookie(`accessToken`),
@@ -132,7 +132,7 @@ export default function OrderDetails() {
       product_order_attributes: cart.CartProduct,
     };
     setBody(body);
-    console.log(body);
+    // console.log(body);
   };
   const handleCreateOrder = async () => {
     const response = await fetchWithToken(
@@ -146,11 +146,12 @@ export default function OrderDetails() {
         body: JSON.stringify(body),
       }
     );
-    console.log(response);
+    // console.log(response);
 
     if (response.status === "success") {
-      router.push("/order");
+      router.refresh();
       setRefresh();
+      router.push("/order");
       console.log(`order created`);
     } else {
       toast.error("Please fill all the credentials");
@@ -172,12 +173,13 @@ export default function OrderDetails() {
           className="block p-2 text-gray-600 w-full text-sm"
           placeholder="Select Address"
           defaultValue={"DEFAULT"}
+          onChange={(e) => handleSelectAddress(e)}
         >
           <option value="DEFAULT" disabled>
             Choose shipping address
           </option>
           <option
-            onClick={() => document.getElementById("my_modal_3").showModal()}
+            onChange={() => document.getElementById("my_modal_3").showModal()}
           >
             {" "}
             Add Address
@@ -201,6 +203,12 @@ export default function OrderDetails() {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
           <div method="dialog">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </form>
             {/* <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button> */}
@@ -268,9 +276,7 @@ export default function OrderDetails() {
             })}
           </select>
         </div>
-      ) : (
-        "loading..."
-      )}
+      ) : null}
 
       {shippingMethod ? (
         <div className="my-3">

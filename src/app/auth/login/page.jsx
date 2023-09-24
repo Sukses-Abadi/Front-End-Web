@@ -11,6 +11,9 @@ import { useAuthStore } from "@/zustand";
 export default function Page() {
   const { token, setToken, isLoggedIn, login, logout } = useAuthStore();
   const router = useRouter();
+  if (isLoggedIn) {
+    router.push("/");
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(`clicked`);
@@ -29,8 +32,8 @@ export default function Page() {
         }),
       });
 
+      const data = await response?.json();
       if (response.ok) {
-        const data = await response?.json();
         const token = data?.data;
         setCookie("accessToken", token);
         setToken(token);

@@ -1,9 +1,88 @@
 "use client";
-import React from "react";
+import fetchData from "@/fetch";
+import { baseUrl } from "@/lib/constant";
+import fetchWithToken from "@/lib/fetchWithToken";
+import { useAuthStore } from "@/zustand";
+import { getCookie } from "cookies-next";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function IconTable({ order }) {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [filePreview, setFilePreview] = useState("");
+  const { setRefresh } = useAuthStore();
+  const router = useRouter();
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFiles(file);
+
+    // Generate a preview for the selected file
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFilePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append("files", file);
+    });
+    try {
+      const data = await fetchWithToken(
+        "api/uploads",
+        getCookie(`accessToken`),
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (data.length > 0) {
+        data.map(async (file) => {
+          const body = {
+            order_id: order.id,
+            payment_receipt: file.photo,
+            status: "received",
+          };
+          const res = await fetchWithToken(
+            "api/order",
+            getCookie(`accessToken`),
+            {
+              method: "PUT",
+              body: JSON.stringify(body),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setRefresh();
+          router.refresh();
+          // console.log(res);
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
+  };
+  let photo = [];
+  const orderedProducts = order.orderProducts;
+  {
+    orderedProducts.map((orderedProduct) => {
+      const productDetails = orderedProduct.ProductDetails;
+      const product = productDetails.product;
+      const photos = product.productGalleries;
+      photo = photos.map((photo) => photo.photo);
+    });
+  }
+  console.log(photo);
+
   return (
-    <td className="py-3 px-6 text-center">
+    <td className="py-3 mr-2 text-center">
       <div className="flex item-center justify-center ml-10">
         {/* see more */}
         <div
@@ -40,6 +119,25 @@ export default function IconTable({ order }) {
               </button>
             </form>
             <h3 className="font-bold text-lg">Order Details!</h3>
+            {/* <div className="w-10 h-10 bg-red-900">
+              {photo.map((element) => {
+                {
+                  console.log(element);
+                }
+                return (
+                  <>
+                    <p>{element}</p>
+                    <Image
+                      key={element}
+                      src={`${baseUrl}/${element}`}
+                      alt=""
+                      width={10}
+                      height={10}
+                    />
+                  </>
+                );
+              })}
+            </div> */}
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
                 <p>Order Date</p>
@@ -114,14 +212,22 @@ export default function IconTable({ order }) {
                 <p>Rp. {order.total_payment}</p>
               </div>
             </div>
-            <div className="md:flex md:items-center mb-3">
+            {/* <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
                 <p>Payment Receipt</p>
               </div>
               <div className="md:w-2/3">
-                <p>{order.payment_receipt}</p>
+                {order.payment_receipt === null ? null : (
+                  <Image
+                    className="w-10 h-10 rounded-full border-gray-200 border transform hover:scale-125"
+                    src={`${baseUrl}/${order.payment_receipt}`}
+                    alt={""}
+                    width={100}
+                    height={100}
+                  />
+                )}
               </div>
-            </div>
+            </div> */}
           </div>
         </dialog>
         {/* delete */}
@@ -144,9 +250,9 @@ export default function IconTable({ order }) {
           </svg>
         </div> */}
         {/* Upload */}
-        <div
-          type="file"
-          className=" tooltip tooltip-success transform hover:text-purple-500 hover:scale-100"
+        <form
+          onSubmit={handleFormSubmit}
+          className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
           data-tip="Upload transfer "
         >
           {/* <svg
@@ -162,11 +268,30 @@ export default function IconTable({ order }) {
             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
           />
         </svg> */}
+          {/* Display file preview */}
+          {/* {filePreview && (
+            <Image
+              src={filePreview}
+              alt="File Preview"
+              className="max-w-xs mx-auto mt-2 h-10 w-10"
+              width={100}
+              height={100}
+            />
+          )} */}
           <input
             type="file"
-            className="file-input file-input-bordered file-input-xs w-full max-w-xs"
+            name="files"
+            multiple
+            onChange={handleFileChange}
+            className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
           />
-        </div>
+          <button
+            className="p-1  bg-blue-400 text-white rounded-md"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </td>
   );

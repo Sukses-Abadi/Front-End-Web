@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const router = useRouter();
-
+  if (isLoggedIn) {
+    router.push("/");
+  }
   function isSlugFriendly(username) {
     const pattern = /^[a-z0-9-]+$/;
     return pattern.test(username) && username.length >= 6;
