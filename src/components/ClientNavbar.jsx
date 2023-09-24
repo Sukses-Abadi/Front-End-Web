@@ -143,6 +143,11 @@ export default function ClientNavbar(props) {
             </Link>
           </li>
           <li>
+            <Link href="/order" className="justify-between">
+              Payment/Order
+            </Link>
+          </li>
+          <li>
             <button onClick={handleLogOut}>Logout</button>
           </li>
         </ul>
