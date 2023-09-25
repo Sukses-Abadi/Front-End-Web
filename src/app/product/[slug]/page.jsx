@@ -5,6 +5,7 @@ import fetchData from "@/lib/fetch";
 import Image from "next/image";
 import { MoreProduct } from "./components/MoreProduct";
 import DetailsComponent from "./components/DetailsComponent";
+import Link from "next/link";
 
 export async function generateMetadata(req) {
   const { slug } = req.params;
@@ -23,6 +24,7 @@ export default async function Page(req) {
   const { data } = await fetchData(`api/products/${slug}`, "GET", {
     cache: "no-store",
   });
+
   const photoGallery = data.productGalleries;
   return (
     <>
@@ -50,26 +52,28 @@ export default async function Page(req) {
               <DetailsComponent {...data} />
             </div>
           </div>
-          {/* description */}
-          <div className=" h-screen my-10 ">
-            Description: A detailed description of the product, including its
-            purpose, design, and intended use.
-            <br />
-            Features: List of features or functionalities the product offers.
-            <br />
-            Technical Details: Information about the internal components,
-            materials, and manufacturing processes used.
-            <br />
-            Dimensions and Weight: Measurements of the product is size and
-            weight.
-            <br />
-            Performance: Information about how the product performs under
-            different conditions.
-            <br />
-            Power Requirements: Details about the power source or battery life.
-          </div>
         </div>
       </main>
+      {/* description */}
+      <div className=" container m-auto w-screen my-10 text-left font-mono text-lg">
+        <p className="my-2 tracking-wider leading-8">
+          <span className=" text-blue-400 italic font-serif lining-nums text-xl ">
+            SKU : {data.SKU}
+          </span>
+          <br />
+          {data.description}
+          <br />
+        </p>
+      </div>
+      <Link href="/" className="flex font-semibold text-blue-400 text-sm mt-10">
+        <svg
+          className="fill-current mr-2 text-indigo-600 w-4"
+          viewBox="0 0 448 512"
+        >
+          <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
+        </svg>
+        Back to Homepage
+      </Link>
     </>
   );
 }

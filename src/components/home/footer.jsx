@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "../assets/logo2.svg";
 import fetchData from "@/lib/fetch";
+import Link from "next/link";
 
 export default async function Footer() {
   const { data } = await fetchData("api/category", "GET", {
@@ -11,20 +12,22 @@ export default async function Footer() {
   return (
     <>
       <footer className="mt-24 footer p-10 bg-primary text-base-content">
-        <aside>
-          <Image
-            alt="logo"
-            src={logo}
-            width={250}
-            height={50}
-            className="fill-current"
-          />
-          <p className="text-white text-md pt-2">
-            Sukses Abadi is a fashion retail product for men.
-            <br />
-            Established on 8 January 2010 in Jakarta.
-          </p>
-        </aside>
+        <Link href="/">
+          <aside>
+            <Image
+              alt="logo"
+              src={logo}
+              width={250}
+              height={50}
+              className="fill-current"
+            />
+            <p className="text-white text-md pt-2">
+              Sukses Abadi is a fashion retail product for men.
+              <br />
+              Established on 8 January 2010 in Jakarta.
+            </p>
+          </aside>
+        </Link>
         <nav>
           <header className="footer-title text-white opacity-100">
             SHOP BY COLLECTION
@@ -32,10 +35,14 @@ export default async function Footer() {
           <ul className="list-none">
             {category.map((category, index) => {
               return (
-                <li key={category.id} className="pb-2 text-white font-light">
+                <Link
+                  href={`/category/${category.name}`}
+                  key={category.id}
+                  className="pb-2 text-white font-light"
+                >
                   {" "}
                   {category.name}
-                </li>
+                </Link>
               );
             })}
           </ul>

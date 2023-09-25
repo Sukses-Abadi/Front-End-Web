@@ -8,6 +8,7 @@ import logo from "./assets/logo.svg";
 import ClientNavbar from "./ClientNavbar";
 import { cookies } from "next/headers";
 import fetchWithToken from "@/lib/fetchWithToken";
+import SearchComponent from "./Search";
 export default async function Navbar() {
   const { data } = await fetchData("api/category", "GET", {
     cache: "no-store",
@@ -29,6 +30,7 @@ export default async function Navbar() {
       },
       cache: "no-store",
     });
+    // console.log(res);
     userData = res?.data;
     if (userData) {
       isLoggedIn = true;
@@ -78,11 +80,13 @@ export default async function Navbar() {
 
         {/* End Menu Web View  */}
 
+        {/* search Bar */}
+        <SearchComponent />
         {/* Client Component Or Login */}
         {isLoggedIn ? (
           <ClientNavbar />
         ) : (
-          <Link className="hidden lg:flex btn btn-primary" href="/auth/login">
+          <Link className=" btn btn-primary" href="/auth/login">
             Log In
           </Link>
         )}
