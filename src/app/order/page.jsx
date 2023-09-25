@@ -22,7 +22,7 @@ export default async function page() {
     redirect("/");
   }
 
-  console.log(response);
+  // console.log(response);
   const orders = response.data.orders;
 
   return (
@@ -64,7 +64,6 @@ export default async function page() {
                           </span>
                         </div>
                       </td>
-
 
                       <td className="py-3 px-6 text-left text-xs md:text-md">
                         <div className="flex items-center">

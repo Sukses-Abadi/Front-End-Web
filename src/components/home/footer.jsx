@@ -12,8 +12,8 @@ export default async function Footer() {
   return (
     <>
       <footer className="mt-24 footer p-10 bg-primary text-base-content">
-        <Link href="/">
-          <aside>
+        <aside>
+          <Link href="/">
             <Image
               alt="logo"
               src={logo}
@@ -21,13 +21,13 @@ export default async function Footer() {
               height={50}
               className="fill-current"
             />
-            <p className="text-white text-md pt-2">
-              Sukses Abadi is a fashion retail product for men.
-              <br />
-              Established on 8 January 2010 in Jakarta.
-            </p>
-          </aside>
-        </Link>
+          </Link>
+          <p className="text-white text-md pt-2">
+            Sukses Abadi is a fashion retail product for men.
+            <br />
+            Established on 8 January 2010 in Jakarta.
+          </p>
+        </aside>
         <nav>
           <header className="footer-title text-white opacity-100">
             SHOP BY COLLECTION
