@@ -8,11 +8,11 @@ import { useRouter } from "next/navigation";
 import { getCookies, setCookie, deleteCookie, getCookie } from "cookies-next";
 import { useAuthStore } from "@/zustand";
 
-export const metadata = {
-  title: "Sukses Abadi Login Page",
-  description:
-    "Login Page of Leading Apparel E-commerce Store that sell high quality products",
-};
+// export const metadata = {
+//   title: "Sukses Abadi Login Page",
+//   description:
+//     "Login Page of Leading Apparel E-commerce Store that sell high quality products",
+// };
 
 export default function Page() {
   const { token, setToken, isLoggedIn, login, logout } = useAuthStore();

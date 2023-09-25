@@ -35,7 +35,7 @@ export default function Sidebar({ children }) {
         <div className="details">
           <h1 className="text-primary font-semibold text-xl">User Profile</h1>
           <p className="text-primary font-normal text-sm opacity-70">
-            123456789
+            user@email.com
           </p>
         </div>
       </div>

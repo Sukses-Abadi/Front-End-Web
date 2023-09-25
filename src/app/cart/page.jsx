@@ -11,12 +11,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import OrderDetails from "./components/OrderDetails";
 
-export async function generateMetadata() {
-  return {
-    title: `SA Apparel `,
-    description: `Collection of  in SA. Apparel`,
-  };
-}
+// export async function generateMetadata() {
+//   return {
+//     title: `SA Apparel `,
+//     description: `Collection of  in SA. Apparel`,
+//   };
+// }
 
 export default function Page() {
   const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore(); // Assuming you have a logout function

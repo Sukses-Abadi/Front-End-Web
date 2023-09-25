@@ -32,7 +32,7 @@ export default function Address() {
         {/* End Upload */}
 
         {/* Start Detail Profile */}
-        <div className="col-span-2 ">
+        <div className="col-span-2">
           <div className="p-5">
             <form className="w-full max-w-lg">
               <div className="flex flex-wrap -mx-3 mb-4">

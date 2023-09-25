@@ -6,11 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand";
 
-export const metadata = {
-  title: "Sukses Abadi Register Page",
-  description:
-    "Login Page of Leading Apparel E-commerce Store that sell high quality products",
-};
+// export const metadata = {
+//   title: "Sukses Abadi Register Page",
+//   description:
+//     "Login Page of Leading Apparel E-commerce Store that sell high quality products",
+// };
 export default function Page() {
   const { isLoggedIn } = useAuthStore();
   const router = useRouter();
