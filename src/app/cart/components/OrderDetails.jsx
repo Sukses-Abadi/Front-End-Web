@@ -74,14 +74,19 @@ export default function OrderDetails() {
     refresh,
     address,
     courier,
-    // setShippingCost,
+    setShippingCost,
   ]);
 
   if (!cart) return;
 
-  const handleSelectAddress = (address_id) => {
-    console.log(address_id + " selected");
-    setAddress(address_id);
+  const handleSelectAddress = (e) => {
+    console.log(e.target);
+    console.log(e.target.value + " selected");
+    if (e.target.value === "openmodal") {
+      document.getElementById("my_modal_3").showModal();
+    } else {
+      setAddress(e.target.value);
+    }
   };
 
   const handleClickCourier = async (courier) => {
@@ -90,7 +95,8 @@ export default function OrderDetails() {
       weight: cart.total_weight,
       courier: courier,
     };
-    console.log(body);
+
+    setCourier(courier);
     const response = await fetchWithToken(
       "api/rajaongkir",
       getCookie(`accessToken`),
@@ -103,7 +109,6 @@ export default function OrderDetails() {
       }
     );
     setShippingMethodArray(response.data);
-    setCourier(courier);
 
     const data = await fetchWithToken("api/cart", getCookie("accessToken"), {
       cache: "no-store",
@@ -111,29 +116,28 @@ export default function OrderDetails() {
     setCart(data.data);
   };
 
-  const handleClickShippingCostAndMethod = async (
-    shipping_method,
-    shipping_cost
-  ) => {
-    setShippingCost(shipping_cost);
-    setShippingMethod(shipping_method);
+  const handleClickShippingCostAndMethod = async (e) => {
+    const data = e.target.options[e.target.selectedIndex].getAttribute("cost");
+    // console.log(data);
+    setShippingCost(+data);
+    setShippingMethod(e.target.value);
   };
 
   const handleClickBankAccount = async (id) => {
     const body = {
       shipping_method: shippingMethod,
       shipping_cost: shippingCost,
-      address_id: address,
+      address_id: +address,
       courier: courier,
-      bank_account_id: id,
+      bank_account_id: +id,
       total_price: cart.total_price,
       total_payment: cart.total_payment + shippingCost,
       total_weight: cart.total_weight,
       product_order_attributes: cart.CartProduct,
     };
     setBody(body);
-    console.log(body);
   };
+
   const handleCreateOrder = async () => {
     const response = await fetchWithToken(
       "api/order",
@@ -146,11 +150,12 @@ export default function OrderDetails() {
         body: JSON.stringify(body),
       }
     );
-    console.log(response);
+    // console.log(response);
 
     if (response.status === "success") {
-      router.push("/order");
+      router.refresh();
       setRefresh();
+      router.push("/order");
       console.log(`order created`);
     } else {
       toast.error("Please fill all the credentials");
@@ -172,12 +177,14 @@ export default function OrderDetails() {
           className="block p-2 text-gray-600 w-full text-sm"
           placeholder="Select Address"
           defaultValue={"DEFAULT"}
+          onChange={(e) => handleSelectAddress(e)}
         >
           <option value="DEFAULT" disabled>
             Choose shipping address
           </option>
           <option
-            onClick={() => document.getElementById("my_modal_3").showModal()}
+            value={`openmodal`}
+            // onChange={() => document.getElementById("my_modal_3").showModal()}
           >
             {" "}
             Add Address
@@ -185,11 +192,7 @@ export default function OrderDetails() {
 
           {user.address.map((address) => {
             return (
-              <option
-                onClick={() => handleSelectAddress(address.id)}
-                value={address.id}
-                key={address.id}
-              >
+              <option value={address.id} key={address.id}>
                 {address.name}, {address.street}, {address.city.name},{" "}
                 {address.zip_code}{" "}
               </option>
@@ -201,6 +204,12 @@ export default function OrderDetails() {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
           <div method="dialog">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </form>
             {/* <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button> */}
@@ -220,22 +229,20 @@ export default function OrderDetails() {
           <select
             defaultValue={"DEFAULT"}
             className="block p-2 text-gray-600 w-full text-sm"
+            onChange={(e) => handleClickCourier(e.target.value)}
           >
             <option value="DEFAULT">Choose courier service</option>
             {courierOption.map((element) => (
-              <option
-                key={element.id}
-                onClick={() => handleClickCourier(element.id)}
-                value={element.id}
-              >
+              <option key={element.name} value={element.id}>
                 {element.name}
               </option>
             ))}
           </select>
         </div>
       ) : null}
-
-      {courier ? (
+      {!courier ? null : courier && !shippingMethodArray ? (
+        <span className=" my-4 loading loading-spinner loading-xs"></span>
+      ) : (
         <div className="my-3">
           <label
             defaultValue={"DEFAULT"}
@@ -246,30 +253,24 @@ export default function OrderDetails() {
           <select
             defaultValue={"DEFAULT"}
             className="block p-2 text-gray-600 w-full text-sm"
+            onChange={(e) => handleClickShippingCostAndMethod(e)}
           >
             <option value="DEFAULT">Choose shipping method</option>
-            {shippingMethodArray.map((element) => {
+            {shippingMethodArray?.map((element) => {
               const cost = element.cost[0];
               return (
                 <option
                   key={element.service}
-                  onClick={() =>
-                    handleClickShippingCostAndMethod(
-                      element.service,
-                      cost.value
-                    )
-                  }
                   value={element.service}
+                  cost={cost.value}
                 >
-                  {element.service}| {element.description}, Cost: {cost.value}{" "}
-                  {cost.etd} days
+                  {element.service} | {element.description}, Cost:Rp.{" "}
+                  {cost.value} {cost.etd} days
                 </option>
               );
             })}
           </select>
         </div>
-      ) : (
-        "loading..."
       )}
 
       {shippingMethod ? (
@@ -283,15 +284,12 @@ export default function OrderDetails() {
           <select
             defaultValue={"DEFAULT"}
             className="block p-2 text-gray-600 w-full text-sm"
+            onChange={(e) => handleClickBankAccount(e.target.value)}
           >
             <option value="DEFAULT">Choose shipping method</option>
             {bankArray.map((element) => {
               return (
-                <option
-                  key={element.id}
-                  onClick={() => handleClickBankAccount(element.id)}
-                  value={element.id}
-                >
+                <option key={element.id} value={element.id}>
                   {element.bank_name}
                 </option>
               );
@@ -317,7 +315,12 @@ export default function OrderDetails() {
       <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">
         Apply
       </button> */}
+
       <div className="border-t mt-8">
+        <div className="flex font-semibold justify-between py-6 text-sm uppercase">
+          <span>Shipping Cost</span>
+          <span>Rp. {shippingCost || 0}</span>
+        </div>
         <div className="flex font-semibold justify-between py-6 text-sm uppercase">
           <span>Total cost</span>
           <span>

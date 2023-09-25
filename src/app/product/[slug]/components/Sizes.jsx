@@ -2,6 +2,7 @@
 import { baseUrl } from "@/lib/constant";
 import fetchWithToken from "@/lib/fetchWithToken";
 import { useAuthStore } from "@/zustand";
+import { getCookie } from "cookies-next";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -36,6 +37,9 @@ export function Sizes(props) {
   };
 
   const handleAddToCart = async () => {
+    if (!getCookie("accessToken")) {
+      toast.error("please login to your account");
+    }
     const data = {
       product_details: {
         id: selectedProduct, // Assuming you have a productId

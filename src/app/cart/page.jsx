@@ -35,6 +35,7 @@ export default function Page() {
             cache: "no-store",
           }
         );
+        console.log("test");
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
@@ -144,11 +145,8 @@ export default function Page() {
     }
   };
 
-  const handleSubmit = () => {};
-  if (!cart) return;
-
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 ">
       <div className="container mx-auto mt-10">
         <div className="md:flex shadow-md my-10">
           <div className="md:w-3/4  bg-white  px-10 py-10">

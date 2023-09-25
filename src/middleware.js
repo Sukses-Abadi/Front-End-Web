@@ -10,6 +10,7 @@ export function middleware(request) {
     return NextResponse.next();
   } else {
     const accessToken = request.cookies.get("accessToken");
+
     if (!accessToken) {
       return NextResponse.redirect(new URL("/", request.url));
     } else {
@@ -20,5 +21,5 @@ export function middleware(request) {
 
 // Tentukan path mana saja yang mau di apply middleware
 export const config = {
-  matcher: "/collection/",
+  matcher: ["/cart", "/order"],
 };

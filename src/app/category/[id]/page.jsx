@@ -1,4 +1,5 @@
-import { Card } from "@/components/Card";
+import Card from "@/components/home/card";
+import Container from "@/components/home/container.grid";
 import fetchData from "@/lib/fetch";
 
 export async function generateMetadata(req) {
@@ -22,14 +23,17 @@ export default async function Page(req) {
       cache: "no-store",
     }
   );
+  const products = data.products;
   return (
-    <div className="flex justify-center items-center">
-      <section className="mx-auto flex flex-wrap flex-inline items-center justify-center">
-        {data.products?.map((product, index) => {
-          return <Card key={product.id} {...product} />;
-        })}
-      </section>
-    </div>
+    <Container>
+      {products ? (
+        products.map((product) => {
+          return <Card key={product.id} product={product} />;
+        })
+      ) : (
+        <h1> {searchTerm} not Found</h1>
+      )}
+    </Container>
   );
 }
 
