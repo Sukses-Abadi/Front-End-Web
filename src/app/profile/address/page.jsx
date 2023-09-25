@@ -1,9 +1,17 @@
 "use client";
+import fetchWithToken from "@/lib/fetchWithToken";
+import { useAuthStore, useUserStore } from "@/zustand";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 import { useState, useEffect } from "react";
 import fetchData from "@/lib/fetch";
 
 export default function Address() {
+  const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
+  const router = useRouter();
+
+  const [user, setUser] = useState(null);
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
@@ -12,8 +20,41 @@ export default function Address() {
       const cityArray = result.data;
       setCities(cityArray);
     };
+
+    const getData = async () => {
+      try {
+        const result = await fetchWithToken(
+          "api/user",
+          getCookie("accessToken"),
+          {
+            cache: "no-store",
+          }
+        );
+
+        console.log("test");
+
+        if (!getCookie("accessToken")) {
+          logout();
+          toast.info("Your session has expired");
+          router.push("/");
+        } else if (result.status === "success") {
+          const user = result.data;
+          // console.log(user);
+          setUser(user);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle the error (e.g., show a toast message)
+        toast.error("An error occurred. Please try again later.");
+      }
+    };
     fetchCity();
-  }, []);
+    if (isLoggedIn) {
+      getData();
+    }
+  }, [token, router, isLoggedIn, logout]);
   return (
     <div className="flex flex-col h-full p-3">
       <div className="container p-3">
@@ -46,7 +87,7 @@ export default function Address() {
               <div>
                 <label
                   className="block uppercase tracking-wide text-primary text-xs font-bold mb-2"
-                  for="grid-username"
+                  htmlFor="grid-username"
                 >
                   Name
                 </label>
@@ -60,7 +101,7 @@ export default function Address() {
               <div>
                 <label
                   className="block uppercase tracking-wide text-primary text-xs font-bold mb-2"
-                  for="grid-username"
+                  htmlFor="grid-username"
                 >
                   Street
                 </label>
@@ -75,7 +116,7 @@ export default function Address() {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-primary text-xs font-bold mb-2"
-                    for="grid-first-name"
+                    htmlFor="grid-first-name"
                   >
                     City
                   </label>
@@ -111,7 +152,7 @@ export default function Address() {
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-primary text-xs font-bold mb-2"
-                    for="grid-last-name"
+                    htmlFor="grid-last-name"
                   >
                     Zip Code
                   </label>
@@ -137,9 +178,49 @@ export default function Address() {
       </div>
       {/* End Modal */}
 
-      <div className="mt-4 w-full px-3 bg-slate-300">
-        <h1>Belum Ada Alamat</h1>
-      </div>
+      {/* Start List Address */}
+      {user &&
+        user.address &&
+        user.address.map((address) => {
+          return (
+            <div
+              key={address.id}
+              className="flex flex-col mt-4 p-4 w-full border rounded-md shadow-md"
+            >
+              <div className="flex">
+                <h1 className="text-lg font-semibold text-primary pb-3">
+                  {address.name}
+                </h1>
+              </div>
+              <div className="flex">
+                <p className="text-md font-light text-primary">
+                  {address.street}
+                </p>
+              </div>
+              <div className="flex">
+                <p className="text-md font-light text-primary">
+                  {address.city.name}
+                </p>
+              </div>
+              <div className="flex">
+                <p className="text-md font-light text-primary">
+                  {address.zip_code}
+                </p>
+              </div>
+
+              <div className="flex flex-row-reverse gap-y-2">
+                <button className="text-sm font-normal text-red-600 px-3 py-4  hover:text-red-800">
+                  Delete Address
+                </button>
+
+                <button className="text-sm font-normal text-red-600 px-3 py-4  hover:text-red-800">
+                  Edit Address
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      {/* End List Address */}
     </div>
   );
 }

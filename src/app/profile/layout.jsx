@@ -5,7 +5,7 @@ export default function layout({ children }) {
     <div className="container mx-auto py-10 h-full">
       <div className="flex flex-row gap-3">
         <Sidebar />
-        <div class="basis-3/4 w-full border-2 rounded-r-lg shadow-md">
+        <div className="basis-3/4 w-full border-2 rounded-r-lg shadow-md">
           {children}
         </div>
       </div>

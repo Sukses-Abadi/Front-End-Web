@@ -1,7 +1,55 @@
+"use client";
+import fetchWithToken from "@/lib/fetchWithToken";
+import { useAuthStore, useUserStore } from "@/zustand";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+
 import Image from "next/image";
 import profile from "../../components/assets/profile.jpg";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-export default function Address() {
+export default function Profile() {
+  const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
+  const router = useRouter();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const result = await fetchWithToken(
+          "api/user",
+          getCookie("accessToken"),
+          {
+            cache: "no-store",
+          }
+        );
+
+        console.log("test");
+
+        if (!getCookie("accessToken")) {
+          logout();
+          toast.info("Your session has expired");
+          router.push("/");
+        } else if (result.status === "success") {
+          const user = result.data;
+          // console.log(user);
+          setUser(user);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle the error (e.g., show a toast message)
+        toast.error("An error occurred. Please try again later.");
+      }
+    };
+    if (isLoggedIn) {
+      getData();
+    }
+  }, [token, router, isLoggedIn, logout]);
+
   return (
     <div className="flex flex-col h-full p-3">
       <div className="container p-3">
@@ -47,7 +95,7 @@ export default function Address() {
                     className="appearance-none block w-full bg-gray-200 text-primary border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                     id="grid-first-name"
                     type="text"
-                    placeholder="Jane"
+                    placeholder={user ? user.first_name : " "}
                   />
                 </div>
                 <div className="w-full md:w-1/2 px-3">
@@ -61,7 +109,7 @@ export default function Address() {
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-last-name"
                     type="text"
-                    placeholder="Doe"
+                    placeholder={user ? user.last_name : " "}
                   />
                 </div>
               </div>
@@ -77,7 +125,7 @@ export default function Address() {
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-username"
                     type="text"
-                    placeholder="janedoe123"
+                    placeholder={user ? user.username : " "}
                   />
                 </div>
               </div>
@@ -94,7 +142,7 @@ export default function Address() {
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-email"
                     type="email"
-                    placeholder="janedoe@email.com"
+                    placeholder={user ? user.email : " "}
                   />
                 </div>
               </div>
