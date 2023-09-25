@@ -1,4 +1,5 @@
 "use client";
+
 import fetchData from "@/fetch";
 import { baseUrl } from "@/lib/constant";
 import fetchWithToken from "@/lib/fetchWithToken";
@@ -104,6 +105,7 @@ export default function IconTable({ order }) {
             />
           </svg>
         </div>
+
         <dialog id="my_modal_3" className="modal overflow-auto">
           <div className="modal-box">
             <form method="dialog">
@@ -112,6 +114,7 @@ export default function IconTable({ order }) {
                 ✕
               </button>
             </form>
+
             <h3 className="font-bold text-lg mb-2">Order Details!</h3>
             <div className="md:flex md:items-center mb-3 ">
               <div className="md:w-1/3 my-2">
@@ -141,7 +144,9 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
+
                 <p className="font-semibold">Total Weight</p>
+
               </div>
               <div className="md:w-2/3">
                 <p>{order.total_weight} gram</p>
