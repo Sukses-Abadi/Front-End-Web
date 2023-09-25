@@ -8,22 +8,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function IconTable({ order }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [filePreview, setFilePreview] = useState("");
   const { setRefresh } = useAuthStore();
   const router = useRouter();
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFiles(file);
 
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    setSelectedFiles(Array.from(files));
     // Generate a preview for the selected file
     const reader = new FileReader();
     reader.onload = (e) => {
       setFilePreview(e.target.result);
     };
-    reader.readAsDataURL(file);
+
+    reader.readAsDataURL(files[0]); // Display preview for the first file
   };
 
   const handleFormSubmit = async (e) => {
@@ -60,6 +62,7 @@ export default function IconTable({ order }) {
               },
             }
           );
+          toast.success(`${res.message}`);
           setRefresh();
           router.refresh();
           // console.log(res);
@@ -71,15 +74,6 @@ export default function IconTable({ order }) {
   };
   let photo = [];
   const orderedProducts = order.orderProducts;
-  {
-    orderedProducts.map((orderedProduct) => {
-      const productDetails = orderedProduct.ProductDetails;
-      const product = productDetails.product;
-      const photos = product.productGalleries;
-      photo = photos.map((photo) => photo.photo);
-    });
-  }
-  console.log(photo);
 
   return (
     <td className="py-3 mr-2 text-center">
@@ -110,7 +104,7 @@ export default function IconTable({ order }) {
             />
           </svg>
         </div>
-        <dialog id="my_modal_3" className="modal">
+        <dialog id="my_modal_3" className="modal overflow-auto">
           <div className="modal-box">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
@@ -118,29 +112,10 @@ export default function IconTable({ order }) {
                 ✕
               </button>
             </form>
-            <h3 className="font-bold text-lg">Order Details!</h3>
-            {/* <div className="w-10 h-10 bg-red-900">
-              {photo.map((element) => {
-                {
-                  console.log(element);
-                }
-                return (
-                  <>
-                    <p>{element}</p>
-                    <Image
-                      key={element}
-                      src={`${baseUrl}/${element}`}
-                      alt=""
-                      width={10}
-                      height={10}
-                    />
-                  </>
-                );
-              })}
-            </div> */}
-            <div className="md:flex md:items-center mb-3">
+            <h3 className="font-bold text-lg mb-2">Order Details!</h3>
+            <div className="md:flex md:items-center mb-3 ">
               <div className="md:w-1/3 my-2">
-                <p>Order Date</p>
+                <p className="font-semibold">Order Date</p>
               </div>
               <div className="md:w-2/3">
                 <p>{order.order_date}</p>
@@ -148,7 +123,7 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>address</p>
+                <p className="font-semibold">address</p>
               </div>
               <div className="md:w-2/3">
                 <p>
@@ -158,7 +133,7 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Total Price</p>
+                <p className="font-semibold">Total Price</p>
               </div>
               <div className="md:w-2/3">
                 <p>Rp. {order.total_price}</p>
@@ -166,7 +141,7 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Total Weight</p>
+                <p className="font-semibold">Total Weight</p>
               </div>
               <div className="md:w-2/3">
                 <p>{order.total_weight} gram</p>
@@ -174,7 +149,7 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Courier</p>
+                <p className="font-semibold">Courier</p>
               </div>
               <div className="md:w-2/3">
                 <p>{order.courier}</p>
@@ -182,15 +157,15 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Shipping Method</p>
+                <p className="font-semibold">Shipping Method</p>
               </div>
               <div className="md:w-2/3">
-                <p>{order.shipping_method}</p>
+                <p className="">{order.shipping_method}</p>
               </div>
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Tracking Number</p>
+                <p className="font-semibold">Tracking Number</p>
               </div>
               <div className="md:w-2/3">
                 <p>{order.tracking_number}</p>
@@ -198,7 +173,7 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Shipping Cost</p>
+                <p className="font-semibold">Shipping Cost</p>
               </div>
               <div className="md:w-2/3">
                 <p>Rp. {order.shipping_cost}</p>
@@ -206,28 +181,28 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Total Cost</p>
+                <p className="font-semibold">Total Cost</p>
               </div>
               <div className="md:w-2/3">
                 <p>Rp. {order.total_payment}</p>
               </div>
             </div>
-            {/* <div className="md:flex md:items-center mb-3">
+            <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-                <p>Payment Receipt</p>
+                <p className="font-semibold">Payment Receipt</p>
               </div>
               <div className="md:w-2/3">
-                {order.payment_receipt === null ? null : (
+                {order.payment_receipt ? (
                   <Image
-                    className="w-10 h-10 rounded-full border-gray-200 border transform hover:scale-125"
                     src={`${baseUrl}/${order.payment_receipt}`}
-                    alt={""}
-                    width={100}
-                    height={100}
+                    alt="File Preview"
+                    className=" mx-auto ml-10 "
+                    width={500}
+                    height={500}
                   />
-                )}
+                ) : null}
               </div>
-            </div> */}
+            </div>
           </div>
         </dialog>
         {/* delete */}
@@ -269,15 +244,15 @@ export default function IconTable({ order }) {
           />
         </svg> */}
           {/* Display file preview */}
-          {/* {filePreview && (
+          {filePreview && (
             <Image
               src={filePreview}
               alt="File Preview"
-              className="max-w-xs mx-auto mt-2 h-10 w-10"
-              width={100}
-              height={100}
+              className="max-w-xs mx-auto ml-10 h-32"
+              width={500}
+              height={500}
             />
-          )} */}
+          )}
           <input
             type="file"
             name="files"
