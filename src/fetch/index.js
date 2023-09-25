@@ -6,13 +6,11 @@ const fetchData = async (api, method, revalidate, body) => {
     },
     body: JSON.stringify(body),
   };
-
+  // console.log(options);
   const data = await fetch(
     `http://localhost:5000/${api}`,
 
-    revalidate,
-
-    options
+    { ...revalidate, ...options }
   );
   const response = await data.json();
   return response;
