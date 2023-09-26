@@ -21,7 +21,9 @@ export default function RootLayout({ children }) {
           <Navbar />
         </nav>
         <main className=" mx-auto "> {children}</main>
-        <Footer />
+        <footer>
+          <Footer />
+        </footer>
       </body>
     </html>
   );
