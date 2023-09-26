@@ -1,3 +1,4 @@
+import Pagination from "@/components/Pagination";
 import Card from "@/components/home/card";
 import Container from "@/components/home/container.grid";
 import fetchData from "@/fetch";
@@ -26,15 +27,18 @@ export default async function SearchResults({ params: { searchTerm } }) {
   });
   const products = data.products;
   const content = (
-    <Container>
-      {products ? (
-        products.map((product) => {
-          return <Card key={product.id} product={product} />;
-        })
-      ) : (
-        <h1> {searchTerm} not Found</h1>
-      )}
-    </Container>
+    <div>
+      <Container>
+        {products ? (
+          products.map((product) => {
+            return <Card key={product.id} product={product} />;
+          })
+        ) : (
+          <h1> {searchTerm} not Found</h1>
+        )}
+      </Container>
+      <Pagination data={data} />
+    </div>
   );
   return content;
 }

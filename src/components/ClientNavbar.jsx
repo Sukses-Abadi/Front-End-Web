@@ -14,8 +14,10 @@ export default function ClientNavbar(props) {
   const { refresh, setRefresh, token, setToken, isLoggedIn, login, logout } =
     useAuthStore();
   const { user, setUser } = useUserStore();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchCart = async (token) => {
       const data = await fetchWithToken("api/user", token);
       return await data;
@@ -28,6 +30,7 @@ export default function ClientNavbar(props) {
         setUser(data.data);
         setToken(storedToken);
         login();
+        setLoading(false);
         // router.refresh();
       }
     };
@@ -39,10 +42,10 @@ export default function ClientNavbar(props) {
       router.refresh();
     }
   }, [user, router, setRefresh, refresh]);
-  if (!user) return;
+  if (loading) return;
 
   const userData = user;
-  const userPhoto = userData.photo;
+  const userPhoto = userData?.photo;
   const userCart = userData.cart;
   const total_price = userData.cart.total_price;
   const cartItemCount = userCart.CartProduct.length;
