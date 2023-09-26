@@ -36,7 +36,7 @@ export default async function Footer() {
             {category.map((category, index) => {
               return (
                 <Link
-                  href={`/category/${category.name}`}
+                  href={`/category/${category.id}`}
                   key={category.id}
                   className="pb-2 text-white font-light"
                 >
