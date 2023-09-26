@@ -31,7 +31,7 @@ export default async function Page(req) {
           return <Card key={product.id} product={product} />;
         })
       ) : (
-        <h1> {searchTerm} not Found</h1>
+        <h1> No Products are Found</h1>
       )}
     </Container>
   );
