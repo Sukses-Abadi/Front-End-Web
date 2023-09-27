@@ -93,7 +93,7 @@ export function Sizes(props) {
               key={element}
               className={` ${
                 selectedSize === element
-                  ? "bg-blue-800  border-2"
+                  ? "bg-blue-500  border-2"
                   : " border-white"
               }  h-6 w-6 mr-2 text-gray-700 text-sm`}
               onClick={() => handleClick(`${element}`)}
@@ -122,7 +122,7 @@ export function Sizes(props) {
                   onClick={() => handleColor(element.id, element.price)}
                   className={`h-5 w-5 border-2 rounded-full ${
                     selectedProduct === element.id
-                      ? "border-blue-500"
+                      ? "border-blue-800"
                       : "border-gray-500"
                   } bg-${element.color}-600 mr-2 focus:outline-none`}
                   style={{ backgroundColor: element.color }}
