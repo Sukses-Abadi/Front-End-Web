@@ -144,9 +144,7 @@ export default function IconTable({ order }) {
             </div>
             <div className="md:flex md:items-center mb-3">
               <div className="md:w-1/3 my-2">
-
                 <p className="font-semibold">Total Weight</p>
-
               </div>
               <div className="md:w-2/3">
                 <p>{order.total_weight} gram</p>

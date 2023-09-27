@@ -44,8 +44,8 @@ export default function ClientNavbar(props) {
   const userData = user;
   const userPhoto = userData.photo;
   const userCart = userData.cart;
-  const total_price = userData.cart.total_price;
-  const cartItemCount = userCart.CartProduct.length;
+  const total_price = userData.cart?.total_price || 0;
+  const cartItemCount = userCart?.CartProduct.length;
   const handleLogOut = () => {
     deleteCookie("accessToken");
     setToken("");

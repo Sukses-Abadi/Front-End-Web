@@ -28,11 +28,12 @@ export function Sizes(props) {
 
   const handleColor = (product_details_id, price) => {
     // console.log(product_details_id);
-    setPrice(price);
+    // setPrice(price);
     setSelectedProduct(product_details_id);
   };
 
   const handleClick = (size) => {
+    setPrice(sizes[size].data[0].price);
     setSelectedSize(size);
   };
 
@@ -91,7 +92,9 @@ export function Sizes(props) {
             <button
               key={element}
               className={` ${
-                selectedSize === element ? "bg-blue-500" : " border-white"
+                selectedSize === element
+                  ? "bg-blue-800  border-2"
+                  : " border-white"
               }  h-6 w-6 mr-2 text-gray-700 text-sm`}
               onClick={() => handleClick(`${element}`)}
             >
