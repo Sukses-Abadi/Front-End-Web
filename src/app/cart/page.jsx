@@ -262,7 +262,7 @@ export default function Page() {
 
               <Link
                 href="/"
-                className="flex font-semibold text-indigo-600 text-sm mt-10"
+                className=" inline-flex font-semibold text-indigo-600 text-sm mt-10"
               >
                 <svg
                   className="fill-current mr-2 text-indigo-600 w-4"
