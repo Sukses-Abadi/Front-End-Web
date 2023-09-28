@@ -24,7 +24,6 @@ export default function Home() {
       const { data } = await fetchData(url, "GET", {
         cache: "no-store",
       });
-      console.log(data);
       setData(data);
     }
     fetchProduct();

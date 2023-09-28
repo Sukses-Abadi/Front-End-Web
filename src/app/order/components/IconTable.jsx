@@ -67,7 +67,6 @@ export default function IconTable({ order }) {
           toast.success(`${res.message}`);
           setRefresh();
           router.refresh();
-          // console.log(res);
         });
       }
     } catch (error) {

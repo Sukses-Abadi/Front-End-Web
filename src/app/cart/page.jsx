@@ -28,7 +28,7 @@ export default function Page() {
             cache: "no-store",
           }
         );
-        // console.log("test");
+
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
@@ -66,7 +66,6 @@ export default function Page() {
       );
       setRefresh();
       setRerender((prevRerender) => !prevRerender);
-      console.log("delete item", cartProductID);
     } catch (error) {
       console.error("Error:", error);
     }

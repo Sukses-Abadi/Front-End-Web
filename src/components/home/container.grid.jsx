@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Container({ children }) {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto min-h-[60vh] my-10">
       <div className="flex items-center justify-center py-2 md:py-4 ">
         <header className="text-primary text-3xl font-bold px-5 py-2.5 text-center mr-3 mb-3">
           Our Products

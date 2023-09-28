@@ -27,8 +27,6 @@ export function Sizes(props) {
   };
 
   const handleColor = (product_details_id, price) => {
-    // console.log(product_details_id);
-    // setPrice(price);
     setSelectedProduct(product_details_id);
   };
 

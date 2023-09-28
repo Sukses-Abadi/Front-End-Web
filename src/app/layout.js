@@ -16,10 +16,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToastContainer />
         <nav>
           <Navbar />
         </nav>
+        <ToastContainer />
         <main className=" mx-auto "> {children}</main>
         <footer>
           <Footer />

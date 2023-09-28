@@ -24,7 +24,7 @@ export default async function page() {
   if (!response.data) {
     redirect("/");
   }
-  // console.log(response);
+
   const orders = response.data?.orders;
 
   return (
@@ -117,13 +117,13 @@ export default async function page() {
                             backgroundColor:
                               order.status === "waiting"
                                 ? "#8DD1F0"
-                                : "Red" || order.status === "received"
+                                : order.status === "received"
                                 ? "#E0C7FE"
-                                : "Red" || order.status === "rejected"
+                                : order.status === "rejected"
                                 ? "#F6AA97"
-                                : "Red" || order.status === "shipped"
-                                ? "#F7D0AF"
-                                : "Red" || order.status === "completed"
+                                : order.status === "shipped"
+                                ? "#DCD7A0"
+                                : order.status === "completed"
                                 ? "#93EF93"
                                 : "Red",
                           }}

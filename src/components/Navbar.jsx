@@ -30,7 +30,7 @@ export default async function Navbar() {
       },
       cache: "no-store",
     });
-    // console.log(res);
+
     userData = res?.data;
     if (userData) {
       isLoggedIn = true;
@@ -56,23 +56,25 @@ export default async function Navbar() {
         <ul className="menu menu-horizontal text-primary font-semibold max-lg:hidden">
           {category.map((category, index) => {
             return (
-              <li className=" z-[10]" key={category.id}>
-                <details>
-                  <summary>{category.name}</summary>
-                  <ul className="p-2">
-                    {/* mapping from category.subcategory  */}
-                    {category.SubCategory.map((subcategory, index) => {
-                      const slug = slugify(subcategory.name);
-                      return (
-                        <li className="w-60" key={subcategory.id}>
-                          <Link href={`/sub/${subcategory.id}`}>
-                            {subcategory.name}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </details>
+              <li className="dropdown dropdown-hover" key={category.id}>
+                <Link href={`/category/${category.id}`}>
+                  <p tabIndex={0} className="">
+                    {category.name}
+                  </p>
+                </Link>
+                <ul className=" dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box ">
+                  {/* mapping from category.subcategory  */}
+                  {category.SubCategory.map((subcategory, index) => {
+                    const slug = slugify(subcategory.name);
+                    return (
+                      <li className="w-60" key={subcategory.id}>
+                        <Link href={`/sub/${subcategory.id}`}>
+                          {subcategory.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
             );
           })}
