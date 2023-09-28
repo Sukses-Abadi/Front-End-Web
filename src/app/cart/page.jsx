@@ -28,7 +28,7 @@ export default function Page() {
             cache: "no-store",
           }
         );
-        console.log("test");
+        // console.log("test");
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");

@@ -45,6 +45,7 @@ export default function IconTable({ order }) {
           body: formData,
         }
       );
+
       if (data.length > 0) {
         data.map(async (file) => {
           const body = {

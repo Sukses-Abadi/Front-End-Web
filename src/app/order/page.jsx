@@ -21,9 +21,11 @@ export default async function page() {
   if (response.error === "Unauthorized") {
     redirect("/");
   }
-
+  if (!response.data) {
+    redirect("/");
+  }
   // console.log(response);
-  const orders = response.data.orders;
+  const orders = response.data?.orders;
 
   return (
     <div className="overflow-x-auto">
@@ -46,7 +48,7 @@ export default async function page() {
               <tbody className="text-gray-600 text-sm font-light">
                 {/* ROW <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
-                {orders.map((order) => {
+                {orders?.map((order) => {
                   const bank = order.bankAccount;
                   const orderedProducts = order.orderProducts;
                   return (
