@@ -22,7 +22,6 @@ export default function Page() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`clicked`);
     const username = e.target.username.value;
     const password = e.target.password.value;
 

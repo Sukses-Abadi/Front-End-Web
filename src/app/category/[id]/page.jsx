@@ -25,15 +25,19 @@ export default async function Page(req) {
   );
   const products = data.products;
   return (
-    <Container>
+    <>
       {products ? (
-        products.map((product) => {
-          return <Card key={product.id} product={product} />;
-        })
+        <Container>
+          {products.map((product) => {
+            return <Card key={product.id} product={product} />;
+          })}
+        </Container>
       ) : (
-        <h1> {searchTerm} not Found</h1>
+        <h1 className=" min-h-[51vh] text-2xl font-bold font-mono m-20">
+          Ups!! No Products in this Category... Please wait for further update!
+        </h1>
       )}
-    </Container>
+    </>
   );
 }
 

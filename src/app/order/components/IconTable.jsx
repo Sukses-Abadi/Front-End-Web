@@ -45,6 +45,7 @@ export default function IconTable({ order }) {
           body: formData,
         }
       );
+
       if (data.length > 0) {
         data.map(async (file) => {
           const body = {
@@ -66,7 +67,6 @@ export default function IconTable({ order }) {
           toast.success(`${res.message}`);
           setRefresh();
           router.refresh();
-          // console.log(res);
         });
       }
     } catch (error) {
@@ -245,17 +245,17 @@ export default function IconTable({ order }) {
             <dialog id="my_modal_1" className="modal">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">Transaction Completed!</h3>
-                <p className="py-4">Your feedback matters. Leave a review?</p>
-                <div className="modal-action">
+                <p className="pt-4 font-semibold">Your feedback matters. Leave a review?</p>
+                <div className="justify-center mt-4">
                   <form method="dialog">
-                    <button
+                    <button className="btn btn-sm ">Later</button>
+                    <button 
                       type="button"
-                      className="btn btn-sm"
+                      className="btn btn-sm ml-5 btn-neutral"
                       onClick={handleReview}
                     >
                       Yes!
                     </button>
-                    <button className="btn btn-sm">Later</button>
                   </form>
                 </div>
               </div>

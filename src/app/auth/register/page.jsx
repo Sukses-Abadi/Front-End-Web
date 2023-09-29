@@ -33,8 +33,6 @@ export default function Page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(`clicked`);
     const username = e.target.username.value;
     const first_name = e.target.first_name.value;
     const last_name = e.target.last_name.value;
@@ -101,7 +99,6 @@ export default function Page() {
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               type="text"
-              id="name"
               name="username"
               placeholder="John-doe"
               value={username}
@@ -139,7 +136,6 @@ export default function Page() {
             <input
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               type="text"
-              id="name"
               name="last_name"
               placeholder="Doe"
             />

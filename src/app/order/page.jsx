@@ -21,8 +21,11 @@ export default async function page() {
   if (response.error === "Unauthorized") {
     redirect("/");
   }
+  if (!response.data) {
+    redirect("/");
+  }
 
-  // console.log(response.data);
+  // console.log(response);
   const orders = response.data.orders;
 
   return (
@@ -46,7 +49,7 @@ export default async function page() {
               <tbody className="text-gray-600 text-sm font-light">
                 {/* ROW <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
 
-                {orders.map((order) => {
+                {orders?.map((order) => {
                   const bank = order.bankAccount;
                   const orderedProducts = order.orderProducts;
                   return (
@@ -116,13 +119,13 @@ export default async function page() {
                             backgroundColor:
                               order.status === "waiting"
                                 ? "#8DD1F0"
-                                : "Red" || order.status === "received"
+                                : order.status === "received"
                                 ? "#E0C7FE"
-                                : "Red" || order.status === "rejected"
+                                : order.status === "rejected"
                                 ? "#F6AA97"
                                 : "Red" || order.status === "shipped"
                                 ? "#F7D0AF"
-                                : "Red" || order.status === "complete"
+                                : "Red" || order.status === "completed"
                                 ? "#93EF93"
                                 : "Red",
                           }}
