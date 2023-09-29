@@ -14,7 +14,10 @@ export default async function page({ params }) {
     },
     cache: "no-store",
   });
-  if (response.error === "Unauthorized" || response.data.status !== "complete") {
+  if (
+    response.error === "Unauthorized" ||
+    response.data.status !== "complete"
+  ) {
     redirect("/");
   }
   const orders = Array.isArray(response.data)

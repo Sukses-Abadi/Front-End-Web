@@ -81,7 +81,7 @@ export default function FormReview({ order, productId, productDetails }) {
         </h1>
         <div className="mt-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-          Share Your Thoughts
+            Share Your Thoughts
           </label>
           <input
             type="text"
@@ -91,7 +91,7 @@ export default function FormReview({ order, productId, productDetails }) {
         </div>
         <div className="rating space-x-2 mt-4 block">
           <label className="flex text-gray-700 text-sm font-bold mb-2">
-          {productDetails.product.name} Rating's
+            {productDetails.product.name} Rating's
           </label>
           <div className="flex items-center">
             {[1, 2, 3, 4, 5].map((value) => (
