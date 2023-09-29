@@ -73,6 +73,9 @@ export default function IconTable({ order }) {
       console.error("Error uploading files:", error);
     }
   };
+  const handleReview = () => {
+    router.push(`/review/${order.id}`);
+  };
   let photo = [];
   const orderedProducts = order.orderProducts;
 
@@ -228,12 +231,43 @@ export default function IconTable({ order }) {
           </svg>
         </div> */}
         {/* Upload */}
-        <form
-          onSubmit={handleFormSubmit}
-          className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
-          data-tip="Upload transfer "
-        >
-          {/* <svg
+        {/* order.status === 'complete' ? modal ke review : null
+          flow -> jika status jadi complete, muncul modal=> penawaran review, jika mau redirect, muncul modal
+        */}
+        {order.status === "complete" ? (
+          <>
+            <button
+              className="btn btn-xs btn-neutral"
+              onClick={() => document.getElementById("my_modal_1").showModal()}
+            >
+              complete
+            </button>
+            <dialog id="my_modal_1" className="modal">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Transaction Completed!</h3>
+                <p className="py-4">Your feedback matters. Leave a review?</p>
+                <div className="modal-action">
+                  <form method="dialog">
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={handleReview}
+                    >
+                      Yes!
+                    </button>
+                    <button className="btn btn-sm">Later</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+          </>
+        ) : (
+          <form
+            onSubmit={handleFormSubmit}
+            className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
+            data-tip="Upload transfer "
+          >
+            {/* <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -246,30 +280,31 @@ export default function IconTable({ order }) {
             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
           />
         </svg> */}
-          {/* Display file preview */}
-          {filePreview && (
-            <Image
-              src={filePreview}
-              alt="File Preview"
-              className="max-w-xs mx-auto ml-10 h-32"
-              width={500}
-              height={500}
+            {/* Display file preview */}
+            {filePreview && (
+              <Image
+                src={filePreview}
+                alt="File Preview"
+                className="max-w-xs mx-auto ml-10 h-32"
+                width={500}
+                height={500}
+              />
+            )}
+            <input
+              type="file"
+              name="files"
+              multiple
+              onChange={handleFileChange}
+              className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
             />
-          )}
-          <input
-            type="file"
-            name="files"
-            multiple
-            onChange={handleFileChange}
-            className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
-          />
-          <button
-            className="p-1  bg-blue-400 text-white rounded-md"
-            type="submit"
-          >
-            Submit
-          </button>
-        </form>
+            <button
+              className="p-1  bg-blue-400 text-white rounded-md"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        )}
       </div>
     </td>
   );

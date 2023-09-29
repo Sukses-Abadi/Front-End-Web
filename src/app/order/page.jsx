@@ -22,7 +22,7 @@ export default async function page() {
     redirect("/");
   }
 
-  // console.log(response);
+  // console.log(response.data);
   const orders = response.data.orders;
 
   return (
@@ -77,6 +77,7 @@ export default async function page() {
                           {orderedProducts.map((orderedProduct) => {
                             const productDetails =
                               orderedProduct.ProductDetails;
+                              // console.log(productDetails)
                             const product = productDetails.product;
                             const photos = product.productGalleries;
                             return (
@@ -121,7 +122,7 @@ export default async function page() {
                                 ? "#F6AA97"
                                 : "Red" || order.status === "shipped"
                                 ? "#F7D0AF"
-                                : "Red" || order.status === "completed"
+                                : "Red" || order.status === "complete"
                                 ? "#93EF93"
                                 : "Red",
                           }}
