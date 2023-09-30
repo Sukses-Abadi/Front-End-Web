@@ -28,14 +28,16 @@ export default function Page() {
         `&status=${activeLink}` +
         `&page=${page}` +
         `&limit=${limit}`;
-      // console.log(url);
       const data = await fetchWithTokenClient(url, "GET", {
         cache: "no-store",
       });
+      if (data === "Unauthorized") {
+        router.push("/");
+      }
       setData(data.data);
     };
     fetchData();
-  }, [dateFilter, page, activeLink, limit, trackingUpdate, refresh]);
+  }, [dateFilter, page, activeLink, limit, trackingUpdate, refresh, router]);
 
   const handleLinkClick = (status) => {
     setActiveLink(status);
