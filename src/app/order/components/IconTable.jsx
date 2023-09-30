@@ -16,7 +16,6 @@ export default function IconTable({ order }) {
   const [filePreview, setFilePreview] = useState("");
   const { setRefresh } = useAuthStore();
   const router = useRouter();
-
   const handleFileChange = (e) => {
     const files = e.target.files;
     setSelectedFiles(Array.from(files));
@@ -73,12 +72,33 @@ export default function IconTable({ order }) {
       console.error("Error uploading files:", error);
     }
   };
+
+  const handleReview = async (orderId) => {
+    router.push(`/review/${orderId}`);
+  };
+
+  const handleStatusComplete = async (orderId) => {
+    const body = {
+      order_id: orderId,
+      status: "complete",
+    };
+    const res = await fetchWithToken("api/order", getCookie(`accessToken`), {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    toast.success(`${res.message}`);
+    setRefresh();
+    router.refresh();
+  };
+
   let photo = [];
   const orderedProducts = order.orderProducts;
-
   return (
-    <td className="py-3 mr-2 text-center">
-      <div className="flex item-center justify-center ml-10">
+    <td className="py-3 mr-2 text-left">
+      <div className="flex  ml-10">
         {/* see more */}
         <div
           onClick={() => document.getElementById("my_modal_3").showModal()}
@@ -228,48 +248,67 @@ export default function IconTable({ order }) {
           </svg>
         </div> */}
         {/* Upload */}
-        <form
-          onSubmit={handleFormSubmit}
-          className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
-          data-tip="Upload transfer "
-        >
-          {/* <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-          />
-        </svg> */}
-          {/* Display file preview */}
-          {filePreview && (
-            <Image
-              src={filePreview}
-              alt="File Preview"
-              className="max-w-xs mx-auto ml-10 h-32"
-              width={500}
-              height={500}
-            />
-          )}
-          <input
-            type="file"
-            name="files"
-            multiple
-            onChange={handleFileChange}
-            className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
-          />
-          <button
-            className="p-1  bg-blue-400 text-white rounded-md"
-            type="submit"
+        {order.status === "waiting" || order.status === "received" ? (
+          <form
+            onSubmit={handleFormSubmit}
+            className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
+            data-tip="Upload transfer "
           >
-            Submit
-          </button>
-        </form>
+            {/* Display file preview */}
+            {filePreview && (
+              <Image
+                src={filePreview}
+                alt="File Preview"
+                className="max-w-xs mx-auto ml-10 h-32"
+                width={500}
+                height={500}
+              />
+            )}
+            <input
+              type="file"
+              name="files"
+              multiple
+              onChange={handleFileChange}
+              className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
+            />
+            <button
+              className="p-1  bg-blue-400 text-white rounded-md"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        ) : null}
+
+        {order.status === "shipped" ? (
+          <div className=" text-left">
+            <button
+              className="btn btn-xs btn-neutral"
+              onClick={() => {
+                handleStatusComplete(order.id);
+              }}
+            >
+              Order Arrived!
+            </button>
+          </div>
+        ) : null}
+        {order.status === "complete" && order.review === false ? (
+          <>
+            <button
+              className="btn btn-xs btn-neutral"
+              onClick={() => {
+                handleReview(order.id);
+              }}
+            >
+              Review
+            </button>
+          </>
+        ) : null}
+        {order.status === "complete" && order.review === true ? (
+          <>
+            <p>Thank you for the reviews!</p>
+          </>
+        ) : null}
       </div>
     </td>
   );

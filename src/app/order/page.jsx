@@ -1,35 +1,232 @@
+"use client";
 import { baseUrl } from "@/lib/constant";
 import fetchWithToken from "@/lib/fetchWithToken";
-import { cookies } from "next/headers";
+
 import Image from "next/image";
 import Link from "next/link";
-
-import { redirect } from "next/navigation";
 import IconTable from "./components/IconTable";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import fetchWithTokenClient from "@/lib/fetchWithTokenClient";
+import { useAuthStore } from "@/zustand";
 
-export default async function page() {
-  const token = cookies().get("accessToken");
-  if (!token) redirect("/");
-  const response = await fetchWithToken(`api/order`, token.value, {
-    method: "GET",
+export default function Page() {
+  const router = useRouter();
+  const [data, setData] = useState();
+  const [dateFilter, setDateFilter] = useState("desc");
+  const [activeLink, setActiveLink] = useState("");
+  const [page, setPage] = useState("");
+  const [limit, setLimit] = useState("10");
+  const [trackingUpdate, setTrackingUpdate] = useState("");
+  const [q, setQ] = useState("");
+  const { refresh } = useAuthStore();
+  useEffect(() => {
+    const fetchData = async () => {
+      let url =
+        `api/order?` +
+        `sortOrder=${dateFilter}` +
+        `&status=${activeLink}` +
+        `&page=${page}` +
+        `&limit=${limit}`;
+      // console.log(url);
+      const data = await fetchWithTokenClient(url, "GET", {
+        cache: "no-store",
+      });
+      setData(data.data);
+    };
+    fetchData();
+  }, [dateFilter, page, activeLink, limit, trackingUpdate, refresh]);
 
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
-  if (response.error === "Unauthorized") {
-    redirect("/");
-  }
-  if (!response.data) {
-    redirect("/");
-  }
+  const handleLinkClick = (status) => {
+    setActiveLink(status);
+    setPage(1);
+  };
 
-  const orders = response.data?.orders;
+  const handleSort = async (value) => {
+    setDateFilter(value);
+    setPage(1);
+  };
+
+  const handlePage = async (value) => {
+    setPage(value);
+  };
+
+  const handleLimit = async (value) => {
+    setLimit(value);
+    setPage(1);
+  };
+
+  const renderPageButtons = () => {
+    const currentPage = data.currentPage;
+    const totalPages = data.totalPages;
+    const pageButtons = [];
+
+    // Calculate the range for the first three buttons
+    let start = Math.max(1, currentPage - 1);
+    let end = Math.min(totalPages, currentPage + 1);
+
+    // Render first three buttons
+    for (let i = start; i <= end; i++) {
+      pageButtons.push(
+        <button
+          key={i}
+          onClick={() => handlePage(i)}
+          className={`relative ${
+            currentPage === i
+              ? "z-10 bg-indigo-600 text-white"
+              : "text-gray-900"
+          } inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    if (totalPages > 6 && currentPage < totalPages - 3) {
+      pageButtons.push(
+        <span
+          key="ellipsis-start"
+          className="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300"
+        >
+          ...
+        </span>
+      );
+    }
+
+    // Check if the last two buttons are lined up with the first three buttons
+    const lastTwoLinedUp = totalPages <= currentPage + 2;
+    // Render last two buttons without ellipsis
+    if (!lastTwoLinedUp) {
+      for (let i = Math.max(totalPages - 1, 4); i <= totalPages; i++) {
+        pageButtons.push(
+          <button
+            key={i}
+            onClick={() => handlePage(i)}
+            className={`relative ${
+              currentPage === i
+                ? "z-10 bg-indigo-600 text-white"
+                : "text-gray-900"
+            } inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+          >
+            {i}
+          </button>
+        );
+      }
+    }
+
+    return pageButtons;
+  };
+  if (!data) return;
+  // console.log(data);
+  const orders = data.orders;
 
   return (
-    <div className="overflow-x-auto">
-      <div className="min-w-screen min-h-screen flex items-center justify-center bg-gray-100 font-sans overflow-auto">
+    <div className="overflow-x-auto min-h-[67vh]">
+      {/* FILTER BY DATE */}
+      <div className="px-4 md:px-10 py-4 md:py-7 ">
+        <div className="flex items-center justify-between flex-wrap">
+          <p
+            tabIndex="0"
+            className="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800"
+          >
+            Orders
+          </p>
+          <div className="flex gap-3 flex-wrap">
+            <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+              <p>Show Entries:</p>
+              <select
+                aria-label="select"
+                className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+                onChange={(e) => handleLimit(e.target.value)}
+                defaultValue={"10"}
+              >
+                <option value={"5"} className="text-sm text-indigo-800">
+                  5
+                </option>
+                <option value={"10"} className="text-sm text-indigo-800">
+                  10
+                </option>
+                <option value={"20"} className="text-indigo-800">
+                  20
+                </option>
+                <option value={"50"} className="text-indigo-800">
+                  50
+                </option>
+              </select>
+            </div>
+            <div className="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+              <p>Sort By:</p>
+              <select
+                aria-label="select"
+                className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+                onChange={(e) => handleSort(e.target.value)}
+                defaultValue={"desc"}
+              >
+                <option value={"desc"} className="text-sm text-indigo-800">
+                  Latest
+                </option>
+                <option value={"asc"} className="text-indigo-800">
+                  Oldest
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* STATUS FILTER */}
+      <div className="flex gap-1 my-2 ml-28 items-center flex-wrap">
+        <a
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ${
+            activeLink === "" ? "bg-indigo-100 text-indigo-700" : ""
+          }`}
+          onClick={() => handleLinkClick("")}
+        >
+          <div className="py-2 px-8 rounded-full">
+            <p>All</p>
+          </div>
+        </a>
+        <a
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ${
+            activeLink === "waiting" ? "bg-indigo-100 text-indigo-700" : ""
+          }`}
+          onClick={() => handleLinkClick("waiting")}
+        >
+          <div className="py-2 px-8 rounded-full">
+            <p>Waiting</p>
+          </div>
+        </a>
+        <a
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8 ${
+            activeLink === "received" ? "bg-indigo-100 text-indigo-700" : ""
+          }`}
+          onClick={() => handleLinkClick("received")}
+        >
+          <div className="py-2 px-8 rounded-full">
+            <p>Received</p>
+          </div>
+        </a>
+        <a
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8 ${
+            activeLink === "shipped" ? "bg-indigo-100 text-indigo-700" : ""
+          }`}
+          onClick={() => handleLinkClick("shipped")}
+        >
+          <div className="py-2 px-8 rounded-full">
+            <p>Shipped</p>
+          </div>
+        </a>
+        <a
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8 ${
+            activeLink === "complete" ? "bg-indigo-100 text-indigo-700" : ""
+          }`}
+          onClick={() => handleLinkClick("complete")}
+        >
+          <div className="py-2 px-8 rounded-full">
+            <p>Completed</p>
+          </div>
+        </a>
+      </div>
+      <div className="min-w-screen flex items-center justify-center bg-gray-100 font-sans overflow-auto">
         <div className="w-full lg:w-5/6">
           <div className="bg-white shadow-md rounded my-6">
             <table className="min-w-max w-full table-auto">
@@ -79,6 +276,7 @@ export default async function page() {
                           {orderedProducts.map((orderedProduct) => {
                             const productDetails =
                               orderedProduct.ProductDetails;
+                            // console.log(productDetails)
                             const product = productDetails.product;
                             const photos = product.productGalleries;
                             return (
@@ -122,8 +320,8 @@ export default async function page() {
                                 : order.status === "rejected"
                                 ? "#F6AA97"
                                 : order.status === "shipped"
-                                ? "#DCD7A0"
-                                : order.status === "completed"
+                                ? "#F7D0AF"
+                                : order.status === "complete"
                                 ? "#93EF93"
                                 : "Red",
                           }}
@@ -145,9 +343,8 @@ export default async function page() {
                             : null}
                         </span>
                       </td>
-                      {/* <td className="py-3 px-6 text-center"> */}
+
                       <IconTable order={order} />
-                      {/* </td> */}
                     </tr>
                   );
                 })}
@@ -165,6 +362,51 @@ export default async function page() {
         </svg>
         Back to Homepage
       </Link>
+      {/* pagination */}
+      <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+        <div className=" sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm text-gray-700">
+              Showing{" "}
+              <span className="font-medium">
+                {(data.currentPage - 1) * data.limit + 1}
+              </span>{" "}
+              to{" "}
+              <span className="font-medium">
+                {(data.currentPage - 1) * data.limit + 1 + data.limit - 1}
+              </span>{" "}
+              of <span className="font-medium">{data.totalItems}</span> results
+            </p>
+          </div>
+          <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+            {/* ... */}
+            <nav
+              className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+              aria-label="Pagination"
+            >
+              <button
+                onClick={() => handlePage(data.currentPage - 1)}
+                className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+                  data.currentPage === 1 ? "hidden" : ""
+                }`}
+              >
+                Previous
+              </button>
+
+              {renderPageButtons()}
+
+              <button
+                onClick={() => handlePage(data.currentPage + 1)}
+                className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
+                  data.currentPage === data.totalPages ? "hidden" : ""
+                } ${data.totalPages === null ? "hidden" : ""}`}
+              >
+                Next
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
