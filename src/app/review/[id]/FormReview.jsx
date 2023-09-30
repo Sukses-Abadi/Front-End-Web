@@ -86,6 +86,7 @@ export default function FormReview({ order, productId, productDetails }) {
           <input
             type="text"
             name="review"
+            required
             className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
           />
         </div>
@@ -100,6 +101,7 @@ export default function FormReview({ order, productId, productDetails }) {
                   type="radio"
                   name="rating"
                   value={value}
+                  required
                   className={`mask mask-star-2 ${
                     value <= rating ? "bg-orange-400" : "bg-orange-900"
                   }`}

@@ -16,7 +16,6 @@ export default function IconTable({ order }) {
   const [filePreview, setFilePreview] = useState("");
   const { setRefresh } = useAuthStore();
   const router = useRouter();
-
   const handleFileChange = (e) => {
     const files = e.target.files;
     setSelectedFiles(Array.from(files));
@@ -73,12 +72,13 @@ export default function IconTable({ order }) {
       console.error("Error uploading files:", error);
     }
   };
-  const handleReview = () => {
-    router.push(`/review/${order.id}`);
+
+  const handleReview = (orderId) => {
+    router.push(`/review/${orderId}`);
   };
+
   let photo = [];
   const orderedProducts = order.orderProducts;
-
   return (
     <td className="py-3 mr-2 text-center">
       <div className="flex item-center justify-center ml-10">
@@ -231,35 +231,36 @@ export default function IconTable({ order }) {
           </svg>
         </div> */}
         {/* Upload */}
-        {/* order.status === 'complete' ? modal ke review : null
-          flow -> jika status jadi complete, muncul modal=> penawaran review, jika mau redirect, muncul modal
-        */}
         {order.status === "complete" ? (
           <>
             <button
               className="btn btn-xs btn-neutral"
-              onClick={() => document.getElementById("my_modal_1").showModal()}
+              onClick={() => {
+                handleReview(order.id);
+              }}
             >
-              complete
+              Review
             </button>
-            <dialog id="my_modal_1" className="modal">
+            {/* <dialog id="my_modal_1" className="modal">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">Transaction Completed!</h3>
-                <p className="pt-4 font-semibold">Your feedback matters. Leave a review?</p>
+                <p className="pt-4 font-semibold">
+                  Your feedback matters. Leave a review?
+                </p>
                 <div className="justify-center mt-4">
                   <form method="dialog">
                     <button className="btn btn-sm ">Later</button>
-                    <button 
+                    <button
                       type="button"
                       className="btn btn-sm ml-5 btn-neutral"
-                      onClick={handleReview}
+                      // onClick={handleReview}
                     >
-                      Yes!
+                      {order.id}Yes!{orderId}
                     </button>
                   </form>
                 </div>
               </div>
-            </dialog>
+            </dialog> */}
           </>
         ) : (
           <form
