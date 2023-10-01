@@ -13,10 +13,6 @@ const menuItems = [
     title: "Address",
   },
   {
-    href: "/profile/transaction",
-    title: "Transaction",
-  },
-  {
     href: "/profile/logout",
     title: "Logout",
   },

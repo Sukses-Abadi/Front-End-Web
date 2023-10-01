@@ -53,7 +53,6 @@ export default function Profile(props) {
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [photo, setPhoto] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -66,44 +65,12 @@ export default function Profile(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    console.log(photo);
-    const formData = new FormData();
-    formData.append("files", photo);
-
-    try {
-      const image = await fetchWithToken(
-        "api/uploads",
-        getCookie(`accessToken`),
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      // console.log(image);
-    } catch (error) {
-      console.log(error);
-    }
-
-    // let payload = {
-    //   first_name: firstName,
-    //   last_name: lastName,
-    //   username: userName,
-    //   email: email,
-    // };
-
-    // try {
-    //   const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
-    //     method: "PUT",
-    //     body: JSON.stringify(payload),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    await props.onSubmit({
+      firstName,
+      lastName,
+      userName,
+      email,
+    });
 
     router.refresh();
   };
@@ -131,7 +98,6 @@ export default function Profile(props) {
               className="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:placeholder-gray-400"
               id="large_size"
               type="file"
-              onChange={(e) => setPhoto(e.target.files)}
             />
           </div>
         </div>

@@ -13,7 +13,7 @@ const fetchWithToken = async (path, token, options = {}) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log("response.ok <<<<<<<<<<<<<<<<<<<", response.ok);
+    console.log("response.ok <<<<<<<<<<<<<<<<<<<", response);
     if (!response.ok) {
       console.log("fetch with token failed", url, options);
       return "failed";
