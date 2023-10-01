@@ -1,7 +1,7 @@
 "use client";
 import fetchWithToken from "@/lib/fetchWithToken";
 import { useAuthStore, useUserStore } from "@/zustand";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
@@ -9,8 +9,11 @@ import profile from "../../components/assets/profile.jpg";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+import { baseUrl } from "@/lib/constant";
+
 export default function Profile(props) {
-  const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
+  const { token, setToken, isLoggedIn, logout, refresh, setRefresh } =
+    useAuthStore();
   const router = useRouter();
 
   const [user, setUser] = useState(null);
@@ -30,10 +33,9 @@ export default function Profile(props) {
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
-          router.push("/");
         } else if (result.status === "success") {
           const user = result.data;
-          // console.log(user);
+          console.log(user);
           setUser(user);
         } else {
           toast.error("An error occurred. Please try again later.");
@@ -47,13 +49,13 @@ export default function Profile(props) {
     if (isLoggedIn) {
       getData();
     }
-  }, [token, router, isLoggedIn, logout]);
+  }, [token, setToken, router, isLoggedIn, logout, refresh]);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [photo, setPhoto] = useState([]);
+  const [photo, setPhoto] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -61,13 +63,13 @@ export default function Profile(props) {
       setLastName(user.last_name);
       setUserName(user.username);
       setEmail(user.email);
+      setPhoto(user.photo);
     }
   }, [user]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(photo);
     const formData = new FormData();
     formData.append("files", photo);
 
@@ -81,31 +83,30 @@ export default function Profile(props) {
         }
       );
 
-      // console.log(image);
+      // console.log(image[0].photo);
+
+      let payload = {
+        first_name: firstName,
+        last_name: lastName,
+        username: userName,
+        email: email,
+        photo: image[0].photo,
+      };
+
+      // console.log(payload);
+
+      const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
+        method: "PUT",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      router.refresh();
     } catch (error) {
       console.log(error);
     }
-
-    // let payload = {
-    //   first_name: firstName,
-    //   last_name: lastName,
-    //   username: userName,
-    //   email: email,
-    // };
-
-    // try {
-    //   const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
-    //     method: "PUT",
-    //     body: JSON.stringify(payload),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    router.refresh();
   };
 
   return (
@@ -118,7 +119,13 @@ export default function Profile(props) {
 
         <div className="max-w-sm bg-white border rounded-lg shadow">
           <div className="pt-3 pb-2 px-3">
-            <Image className="rounded-lg" src={profile} alt="profile" />
+            <Image
+              className="rounded-lg"
+              src={profile}
+              alt="profile photo"
+              width="500"
+              height="500"
+            />
           </div>
           <div className="px-8 pb-10">
             <ul className="list-disc text-xs font-medium italic">
@@ -131,7 +138,8 @@ export default function Profile(props) {
               className="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:placeholder-gray-400"
               id="large_size"
               type="file"
-              onChange={(e) => setPhoto(e.target.files)}
+              name="files"
+              onChange={(e) => setPhoto(e.target.files[0])}
             />
           </div>
         </div>

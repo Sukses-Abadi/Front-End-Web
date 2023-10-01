@@ -1,24 +1,38 @@
+"use client";
 import Link from "next/link";
 
 import profile from "../../components/assets/profile.jpg";
 import Image from "next/image";
 
-const menuItems = [
-  {
-    href: "/profile",
-    title: "Profile",
-  },
-  {
-    href: "/profile/address",
-    title: "Address",
-  },
-  {
-    href: "/profile/logout",
-    title: "Logout",
-  },
-];
+import { useAuthStore, useUserStore } from "@/zustand";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar({ children }) {
+  const router = useRouter();
+
+  const { refresh, setRefresh, token, setToken, isLoggedIn, login, logout } =
+    useAuthStore();
+
+  const handleLogOut = () => {
+    deleteCookie("accessToken");
+    setToken("");
+    setRefresh();
+    logout();
+    router.refresh();
+  };
+
+  const menuItems = [
+    {
+      href: "/profile",
+      title: "Profile",
+    },
+    {
+      href: "/profile/address",
+      title: "Address",
+    },
+  ];
+
   return (
     <aside className="basis-1/4 w-full h-full border-2 rounded-l-lg shadow-md">
       <div className="m-5 flex flex-nowrap items-center gap-6">
@@ -47,6 +61,14 @@ export default function Sidebar({ children }) {
               </Link>
             </li>
           ))}
+          <li className="mx-6 my-2">
+            <button
+              className={`flex p-2 text-primary hover:font-semibold hover:underline hover:underline-offset-8 cursor-pointer`}
+              onClick={handleLogOut}
+            >
+              Logout
+            </button>
+          </li>
         </ul>
       </nav>
     </aside>
