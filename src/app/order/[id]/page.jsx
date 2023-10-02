@@ -9,6 +9,7 @@ import OrderTable from "./components/OrderTable";
 import TransferReceipt from "./components/TransferReceipt";
 import fetchWithTokenServer from "@/lib/fetchWithTokenServer";
 
+
 export async function generateMetadata(req) {
   const { id } = req.params;
 
@@ -17,6 +18,7 @@ export async function generateMetadata(req) {
     description: ` invoice of SA. Apparel`,
   };
 }
+
 export default async function Page({ params }) {
   if (!cookies().get(`accessToken`)) {
     redirect(`auth/login`);
