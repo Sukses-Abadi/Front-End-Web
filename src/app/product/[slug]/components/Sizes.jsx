@@ -9,7 +9,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export function Sizes(props) {
-  const { sizes } = props;
+  const { sizes, discount } = props;
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [price, setPrice] = useState(null);
@@ -43,7 +43,7 @@ export function Sizes(props) {
       product_details: {
         id: selectedProduct, // Assuming you have a productId
         quantity: count,
-        price: price,
+        price: price - discount,
       },
     };
     if (!selectedProduct) {
@@ -128,7 +128,14 @@ export function Sizes(props) {
               );
             })
           : null}
-        <span className="text-gray-500 mt-1">Rp. {price}</span>
+        <span className="text-gray-500 mt-1">
+          Rp. {price}{" "}
+          {discount ? (
+            <span className="badge relative bottom-1 badge-xs badge-primary">
+              ${discount} OFF
+            </span>
+          ) : null}
+        </span>
       </div>
       <hr className="my-3" />
       <div className="mt-2">

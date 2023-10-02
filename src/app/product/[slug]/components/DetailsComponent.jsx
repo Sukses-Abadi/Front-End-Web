@@ -22,7 +22,7 @@ export default async function DetailsComponent(product) {
   return (
     <>
       <div className="mt-3">
-        <Sizes sizes={sizes} />
+        <Sizes sizes={sizes} discount={product.discount} />
       </div>
     </>
   );

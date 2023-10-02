@@ -97,6 +97,10 @@ export default function OrderDetails() {
       weight: cart.total_weight,
       courier: courier,
     };
+    if (!cart.total_weight > 0) {
+      toast.error("The cart is empty");
+      return;
+    }
 
     setCourier(courier);
     const response = await fetchWithToken(

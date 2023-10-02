@@ -1,4 +1,3 @@
-import { Card } from "@/components/Card";
 import { baseUrl } from "@/lib/constant";
 
 import fetchData from "@/lib/fetch";
@@ -81,7 +80,7 @@ export default async function Page(req) {
         </Link>
       </div>
       <div className="divider"></div>
-      <Reviews data={data} />
+      <Reviews product_id={data.id} />
     </>
   );
 }

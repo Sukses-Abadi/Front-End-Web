@@ -28,14 +28,16 @@ export default function Page() {
         `&status=${activeLink}` +
         `&page=${page}` +
         `&limit=${limit}`;
-      // console.log(url);
       const data = await fetchWithTokenClient(url, "GET", {
         cache: "no-store",
       });
+      if (data === "Unauthorized") {
+        router.push("/");
+      }
       setData(data.data);
     };
     fetchData();
-  }, [dateFilter, page, activeLink, limit, trackingUpdate, refresh]);
+  }, [dateFilter, page, activeLink, limit, trackingUpdate, refresh, router]);
 
   const handleLinkClick = (status) => {
     setActiveLink(status);
@@ -174,9 +176,9 @@ export default function Page() {
         </div>
       </div>
       {/* STATUS FILTER */}
-      <div className="flex gap-1 my-2 ml-28 items-center flex-wrap">
+      <div className="flex gap-1 my-2 items-center flex-wrap">
         <a
-          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ${
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 cursor-pointer focus:ring-indigo-800 ${
             activeLink === "" ? "bg-indigo-100 text-indigo-700" : ""
           }`}
           onClick={() => handleLinkClick("")}
@@ -196,7 +198,7 @@ export default function Page() {
           </div>
         </a>
         <a
-          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8 ${
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800  cursor-pointer ${
             activeLink === "received" ? "bg-indigo-100 text-indigo-700" : ""
           }`}
           onClick={() => handleLinkClick("received")}
@@ -206,7 +208,17 @@ export default function Page() {
           </div>
         </a>
         <a
-          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8 ${
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 cursor-pointer ${
+            activeLink === "rejected" ? "bg-indigo-100 text-indigo-700" : ""
+          }`}
+          onClick={() => handleLinkClick("rejected")}
+        >
+          <div className="py-2 px-8 rounded-full">
+            <p>Rejected</p>
+          </div>
+        </a>
+        <a
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50  cursor-pointer focus:ring-indigo-800  ${
             activeLink === "shipped" ? "bg-indigo-100 text-indigo-700" : ""
           }`}
           onClick={() => handleLinkClick("shipped")}
@@ -216,7 +228,7 @@ export default function Page() {
           </div>
         </a>
         <a
-          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8 ${
+          className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 cursor-pointer focus:ring-indigo-800  ${
             activeLink === "complete" ? "bg-indigo-100 text-indigo-700" : ""
           }`}
           onClick={() => handleLinkClick("complete")}
