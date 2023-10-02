@@ -45,7 +45,6 @@ export default function AddressForm() {
       );
 
       if (response.data) {
-        console.log("Address added successfully");
         toast.success("Address added");
         setRefresh();
         router.refresh();

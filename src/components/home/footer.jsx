@@ -10,8 +10,9 @@ export default async function Footer() {
   const category = data;
 
   return (
-    <>
-      <footer className="mt-24 footer p-10 bg-primary text-base-content">
+    <div className="sticky bottom-0">
+      <div className="flex-grow"></div>
+      <footer className="mt-auto footer p-10 bg-primary text-base-content">
         <aside>
           <Link href="/">
             <Image
@@ -32,17 +33,18 @@ export default async function Footer() {
           <header className="footer-title text-white opacity-100">
             SHOP BY COLLECTION
           </header>
-          <ul className="list-none">
+          <ul className="list-none flex flex-col">
             {category.map((category, index) => {
               return (
-                <Link
-                  href={`/category/${category.name}`}
-                  key={category.id}
-                  className="pb-2 text-white font-light"
-                >
-                  {" "}
-                  {category.name}
-                </Link>
+                <li key={category.id}>
+                  <Link
+                    href={`/category/${category.id}`}
+                    className="pb-2 text-white font-light"
+                  >
+                    {" "}
+                    {category.name}
+                  </Link>
+                </li>
               );
             })}
           </ul>
@@ -119,6 +121,6 @@ export default async function Footer() {
           </p>
         </aside>
       </footer>
-    </>
+    </div>
   );
 }

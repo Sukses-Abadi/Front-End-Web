@@ -83,12 +83,14 @@ export default function OrderDetails() {
   if (!cart) return;
 
   const handleSelectAddress = (e) => {
-    console.log(e.target);
-    console.log(e.target.value + " selected");
     if (e.target.value === "openmodal") {
       document.getElementById("my_modal_3").showModal();
     } else {
       setAddress(e.target.value);
+      setCourier(null);
+      setShippingCost(null);
+      setShippingMethod(null);
+      setShippingMethodArray(null);
     }
   };
 
@@ -98,6 +100,10 @@ export default function OrderDetails() {
       weight: cart.total_weight,
       courier: courier,
     };
+    if (!cart.total_weight > 0) {
+      toast.error("The cart is empty");
+      return;
+    }
 
     setCourier(courier);
     const response = await fetchWithToken(
@@ -121,7 +127,6 @@ export default function OrderDetails() {
 
   const handleClickShippingCostAndMethod = async (e) => {
     const data = e.target.options[e.target.selectedIndex].getAttribute("cost");
-    // console.log(data);
     setShippingCost(+data);
     setShippingMethod(e.target.value);
   };
@@ -153,13 +158,11 @@ export default function OrderDetails() {
         body: JSON.stringify(body),
       }
     );
-    // console.log(response);
 
     if (response.status === "success") {
       router.refresh();
       setRefresh();
       router.push("/order");
-      console.log(`order created`);
     } else {
       toast.error("Please fill all the credentials");
     }
@@ -237,7 +240,9 @@ export default function OrderDetails() {
             className="block p-2 text-gray-600 w-full text-sm"
             onChange={(e) => handleClickCourier(e.target.value)}
           >
-            <option value="DEFAULT">Choose courier service</option>
+            <option value="DEFAULT" disabled>
+              Choose courier service
+            </option>
             {courierOption.map((element) => (
               <option key={element.name} value={element.id}>
                 {element.name}
@@ -261,7 +266,9 @@ export default function OrderDetails() {
             className="block p-2 text-gray-600 w-full text-sm"
             onChange={(e) => handleClickShippingCostAndMethod(e)}
           >
-            <option value="DEFAULT">Choose shipping method</option>
+            <option value="DEFAULT" disabled>
+              Choose shipping method
+            </option>
             {shippingMethodArray?.map((element) => {
               const cost = element.cost[0];
               return (
@@ -292,7 +299,9 @@ export default function OrderDetails() {
             className="block p-2 text-gray-600 w-full text-sm"
             onChange={(e) => handleClickBankAccount(e.target.value)}
           >
-            <option value="DEFAULT">Choose shipping method</option>
+            <option value="DEFAULT" disabled>
+              Choose shipping method
+            </option>
             {bankArray.map((element) => {
               return (
                 <option key={element.id} value={element.id}>

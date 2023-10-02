@@ -7,7 +7,6 @@ export default function SearchComponent() {
   const router = useRouter();
 
   const handleSubmit = async (e) => {
-    console.log("clicked");
     e.preventDefault();
     setSearchTerm("");
     router.push(`/${searchTerm}`);

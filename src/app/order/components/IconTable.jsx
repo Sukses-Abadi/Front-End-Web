@@ -45,6 +45,7 @@ export default function IconTable({ order }) {
           body: formData,
         }
       );
+
       if (data.length > 0) {
         data.map(async (file) => {
           const body = {
@@ -66,22 +67,40 @@ export default function IconTable({ order }) {
           toast.success(`${res.message}`);
           setRefresh();
           router.refresh();
-          // console.log(res);
         });
       }
     } catch (error) {
       console.error("Error uploading files:", error);
     }
   };
-  let photo = [];
-  const orderedProducts = order.orderProducts;
+
+  const handleReview = async (orderId) => {
+    router.push(`/review/${orderId}`);
+  };
+
+  const handleStatusComplete = async (orderId) => {
+    const body = {
+      order_id: orderId,
+      status: "complete",
+    };
+    const res = await fetchWithToken("api/order", getCookie(`accessToken`), {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    toast.success(`${res.message}`);
+    setRefresh();
+    router.refresh();
+  };
 
   return (
-    <td className="py-3 mr-2 text-center">
-      <div className="flex item-center justify-center ml-10">
+    <td className="py-3 mr-2 text-left">
+      <div className="flex  ml-10">
         {/* see more */}
         <div
-          onClick={() => document.getElementById("my_modal_3").showModal()}
+          onClick={() => router.push(`order/${order.id}`)}
           className="w-4 mr-5 mt-1 tooltip tooltip-success transform hover:text-purple-500 hover:scale-110"
           data-tip="see more detail"
         >
@@ -106,170 +125,68 @@ export default function IconTable({ order }) {
           </svg>
         </div>
 
-        <dialog id="my_modal_3" className="modal overflow-auto">
-          <div className="modal-box">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                ✕
-              </button>
-            </form>
-
-            <h3 className="font-bold text-lg mb-2">Order Details!</h3>
-            <div className="md:flex md:items-center mb-3 ">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Order Date</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>{order.order_date}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">address</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>
-                  {order.address.street},{order.address.zip_code}
-                </p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Total Price</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>Rp. {order.total_price}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Total Weight</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>{order.total_weight} gram</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Courier</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>{order.courier}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Shipping Method</p>
-              </div>
-              <div className="md:w-2/3">
-                <p className="">{order.shipping_method}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Tracking Number</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>{order.tracking_number}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Shipping Cost</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>Rp. {order.shipping_cost}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Total Cost</p>
-              </div>
-              <div className="md:w-2/3">
-                <p>Rp. {order.total_payment}</p>
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-3">
-              <div className="md:w-1/3 my-2">
-                <p className="font-semibold">Payment Receipt</p>
-              </div>
-              <div className="md:w-2/3">
-                {order.payment_receipt ? (
-                  <Image
-                    src={`${baseUrl}/${order.payment_receipt}`}
-                    alt="File Preview"
-                    className=" mx-auto ml-10 "
-                    width={500}
-                    height={500}
-                  />
-                ) : null}
-              </div>
-            </div>
-          </div>
-        </dialog>
-        {/* delete */}
-        {/* <div
-          className="w-4 tooltip tooltip-success mr-2 transform hover:text-purple-500 hover:scale-110"
-          data-tip="Delete record"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-        </div> */}
         {/* Upload */}
-        <form
-          onSubmit={handleFormSubmit}
-          className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
-          data-tip="Upload transfer "
-        >
-          {/* <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-          />
-        </svg> */}
-          {/* Display file preview */}
-          {filePreview && (
-            <Image
-              src={filePreview}
-              alt="File Preview"
-              className="max-w-xs mx-auto ml-10 h-32"
-              width={500}
-              height={500}
-            />
-          )}
-          <input
-            type="file"
-            name="files"
-            multiple
-            onChange={handleFileChange}
-            className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
-          />
-          <button
-            className="p-1  bg-blue-400 text-white rounded-md"
-            type="submit"
+        {order.status === "waiting" || order.status === "received" ? (
+          <form
+            onSubmit={handleFormSubmit}
+            className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"
+            data-tip="Upload transfer "
           >
-            Submit
-          </button>
-        </form>
+            {/* Display file preview */}
+            {filePreview && (
+              <Image
+                src={filePreview}
+                alt="File Preview"
+                className="max-w-xs mx-auto ml-10 h-32"
+                width={500}
+                height={500}
+              />
+            )}
+            <input
+              type="file"
+              name="files"
+              multiple
+              onChange={handleFileChange}
+              className="file-input file-input-bordered file-input-xs w-full max-w-xs text-xs md:text-md  self-center"
+            />
+            <button
+              className="p-1  bg-blue-400 text-white rounded-md"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        ) : null}
+
+        {order.status === "shipped" ? (
+          <div className=" text-left">
+            <button
+              className="btn btn-xs btn-neutral"
+              onClick={() => {
+                handleStatusComplete(order.id);
+              }}
+            >
+              Order Arrived!
+            </button>
+          </div>
+        ) : null}
+        {order.status === "complete" && order.review === false ? (
+          <>
+            <button
+              className="btn btn-xs btn-neutral"
+              onClick={() => {
+                handleReview(order.id);
+              }}
+            >
+              Review
+            </button>
+          </>
+        ) : null}
+        {order.status === "complete" && order.review === true ? (
+          <>
+            <p>Thank you for the reviews!</p>
+          </>
+        ) : null}
       </div>
     </td>
   );

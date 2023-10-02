@@ -8,7 +8,7 @@ export default function page(req) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target);
+
     const password = e.target.password.value;
     const confirmPassword = e.target.confirm_password.value;
     if (!(password === confirmPassword)) {
@@ -18,7 +18,6 @@ export default function page(req) {
     const body = {
       newPassword: confirmPassword,
     };
-    console.log(`clicked`);
     try {
       const response = await fetchData(
         `api/forget-password/${token}`,

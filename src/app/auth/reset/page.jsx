@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 export default function page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target);
+
     const email = e.target.email;
     const body = {
       email: email.value,
     };
-    console.log(`clicked`);
+
     try {
       const response = await fetchData(
         "api/forget-password",
@@ -29,7 +29,7 @@ export default function page() {
   };
 
   return (
-    <div className="w-screen h-96 justify-center items-center flex">
+    <div className="w-screen min-h-[70vh] justify-center items-center flex">
       <div className="w-full max-w-xs">
         <form
           onSubmit={(e) => handleSubmit(e)}

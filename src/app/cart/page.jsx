@@ -28,7 +28,7 @@ export default function Page() {
             cache: "no-store",
           }
         );
-        console.log("test");
+
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
@@ -66,7 +66,6 @@ export default function Page() {
       );
       setRefresh();
       setRerender((prevRerender) => !prevRerender);
-      console.log("delete item", cartProductID);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -87,8 +86,6 @@ export default function Page() {
         }
       );
       if (response.status === "success") {
-        // // Quantity updated successfully
-        // setQuantity(quantity);
         setRefresh();
       } else {
         // Handle error
@@ -137,7 +134,6 @@ export default function Page() {
       updateCartItemQuantity(item.id, newQuantity);
     }
   };
-
   return (
     <div className="bg-gray-100 ">
       <div className="container mx-auto mt-10">
@@ -248,21 +244,9 @@ export default function Page() {
 
             {/* continue Shopping */}
             <div className="w-full">
-              {/* {quantity ? (
-                <button
-                  onClick={handleSubmit}
-                  className="group relative h-10 w-44 overflow-hidden rounded-lg bg-white text-lg shadow p-2"
-                >
-                  <div className="absolute inset-0 w-3 bg-green-400 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                  <span className="relative text-sm text-black group-hover:text-white">
-                    Apply Changes
-                  </span>
-                </button>
-              ) : null} */}
-
               <Link
                 href="/"
-                className="flex font-semibold text-indigo-600 text-sm mt-10"
+                className=" inline-flex font-semibold text-indigo-600 text-sm mt-10"
               >
                 <svg
                   className="fill-current mr-2 text-indigo-600 w-4"

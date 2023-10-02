@@ -10,7 +10,6 @@ export default function Card(props) {
     const price = product.price; // Assuming each product has a 'price' property
     return price < minPrice ? price : minPrice;
   }, Infinity);
-
   function convertToRupiah(angka) {
     var rupiah = "";
     var angkarev = angka.toString().split("").reverse().join("");
@@ -93,7 +92,12 @@ export default function Card(props) {
 
           <div className="pt-3 flex items-center justify-between">
             <span className="text-lg font-semibold font-sans text-secondary">
-              {convertToRupiah(cheapestPrice)}
+              {convertToRupiah(cheapestPrice)}{" "}
+              {product.discount ? (
+                <span className="badge badge-xs badge-primary py-1 bottom-2  relative">
+                  Rp. {product.discount} OFF
+                </span>
+              ) : null}
             </span>
           </div>
         </div>

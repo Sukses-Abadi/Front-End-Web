@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import carousel1 from "../assets/carousel1.jpeg";
 import carousel2 from "../assets/carousel2.jpeg";
@@ -5,52 +6,63 @@ import carousel3 from "../assets/carousel3.jpeg";
 import carousel4 from "../assets/carousel4.jpeg";
 
 export default function Carousel() {
+  const [activeSlide, setActiveSlide] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((prevSlide) => (prevSlide % 4) + 1); // Cycle through slides 1 to 4
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, []);
+
+  const getSlide = (slideNumber) => {
+    switch (slideNumber) {
+      case 1:
+        return carousel1;
+      case 2:
+        return carousel2;
+      case 3:
+        return carousel3;
+      case 4:
+        return carousel4;
+      default:
+        return null;
+    }
+  };
+
+  const handleSlideClick = (slideNumber) => {
+    setActiveSlide(slideNumber);
+  };
+
   return (
     <div className="carousel w-full">
-      <div id="slide1" className="carousel-item relative w-full">
-        <Image alt="" src={carousel1} className="w-full" />
-        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-          <a href="#slide4" className="btn btn-circle">
-            ❮
-          </a>
-          <a href="#slide2" className="btn btn-circle">
-            ❯
-          </a>
+      {Array.from({ length: 4 }, (_, i) => (
+        <div
+          key={`slide${i + 1}`}
+          className={`carousel-item relative w-full ${
+            i + 1 === activeSlide ? "" : "hidden"
+          }`}
+        >
+          <Image alt="" src={getSlide(i + 1)} className="w-full" />
+          <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+            <a
+              href={`#slide${i === 0 ? 4 : i}`}
+              className="btn btn-circle"
+              onClick={() => handleSlideClick(i === 0 ? 4 : i)}
+            >
+              ❮
+            </a>
+            <a
+              href={`#slide${i === 3 ? 1 : i + 2}`}
+              className="btn btn-circle"
+              onClick={() => handleSlideClick(i === 3 ? 1 : i + 2)}
+            >
+              ❯
+            </a>
+          </div>
         </div>
-      </div>
-      <div id="slide2" className="carousel-item relative w-full">
-        <Image alt="" src={carousel2} className="w-full" />
-        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-          <a href="#slide1" className="btn btn-circle">
-            ❮
-          </a>
-          <a href="#slide3" className="btn btn-circle">
-            ❯
-          </a>
-        </div>
-      </div>
-      <div id="slide3" className="carousel-item relative w-full">
-        <Image alt="" src={carousel3} className="w-full" />
-        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-          <a href="#slide2" className="btn btn-circle">
-            ❮
-          </a>
-          <a href="#slide4" className="btn btn-circle">
-            ❯
-          </a>
-        </div>
-      </div>
-      <div id="slide4" className="carousel-item relative w-full">
-        <Image alt="" src={carousel4} className="w-full" />
-        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-          <a href="#slide3" className="btn btn-circle">
-            ❮
-          </a>
-          <a href="#slide1" className="btn btn-circle">
-            ❯
-          </a>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }
