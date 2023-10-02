@@ -1,16 +1,10 @@
 "use client";
 import { baseUrl } from "@/lib/constant";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand";
 
-// export const metadata = {
-//   title: "Sukses Abadi Register Page",
-//   description:
-//     "Login Page of Leading Apparel E-commerce Store that sell high quality products",
-// };
 export default function Page() {
   const { isLoggedIn } = useAuthStore();
   const router = useRouter();
