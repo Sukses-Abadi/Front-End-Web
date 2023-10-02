@@ -9,6 +9,14 @@ import OrderTable from "./components/OrderTable";
 import TransferReceipt from "./components/TransferReceipt";
 import fetchWithTokenServer from "@/lib/fetchWithTokenServer";
 
+export async function generateMetadata(req) {
+  const { id } = req.params;
+
+  return {
+    title: `Order number : #${id.toString().padStart(7, "0")} SA Apparel`,
+    description: ` invoice of SA. Apparel`,
+  };
+}
 export default async function Page({ params }) {
   if (!cookies().get(`accessToken`)) {
     redirect(`auth/login`);
