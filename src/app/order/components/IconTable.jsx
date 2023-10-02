@@ -16,6 +16,7 @@ export default function IconTable({ order }) {
   const [filePreview, setFilePreview] = useState("");
   const { setRefresh } = useAuthStore();
   const router = useRouter();
+
   const handleFileChange = (e) => {
     const files = e.target.files;
     setSelectedFiles(Array.from(files));
@@ -94,8 +95,6 @@ export default function IconTable({ order }) {
     router.refresh();
   };
 
-  let photo = [];
-  const orderedProducts = order.orderProducts;
   return (
     <td className="py-3 mr-2 text-left">
       <div className="flex  ml-10">
@@ -159,7 +158,7 @@ export default function IconTable({ order }) {
                 <p className="font-semibold">Total Price</p>
               </div>
               <div className="md:w-2/3">
-                <p>Rp. {order.total_price}</p>
+                <p>Rp. {order.total_price} </p>
               </div>
             </div>
             <div className="md:flex md:items-center mb-3">

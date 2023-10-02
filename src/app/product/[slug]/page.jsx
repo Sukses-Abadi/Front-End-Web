@@ -80,7 +80,7 @@ export default async function Page(req) {
         </Link>
       </div>
       <div className="divider"></div>
-      <Reviews data={data} />
+      <Reviews product_id={data.id} />
     </>
   );
 }

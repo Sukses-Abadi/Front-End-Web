@@ -241,7 +241,9 @@ export default function Page(req) {
                   </span>{" "}
                   to{" "}
                   <span className="font-medium">
-                    {(data.currentPage - 1) * data.limit + 1 + data.limit - 1}
+                    {data.currentPage * data.limit < data.totalItems
+                      ? data.currentPage * data.limit
+                      : data.totalItems}
                   </span>{" "}
                   of <span className="font-medium">{data.totalItems}</span>{" "}
                   results
