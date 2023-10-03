@@ -10,14 +10,17 @@ export default function Reviews({ product_id }) {
 
   useEffect(() => {
     const url =
-      `api/review/${product_id}?` + `page=${page}` + `&limit=${limit}`;
+      `api/review?product_id=${product_id}` +
+      `page=${page}` +
+      `&limit=${limit}`;
     console.log(url);
     const fetchProduct = async () => {
       try {
-        const { reviews } = await fetchData(url, "GET", {
+        const { data } = await fetchData(url, "GET", {
           cache: "no-store",
         });
-        setData(reviews);
+        console.log(data);
+        setData(data);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -93,7 +96,7 @@ export default function Reviews({ product_id }) {
   };
 
   if (!data) return;
-  console.log(data.limit);
+  console.log(data);
   return (
     <div className="m-10 ">
       <div>Review</div>

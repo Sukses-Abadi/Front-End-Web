@@ -29,13 +29,11 @@ export default function Profile(props) {
           }
         );
 
-        console.log("test");
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
         } else if (result.status === "success") {
           const user = result.data;
-          console.log(user);
           setUser(user);
         } else {
           toast.error("An error occurred. Please try again later.");
@@ -54,25 +52,40 @@ export default function Profile(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [photo, setPhoto] = useState(null);
-
+  const [filePreview, setFilePreview] = useState("");
   useEffect(() => {
     if (user) {
       setFirstName(user.first_name);
       setLastName(user.last_name);
       setUserName(user.username);
+      setPhone(user.phone);
       setEmail(user.email);
       setPhoto(user.photo);
     }
   }, [user, router, setRefresh, refresh]);
 
+  const handleFileChange = (e) => {
+    const files = e.target.files[0];
+    if (!files) {
+      setFilePreview(null);
+      return;
+    }
+    setPhoto(files);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFilePreview(e.target.result);
+    };
+
+    reader.readAsDataURL(files); // Display preview for the first file
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const formData = new FormData();
     formData.append("files", photo);
-
     try {
       const image = await fetchWithToken(
         "api/uploads",
@@ -83,17 +96,14 @@ export default function Profile(props) {
         }
       );
 
-      // console.log(image[0].photo);
-
       let payload = {
         first_name: firstName,
         last_name: lastName,
         username: userName,
         email: email,
-        photo: image[0].photo,
+        phone: phone,
+        photo: image.photo || photo,
       };
-
-      // console.log(payload);
 
       const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
         method: "PUT",
@@ -125,7 +135,9 @@ export default function Profile(props) {
               <div className="w-64 mask mask-squircle items-center">
                 <Image
                   className="object-fill object-center"
-                  src={!photo ? profile : `${baseUrl}/${photo}`}
+                  src={
+                    filePreview ? filePreview : `${baseUrl}/${photo}` || profile
+                  }
                   alt="photo"
                   width="800"
                   height="800"
@@ -145,7 +157,7 @@ export default function Profile(props) {
               id="large_size"
               type="file"
               name="files"
-              onChange={(e) => setPhoto(e.target.files[0])}
+              onChange={handleFileChange}
             />
           </div>
         </div>
@@ -205,6 +217,24 @@ export default function Profile(props) {
                     placeholder="Username"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap -mx-3 mb-4">
+                <div className="w-full px-3">
+                  <label
+                    className="block uppercase tracking-wide text-primary text-xs font-bold mb-2"
+                    htmlFor="grid-username"
+                  >
+                    Phone
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-primary border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-username"
+                    type="text"
+                    placeholder="Phone Number"
+                    value={phone || ""}
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
               </div>
