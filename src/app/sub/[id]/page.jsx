@@ -6,18 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export async function generateMetadata(req) {
-  const { id } = req.params;
-
-  const { data } = await fetchData(`api/subcategory/${id}`, "GET", {
-    cache: "no-store",
-  });
-
-  return {
-    title: `SA Apparel ${data.name}`,
-    description: `Collection of ${data.name} in SA. Apparel`,
-  };
-}
 export default function Page(req) {
   const { id } = req.params;
   const [data, setData] = useState(null);

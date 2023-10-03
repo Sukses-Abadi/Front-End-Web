@@ -29,7 +29,7 @@ export default function page() {
   };
 
   return (
-    <div className="w-screen min-h-[70vh] justify-center items-center flex">
+    <div className="min-h-[70vh] justify-center items-center flex">
       <div className="w-full max-w-xs">
         <form
           onSubmit={(e) => handleSubmit(e)}

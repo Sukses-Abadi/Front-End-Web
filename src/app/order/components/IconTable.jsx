@@ -90,11 +90,32 @@ export default function IconTable({ order }) {
         "Content-Type": "application/json",
       },
     });
-    toast.success(`${res.message}`);
+    toast.success(`Status updated`);
     setRefresh();
     router.refresh();
   };
+  const handleCheckout = async () => {
+    const body = {
+      id: order.id,
+      total_payment: order.total_payment,
+    };
+    const response = await fetch(
+      "http://localhost:5000/api/create-checkout-session",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
+    const session = await response.json();
+    console.log(session);
+    if (session) {
+      router.push(`${session.url}`);
+    }
+  };
   return (
     <td className="py-3 mr-2 text-left">
       <div className="flex  ml-10">
@@ -124,9 +145,21 @@ export default function IconTable({ order }) {
             />
           </svg>
         </div>
-
+        {/* checkout */}
+        {order.credit_card === true && order.status === "waiting" ? (
+          <button
+            className=" py-1 px-2 bg-gray-100 border-2 rounded-md"
+            type="submit"
+            id="checkout-button"
+            onClick={() => handleCheckout()}
+          >
+            Checkout
+          </button>
+        ) : null}
         {/* Upload */}
-        {order.status === "waiting" || order.status === "received" ? (
+
+        {(order.status === "waiting" && order.credit_card === false) ||
+        (order.status === "received" && order.credit_card === false) ? (
           <form
             onSubmit={handleFormSubmit}
             className="flex tooltip tooltip-success transform hover:text-purple-500 hover:scale-100 flex-wrap"

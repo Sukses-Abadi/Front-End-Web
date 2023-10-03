@@ -69,16 +69,7 @@ export default function OrderDetails() {
     if (isLoggedIn) {
       getData();
     }
-  }, [
-    token,
-    router,
-    isLoggedIn,
-    logout,
-    refresh,
-    address,
-    courier,
-    setShippingCost,
-  ]);
+  }, [token, router, isLoggedIn, logout, refresh, setShippingCost]);
 
   if (!cart) return;
 
@@ -132,18 +123,34 @@ export default function OrderDetails() {
   };
 
   const handleClickBankAccount = async (id) => {
-    const body = {
-      shipping_method: shippingMethod,
-      shipping_cost: shippingCost,
-      address_id: +address,
-      courier: courier,
-      bank_account_id: +id,
-      total_price: cart.total_price,
-      total_payment: cart.total_payment + shippingCost,
-      total_weight: cart.total_weight,
-      product_order_attributes: cart.CartProduct,
-    };
-    setBody(body);
+    if (+id === 1) {
+      const body = {
+        shipping_method: shippingMethod,
+        shipping_cost: shippingCost,
+        address_id: +address,
+        courier: courier,
+        bank_account_id: +id,
+        credit_card: true,
+        total_price: cart.total_price,
+        total_payment: cart.total_payment + shippingCost,
+        total_weight: cart.total_weight,
+        product_order_attributes: cart.CartProduct,
+      };
+      setBody(body);
+    } else {
+      const body = {
+        shipping_method: shippingMethod,
+        shipping_cost: shippingCost,
+        address_id: +address,
+        courier: courier,
+        bank_account_id: +id,
+        total_price: cart.total_price,
+        total_payment: cart.total_payment + shippingCost,
+        total_weight: cart.total_weight,
+        product_order_attributes: cart.CartProduct,
+      };
+      setBody(body);
+    }
   };
 
   const handleCreateOrder = async () => {
@@ -269,6 +276,7 @@ export default function OrderDetails() {
             <option value="DEFAULT" disabled>
               Choose shipping method
             </option>
+
             {shippingMethodArray?.map((element) => {
               const cost = element.cost[0];
               return (
@@ -300,7 +308,7 @@ export default function OrderDetails() {
             onChange={(e) => handleClickBankAccount(e.target.value)}
           >
             <option value="DEFAULT" disabled>
-              Choose shipping method
+              Choose transfer method
             </option>
             {bankArray.map((element) => {
               return (

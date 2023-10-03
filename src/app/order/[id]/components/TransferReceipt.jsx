@@ -6,7 +6,8 @@ import React, { useState } from "react";
 
 export default function TransferReceipt({ data }) {
   const router = useRouter();
-  const [tracking_number, setTrackingNumber] = useState("");
+  const orderedProduct = data.orderProducts;
+  // console.log(data);
 
   return (
     <div className="border-2 rounded-lg p-10 flex-1 min-w-[370px] bg-slate-50">
