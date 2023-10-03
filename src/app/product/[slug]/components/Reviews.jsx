@@ -10,13 +10,17 @@ export default function Reviews({ product_id }) {
 
   useEffect(() => {
     const url =
-      `api/review/${product_id}?` + `page=${page}` + `&limit=${limit}`;
+      `api/review?product_id=${product_id}` +
+      `page=${page}` +
+      `&limit=${limit}`;
+    console.log(url);
     const fetchProduct = async () => {
       try {
-        const { reviews } = await fetchData(url, "GET", {
+        const { data } = await fetchData(url, "GET", {
           cache: "no-store",
         });
-        setData(reviews);
+        console.log(data);
+        setData(data);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -91,7 +95,7 @@ export default function Reviews({ product_id }) {
   };
 
   if (!data) return;
-
+  console.log(data.limit);
   return (
     <div className="m-10 ">
       <div>Review</div>
@@ -100,6 +104,7 @@ export default function Reviews({ product_id }) {
         {data.reviews.map((review) => {
           const name = review.user.first_name;
           const userPhoto = review.user.photo;
+          const userPhotoUrl = `http://localhost:5000/${userPhoto}`;
           const date = review.created_at;
           const rating = review.rating;
           const reviewImage = review.image;
@@ -167,7 +172,7 @@ export default function Reviews({ product_id }) {
                       src={
                         !userPhoto
                           ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                          : userPhoto
+                          : userPhotoUrl
                       }
                       width={28}
                       height={28}

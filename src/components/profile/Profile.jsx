@@ -1,7 +1,7 @@
 "use client";
 import fetchWithToken from "@/lib/fetchWithToken";
 import { useAuthStore, useUserStore } from "@/zustand";
-import { deleteCookie, getCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
@@ -9,12 +9,9 @@ import profile from "../../components/assets/profile.jpg";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { baseUrl } from "@/lib/constant";
-
 export default function Profile(props) {
+  const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
   const router = useRouter();
-  const { token, setToken, isLoggedIn, logout, refresh, setRefresh } =
-    useAuthStore();
 
   const [user, setUser] = useState(null);
 
@@ -29,11 +26,14 @@ export default function Profile(props) {
           }
         );
 
+        console.log("test");
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
+          router.push("/");
         } else if (result.status === "success") {
           const user = result.data;
+          // console.log(user);
           setUser(user);
         } else {
           toast.error("An error occurred. Please try again later.");
@@ -47,78 +47,32 @@ export default function Profile(props) {
     if (isLoggedIn) {
       getData();
     }
-  }, [token, setToken, router, isLoggedIn, logout, refresh]);
+  }, [token, router, isLoggedIn, logout]);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [photo, setPhoto] = useState(null);
-  const [filePreview, setFilePreview] = useState("");
+
   useEffect(() => {
     if (user) {
       setFirstName(user.first_name);
       setLastName(user.last_name);
       setUserName(user.username);
-      setPhone(user.phone);
       setEmail(user.email);
-      setPhoto(user.photo);
     }
-  }, [user, router, setRefresh, refresh]);
-
-  const handleFileChange = (e) => {
-    const files = e.target.files[0];
-    if (!files) {
-      setFilePreview(null);
-      return;
-    }
-    setPhoto(files);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setFilePreview(e.target.result);
-    };
-
-    reader.readAsDataURL(files); // Display preview for the first file
-  };
+  }, [user]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("files", photo);
-    try {
-      const image = await fetchWithToken(
-        "api/uploads",
-        getCookie(`accessToken`),
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+    await props.onSubmit({
+      firstName,
+      lastName,
+      userName,
+      email,
+    });
 
-      let payload = {
-        first_name: firstName,
-        last_name: lastName,
-        username: userName,
-        email: email,
-        phone: phone,
-        photo: image.photo || photo,
-      };
-
-      const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
-        method: "PUT",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      toast.success(`${data.message}`);
-      setRefresh();
-      router.refresh();
-    } catch (error) {
-      console.log(error);
-    }
+    router.refresh();
   };
 
   return (
@@ -130,20 +84,8 @@ export default function Profile(props) {
         {/* Start Upload Image*/}
 
         <div className="max-w-sm bg-white border rounded-lg shadow">
-          <div className="flex pt-3 pb-2 px-2 place-content-center">
-            <div className="avatar ">
-              <div className="w-64 mask mask-squircle items-center">
-                <Image
-                  className="object-fill object-center"
-                  src={
-                    filePreview ? filePreview : `${baseUrl}/${photo}` || profile
-                  }
-                  alt="photo"
-                  width="800"
-                  height="800"
-                />
-              </div>
-            </div>
+          <div className="pt-3 pb-2 px-3">
+            <Image className="rounded-lg" src={profile} alt="profile" />
           </div>
           <div className="px-8 pb-10">
             <ul className="list-disc text-xs font-medium italic">
@@ -156,8 +98,6 @@ export default function Profile(props) {
               className="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:placeholder-gray-400"
               id="large_size"
               type="file"
-              name="files"
-              onChange={handleFileChange}
             />
           </div>
         </div>
@@ -217,24 +157,6 @@ export default function Profile(props) {
                     placeholder="Username"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
-                  <label
-                    className="block uppercase tracking-wide text-primary text-xs font-bold mb-2"
-                    htmlFor="grid-username"
-                  >
-                    Phone
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-200 text-primary border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-username"
-                    type="text"
-                    placeholder="Phone Number"
-                    value={phone || ""}
-                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
               </div>

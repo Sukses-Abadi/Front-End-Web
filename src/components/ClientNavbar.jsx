@@ -43,7 +43,7 @@ export default function ClientNavbar(props) {
 
   const userData = user;
   const userPhoto = userData.photo;
-  const userPhotoUrl = `http:localhost:5000/${userPhoto}`;
+  const userPhotoUrl = `http://localhost:5000/${userPhoto}`;
   const userCart = userData.cart;
   const total_price = userData.cart?.total_price || 0;
   const cartItemCount = userCart?.CartProduct.length;
@@ -109,8 +109,8 @@ export default function ClientNavbar(props) {
                   ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
                   : userPhotoUrl
               }
-              width={10}
-              height={10}
+              width={100}
+              height={100}
             />
           </div>
         </label>
@@ -119,7 +119,7 @@ export default function ClientNavbar(props) {
           className="menu menu-sm dropdown-content mt-3 z-[10] p-2 shadow bg-base-100 rounded-box w-52"
         >
           <li>
-            <Link href="/user" className="justify-between">
+            <Link href="/profile" className="justify-between">
               Profile
               <span className="badge">New</span>
             </Link>
