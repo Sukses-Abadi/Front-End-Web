@@ -105,6 +105,7 @@ export default function Reviews({ product_id }) {
         {data.reviews.map((review) => {
           const name = review.user.first_name;
           const userPhoto = review.user.photo;
+          const userPhotoUrl = `http://localhost:5000/${userPhoto}`;
           const date = review.created_at;
           const rating = review.rating;
           const reviewImage = review.image;
@@ -172,7 +173,7 @@ export default function Reviews({ product_id }) {
                       src={
                         !userPhoto
                           ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                          : userPhoto
+                          : userPhotoUrl
                       }
                       width={28}
                       height={28}

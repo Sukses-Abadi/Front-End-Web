@@ -43,7 +43,7 @@ export default function ClientNavbar(props) {
 
   const userData = user;
   const userPhoto = userData.photo;
-  const userPhotoUrl = `http:localhost:5000/${userPhoto}`;
+  const userPhotoUrl = `http://localhost:5000/${userPhoto}`;
   const userCart = userData.cart;
   const total_price = userData.cart?.total_price || 0;
   const cartItemCount = userCart?.CartProduct.length;
