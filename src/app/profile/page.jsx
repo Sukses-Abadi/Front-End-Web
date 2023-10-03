@@ -12,9 +12,9 @@ import { toast } from "react-toastify";
 import { baseUrl } from "@/lib/constant";
 
 export default function Profile(props) {
+  const router = useRouter();
   const { token, setToken, isLoggedIn, logout, refresh, setRefresh } =
     useAuthStore();
-  const router = useRouter();
 
   const [user, setUser] = useState(null);
 
@@ -55,7 +55,7 @@ export default function Profile(props) {
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -65,7 +65,7 @@ export default function Profile(props) {
       setEmail(user.email);
       setPhoto(user.photo);
     }
-  }, [user]);
+  }, [user, router, setRefresh, refresh]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -103,6 +103,8 @@ export default function Profile(props) {
         },
       });
 
+      toast.success(`${data.message}`);
+      setRefresh();
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -118,14 +120,18 @@ export default function Profile(props) {
         {/* Start Upload Image*/}
 
         <div className="max-w-sm bg-white border rounded-lg shadow">
-          <div className="pt-3 pb-2 px-3">
-            <Image
-              className="rounded-lg"
-              src={profile}
-              alt="profile photo"
-              width="500"
-              height="500"
-            />
+          <div className="flex pt-3 pb-2 px-2 place-content-center">
+            <div className="avatar ">
+              <div className="w-64 mask mask-squircle items-center">
+                <Image
+                  className="object-fill object-center"
+                  src={!photo ? profile : `${baseUrl}/${photo}`}
+                  alt="photo"
+                  width="800"
+                  height="800"
+                />
+              </div>
+            </div>
           </div>
           <div className="px-8 pb-10">
             <ul className="list-disc text-xs font-medium italic">
