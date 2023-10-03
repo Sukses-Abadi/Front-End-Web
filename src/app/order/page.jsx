@@ -239,15 +239,15 @@ export default function Page() {
         </a>
       </div>
       <div className="min-w-screen flex items-center justify-center bg-gray-100 font-sans overflow-auto">
-        <div className="w-full lg:w-5/6">
+        <div className="w-full lg:w-6/7">
           <div className="bg-white shadow-md rounded my-6">
-            <table className="min-w-max w-full table-auto">
+            <table className="min-w-max w-full">
               {/* TABLE HEAD */}
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left">Bank Info</th>
                   <th className="py-3 px-6 text-left">Price</th>
-                  <th className="py-3 px-6 text-center hidden md:flex">
+                  <th className="py-3 px-6 text-center hidden lg:flex">
                     Product
                   </th>
                   <th className="py-3 px-6 text-center">Status</th>
@@ -259,11 +259,12 @@ export default function Page() {
 
                 {orders?.map((order) => {
                   const bank = order.bankAccount;
+
                   const orderedProducts = order.orderProducts;
                   return (
                     <tr
                       key={order.id}
-                      className="border-b border-gray-200 hover:bg-gray-100"
+                      className="border-b border-gray-200 hover:bg-gray-100 flex-1"
                     >
                       {/* BANK */}
                       <td className="py-3 px-6 text-left whitetext-xs md:text-mdspace-nowrap text-xs md:text-md">
@@ -283,7 +284,7 @@ export default function Page() {
                         </div>
                       </td>
                       {/* PRODUCT */}
-                      <td className="py-3 px-6 text-center hidden md:flex text-xs md:text-md">
+                      <td className="py-3 px-6 text-center hidden lg:flex text-xs md:text-md">
                         <div className="flex items-center justify-center">
                           {orderedProducts.map((orderedProduct) => {
                             const productDetails =

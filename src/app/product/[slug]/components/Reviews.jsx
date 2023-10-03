@@ -11,7 +11,6 @@ export default function Reviews({ product_id }) {
   useEffect(() => {
     const url =
       `api/review/${product_id}?` + `page=${page}` + `&limit=${limit}`;
-    console.log(url);
     const fetchProduct = async () => {
       try {
         const { reviews } = await fetchData(url, "GET", {
@@ -27,7 +26,6 @@ export default function Reviews({ product_id }) {
   }, [limit, page, setPage, product_id]);
 
   const handlePage = async (value) => {
-    console.log(" PAGE" + value);
     setPage(value);
   };
 
@@ -93,7 +91,7 @@ export default function Reviews({ product_id }) {
   };
 
   if (!data) return;
-  console.log(data.limit);
+
   return (
     <div className="m-10 ">
       <div>Review</div>
