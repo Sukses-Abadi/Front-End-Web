@@ -26,8 +26,10 @@ export default function OrderDetails() {
   const [shippingMethod, setShippingMethod] = useState(null);
   const [shippingCost, setShippingCost] = useState(null);
   const [body, setBody] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const getData = async () => {
       try {
         const data = await fetchWithToken(
@@ -57,6 +59,7 @@ export default function OrderDetails() {
         } else {
           toast.error("An error occurred. Please try again later.");
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error:", error);
         // Handle the error (e.g., show a toast message)
@@ -165,6 +168,9 @@ export default function OrderDetails() {
     }
   };
 
+  if (loading) {
+    return <p> Loading ...</p>;
+  }
   return (
     <div id="summary" className="lg:w-1/4 px-8 py-10  ">
       <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
@@ -193,7 +199,7 @@ export default function OrderDetails() {
             Add Address
           </option>
 
-          {user.address.map((address) => {
+          {user.address?.map((address) => {
             return (
               <option value={address.id} key={address.id}>
                 {address.name}, {address.street}, {address.city.name},{" "}
