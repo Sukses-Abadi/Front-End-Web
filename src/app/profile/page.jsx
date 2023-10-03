@@ -95,16 +95,16 @@ export default function Profile(props) {
           body: formData,
         }
       );
-
+      console.log(image[0].photo);
       let payload = {
         first_name: firstName,
         last_name: lastName,
         username: userName,
         email: email,
         phone: phone,
-        photo: image.photo || photo,
+        photo: image[0].photo || photo,
       };
-
+      console.log(payload);
       const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
         method: "PUT",
         body: JSON.stringify(payload),

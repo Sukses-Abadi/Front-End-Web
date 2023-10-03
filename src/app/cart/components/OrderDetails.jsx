@@ -69,16 +69,7 @@ export default function OrderDetails() {
     if (isLoggedIn) {
       getData();
     }
-  }, [
-    token,
-    router,
-    isLoggedIn,
-    logout,
-    refresh,
-    address,
-    courier,
-    setShippingCost,
-  ]);
+  }, [token, router, isLoggedIn, logout, refresh, setShippingCost]);
 
   if (!cart) return;
 

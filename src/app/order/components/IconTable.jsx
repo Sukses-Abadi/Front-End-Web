@@ -90,7 +90,7 @@ export default function IconTable({ order }) {
         "Content-Type": "application/json",
       },
     });
-    toast.success(`${res.message}`);
+    toast.success(`Status updated`);
     setRefresh();
     router.refresh();
   };
@@ -157,6 +157,7 @@ export default function IconTable({ order }) {
           </button>
         ) : null}
         {/* Upload */}
+
         {(order.status === "waiting" && order.credit_card === false) ||
         (order.status === "received" && order.credit_card === false) ? (
           <form
