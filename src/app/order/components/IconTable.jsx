@@ -117,7 +117,7 @@ export default function IconTable({ order }) {
     }
   };
   return (
-    <td className="py-3 mr-2 text-left">
+    <td className="py-3 mr-2 flex-1 text-left">
       <div className="flex  ml-10">
         {/* see more */}
         <div

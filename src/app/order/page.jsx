@@ -245,12 +245,12 @@ export default function Page() {
               {/* TABLE HEAD */}
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left">Bank Info</th>
-                  <th className="py-3 px-6 text-left">Price</th>
-                  <th className="py-3 px-6 text-center hidden lg:flex">
+                  <th className="py-3 px-6 text-left w-[200px]">Bank Info</th>
+                  <th className="py-3 px-6 text-left w-[150px]">Price</th>
+                  <th className="py-3 px-6 text-center flex-grow hidden lg:flex">
                     Product
                   </th>
-                  <th className="py-3 px-6 text-center">Status</th>
+                  <th className="py-3 px-6 text-left w-[200px]">Status</th>
                   <th className="py-3 px-6 text-center">Actions</th>
                 </tr>
               </thead>
@@ -321,7 +321,7 @@ export default function Page() {
                         </div>
                       </td>
 
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-3 px-6 text-left max-w-[120px]">
                         <span
                           className="bg-purple-200 font-semibold text-gray-700 py-1 px-3 rounded-full text-[10px]"
                           style={{

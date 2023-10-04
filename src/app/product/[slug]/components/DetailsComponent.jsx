@@ -5,24 +5,28 @@ import { Sizes } from "./Sizes";
 
 export default async function DetailsComponent(product) {
   const productDetails = product.productDetails;
-  const sizeS = await fetchData(`api/product_details/${product.id}/S`, {
-    next: { revalidate: 10 },
-  });
-  const sizeM = await fetchData(`api/product_details/${product.id}/M`, {
-    next: { revalidate: 10 },
-  });
-  const sizeL = await fetchData(`api/product_details/${product.id}/L`, {
-    next: { revalidate: 10 },
-  });
-  const sizeXL = await fetchData(`api/product_details/${product.id}/XL`, {
-    next: { revalidate: 10 },
-  });
-  const sizes = { S: sizeS, M: sizeM, L: sizeL, XL: sizeXL };
 
+  const productSize = productDetails.map((element) => {
+    return element.size;
+  });
+  const uniqueSize = [...new Set(productSize)];
+  const sizePromises = uniqueSize.map(async (size) => {
+    const result = await fetchData(
+      `api/product_details/${product.id}/${size}`,
+      {
+        next: { revalidate: 10 },
+      }
+    );
+    return { [size]: result };
+  });
+
+  const sizesMap = await Promise.all(sizePromises);
+
+  const uniqueSizeData = Object.assign({}, ...sizesMap);
   return (
     <>
       <div className="mt-3">
-        <Sizes sizes={sizes} discount={product.discount} />
+        <Sizes sizes={uniqueSizeData} discount={product.discount} />
       </div>
     </>
   );

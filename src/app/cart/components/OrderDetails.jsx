@@ -18,6 +18,7 @@ export default function OrderDetails() {
   const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
   const router = useRouter();
   const [bankArray, setBankArray] = useState([]);
+  const [selectedBank, setSelectedBank] = useState([]);
   const [cart, setCart] = useState(null);
   const { user, setUser } = useUserStore();
   const [address, setAddress] = useState(null);
@@ -52,6 +53,7 @@ export default function OrderDetails() {
           toast.info("Your session has expired");
           router.push("/");
         } else if (data.status === "success") {
+          console.log("SET DATA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
           const cart = data.data;
           setCart(cart);
           const banks = bankData.data;
@@ -123,37 +125,39 @@ export default function OrderDetails() {
   };
 
   const handleClickBankAccount = async (id) => {
-    if (+id === 1) {
-      const body = {
+    setSelectedBank(+id);
+  };
+
+  const handleCreateOrder = async () => {
+    let body;
+
+    if (selectedBank === 1) {
+      body = {
         shipping_method: shippingMethod,
         shipping_cost: shippingCost,
         address_id: +address,
         courier: courier,
-        bank_account_id: +id,
+        bank_account_id: selectedBank,
         credit_card: true,
         total_price: cart.total_price,
         total_payment: cart.total_payment + shippingCost,
         total_weight: cart.total_weight,
         product_order_attributes: cart.CartProduct,
       };
-      setBody(body);
     } else {
-      const body = {
+      body = {
         shipping_method: shippingMethod,
         shipping_cost: shippingCost,
         address_id: +address,
         courier: courier,
-        bank_account_id: +id,
+        bank_account_id: selectedBank,
         total_price: cart.total_price,
         total_payment: cart.total_payment + shippingCost,
         total_weight: cart.total_weight,
         product_order_attributes: cart.CartProduct,
       };
-      setBody(body);
     }
-  };
-
-  const handleCreateOrder = async () => {
+    console.log(body);
     const response = await fetchWithToken(
       "api/order",
       getCookie(`accessToken`),
@@ -165,13 +169,13 @@ export default function OrderDetails() {
         body: JSON.stringify(body),
       }
     );
-
+    if (response === "Internal Server Error") {
+      toast.error(`Please fill all the credentials`);
+    }
     if (response.status === "success") {
-      router.refresh();
-      setRefresh();
       router.push("/order");
     } else {
-      toast.error("Please fill all the credentials");
+      toast.error(response.message);
     }
   };
 
