@@ -166,7 +166,7 @@ export default function IconTable({ order }) {
             data-tip="Upload transfer "
           >
             {/* Display file preview */}
-            {filePreview && (
+            {/* {filePreview && (
               <Image
                 src={filePreview}
                 alt="File Preview"
@@ -174,7 +174,7 @@ export default function IconTable({ order }) {
                 width={500}
                 height={500}
               />
-            )}
+            )} */}
             <input
               type="file"
               name="files"

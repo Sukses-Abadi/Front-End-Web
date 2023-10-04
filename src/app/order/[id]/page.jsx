@@ -9,7 +9,6 @@ import OrderTable from "./components/OrderTable";
 import TransferReceipt from "./components/TransferReceipt";
 import fetchWithTokenServer from "@/lib/fetchWithTokenServer";
 
-
 export async function generateMetadata(req) {
   const { id } = req.params;
 
@@ -33,7 +32,7 @@ export default async function Page({ params }) {
   // console.log(data);
   if (!data) return;
   return (
-    <div className="p-5">
+    <div className="  p-5 overflow-x-auto">
       {/* headers */}
       <div className=" text-2xl font-bold p-10">
         Order Number{" "}

@@ -176,7 +176,7 @@ export default function Page() {
         </div>
       </div>
       {/* STATUS FILTER */}
-      <div className="flex gap-1 my-2 items-center flex-wrap">
+      <div className="flex gap-1 my-2 items-center flex-wrap mx-10">
         <a
           className={`rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 cursor-pointer focus:ring-indigo-800 ${
             activeLink === "" ? "bg-indigo-100 text-indigo-700" : ""
@@ -239,19 +239,19 @@ export default function Page() {
         </a>
       </div>
       <div className="min-w-screen flex items-center justify-center bg-gray-100 font-sans overflow-auto">
-        <div className="w-full lg:w-6/7">
-          <div className="bg-white shadow-md rounded my-6">
-            <table className="min-w-max w-full">
+        <div className="w-full  lg:w-6/7">
+          <div className="bg-white shadow-md rounded my-6 overflow-auto">
+            <table className="min-w-max w-full mx-10">
               {/* TABLE HEAD */}
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left w-[200px]">Bank Info</th>
                   <th className="py-3 px-6 text-left w-[150px]">Price</th>
-                  <th className="py-3 px-6 text-center flex-grow hidden lg:flex">
+                  <th className="py-3 px-6 text-center flex-grow hidden lg:block">
                     Product
                   </th>
-                  <th className="py-3 px-6 text-left w-[200px]">Status</th>
-                  <th className="py-3 px-6 text-center">Actions</th>
+                  <th className="py-3 px-6 text-left w-[250px]">Status</th>
+                  <th className="py-3 px-6 text-center w-[420px] ">Actions</th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
@@ -264,7 +264,7 @@ export default function Page() {
                   return (
                     <tr
                       key={order.id}
-                      className="border-b border-gray-200 hover:bg-gray-100 flex-1"
+                      className="border-b border-gray-200 hover:bg-gray-100"
                     >
                       {/* BANK */}
                       <td className="py-3 px-6 text-left whitetext-xs md:text-mdspace-nowrap text-xs md:text-md">

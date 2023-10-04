@@ -15,6 +15,7 @@ export function Sizes(props) {
   const [price, setPrice] = useState(null);
   const sizeArray = Object.keys(sizes);
   const [count, setCount] = useState(1);
+  const [stock, setStock] = useState(null);
   const { refresh, setRefresh, token } = useAuthStore();
   const increment = () => {
     setCount(count + 1);
@@ -26,8 +27,10 @@ export function Sizes(props) {
     }
   };
 
-  const handleColor = (product_details_id, price) => {
+  const handleColor = (product_details_id, stock) => {
     setSelectedProduct(product_details_id);
+    setStock(stock);
+    console.log(stock);
   };
 
   const handleClick = (size) => {
@@ -38,6 +41,15 @@ export function Sizes(props) {
   const handleAddToCart = async () => {
     if (!getCookie("accessToken")) {
       toast.error("please login to your account");
+      return;
+    }
+    if (stock <= 0) {
+      toast.error("Item is out of stock, please select another item");
+      return;
+    }
+    if (stock < count) {
+      toast.error("Stock insufficient");
+      return;
     }
     const data = {
       product_details: {
@@ -117,7 +129,7 @@ export function Sizes(props) {
               return (
                 <button
                   key={element.id}
-                  onClick={() => handleColor(element.id, element.price)}
+                  onClick={() => handleColor(element.id, element.stock)}
                   className={`h-5 w-5 border-2 rounded-full ${
                     selectedProduct === element.id
                       ? "border-blue-800"
@@ -137,6 +149,16 @@ export function Sizes(props) {
           ) : null}
         </span>
       </div>
+      {stock ? (
+        <label className="text-gray-700 text-sm" htmlFor="color">
+          Stock : {stock}
+        </label>
+      ) : null}
+      {stock === 0 ? (
+        <label className="text-red-700 text-sm" htmlFor="color">
+          ITEM IS OUT OF STOCK, PLEASE WAIT FOR FURTHER UPDATE !
+        </label>
+      ) : null}
       <hr className="my-3" />
       <div className="mt-2">
         <label className="text-gray-700 text-sm" htmlFor="quantity">

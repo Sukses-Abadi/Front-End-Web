@@ -135,10 +135,10 @@ export default function Page() {
     }
   };
   return (
-    <div className="bg-gray-100 ">
+    <div className="bg-gray-100 min-h-[63vh]">
       <div className="container mx-auto mt-10">
         <div className="md:flex shadow-md my-10">
-          <div className="md:w-3/4  bg-white  px-10 py-10">
+          <div className="md:w-3/4  bg-white my-10 px-10 py-10">
             <div className="flex justify-between border-b pb-8">
               <h1 className="font-semibold text-2xl">Shopping Cart</h1>
               <h2 className="font-semibold text-2xl">
@@ -174,6 +174,7 @@ export default function Page() {
               const discount = product.discount;
               const weight = product.weight;
               const photo = product.productGalleries;
+              const stock = product_details.stock;
               return (
                 <div
                   key={item.id}
@@ -197,6 +198,9 @@ export default function Page() {
                         className={`h-5 w-5 border-2 rounded-full border-blue-300  mr-2 focus:outline-none`}
                         style={{ backgroundColor: color }}
                       ></span>
+                      <span className="text-gray-700 text-xs">
+                        Stock :{stock}
+                      </span>
                       <a
                         onClick={() => handleDeleteItem(item.id)}
                         className="font-semibold hover:text-red-500 text-gray-500 text-xs cursor-pointer"

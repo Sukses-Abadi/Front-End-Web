@@ -18,7 +18,7 @@ export default function OrderDetails() {
   const { token, isLoggedIn, logout, refresh, setRefresh } = useAuthStore();
   const router = useRouter();
   const [bankArray, setBankArray] = useState([]);
-  const [selectedBank, setSelectedBank] = useState([]);
+  const [selectedBank, setSelectedBank] = useState(null);
   const [cart, setCart] = useState(null);
   const { user, setUser } = useUserStore();
   const [address, setAddress] = useState(null);
@@ -53,7 +53,6 @@ export default function OrderDetails() {
           toast.info("Your session has expired");
           router.push("/");
         } else if (data.status === "success") {
-          console.log("SET DATA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
           const cart = data.data;
           setCart(cart);
           const banks = bankData.data;
@@ -130,7 +129,16 @@ export default function OrderDetails() {
 
   const handleCreateOrder = async () => {
     let body;
-
+    if (
+      !selectedBank ||
+      !shippingMethod ||
+      !shippingCost ||
+      !address ||
+      !courier
+    ) {
+      toast.error("Fill all the credentials");
+      return;
+    }
     if (selectedBank === 1) {
       body = {
         shipping_method: shippingMethod,
@@ -169,10 +177,11 @@ export default function OrderDetails() {
         body: JSON.stringify(body),
       }
     );
-    if (response === "Internal Server Error") {
+    if (response === "Internal Server Error" || response === "Bad Request") {
       toast.error(`Please fill all the credentials`);
     }
     if (response.status === "success") {
+      setRefresh();
       router.push("/order");
     } else {
       toast.error(response.message);
