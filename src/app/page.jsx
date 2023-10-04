@@ -111,13 +111,13 @@ export default function Home() {
     <>
       <Carousel />
       {/* Set Limit */}
-      <div className="flex items-center justify-center py-1 md:py-4 ">
+            <div className="flex items-center justify-center py-1 md:py-4 ">
         <header className="text-primary text-3xl font-bold px-5 py-2.5 text-center mr-3 mb-1">
           Our Products
         </header>
       </div>
       <div className="flex flex-row-reverse ml-10">
-        <div className="m-5 inline-flex">
+        <div className="my-5 mr-5 inline-flex">
           <div className="py-2 ml-4 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
             <p>Show Entries:</p>
             <select
@@ -159,7 +159,7 @@ export default function Home() {
                 // value={minPrice}
                 type="number"
                 name="q"
-                className="py-2 text-sm text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
+                className="py-2 text-sm w-[180px] text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
                 placeholder="Minimum Price"
                 autoComplete="off"
               />
@@ -179,7 +179,7 @@ export default function Home() {
                 // value={maxPrice}
                 type="number"
                 name="q"
-                className="py-2 text-sm text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
+                className="py-2 w-[180px] text-sm text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
                 placeholder="Maximum Price"
                 autoComplete="off"
               />
@@ -187,35 +187,35 @@ export default function Home() {
           </form>
         </div>
         {/* delete Filter */}
-        <div className="py-3 ml-4 px-4 inline-flex  flex-wrap items-center gap-4 text-sm font-medium leading-none  cursor-pointer rounded">
-          {maxPrice > 0 ? (
-            <div className=" text-gray-600 focus-within:text-gray-400">
-              <button
-                onClick={() => setMaxPrice("")}
-                className="p-2 border-2 rounded-md focus:outline-none focus:shadow-outline"
-              >
-                <span className="flex gap-2">
-                  Maximum Price
-                  <Image src="/icon/x.svg" alt="" width={15} height={15} />
-                </span>
-              </button>
-            </div>
-          ) : null}
+      </div>
+      <div className="py-3 ml-4 px-4 inline-flex  flex-wrap items-center gap-4 text-sm font-medium leading-none  cursor-pointer rounded">
+        {maxPrice > 0 ? (
+          <div className=" text-gray-600 focus-within:text-gray-400">
+            <button
+              onClick={() => setMaxPrice("")}
+              className="p-2 border-2 rounded-md focus:outline-none focus:shadow-outline"
+            >
+              <span className="flex gap-2">
+                Maximum Price
+                <Image src="/icon/x.svg" alt="" width={15} height={15} />
+              </span>
+            </button>
+          </div>
+        ) : null}
 
-          {minPrice > 0 ? (
-            <div className=" text-gray-600 focus-within:text-gray-400">
-              <button
-                onClick={() => setMinPrice("")}
-                className="p-2 border-2 rounded-md focus:outline-none focus:shadow-outline"
-              >
-                <span className="flex gap-2">
-                  Minimum Price
-                  <Image src="/icon/x.svg" alt="" width={15} height={15} />
-                </span>
-              </button>
-            </div>
-          ) : null}
-        </div>
+        {minPrice > 0 ? (
+          <div className=" text-gray-600 focus-within:text-gray-400">
+            <button
+              onClick={() => setMinPrice("")}
+              className="p-2 border-2 rounded-md focus:outline-none focus:shadow-outline"
+            >
+              <span className="flex gap-2">
+                Minimum Price
+                <Image src="/icon/x.svg" alt="" width={15} height={15} />
+              </span>
+            </button>
+          </div>
+        ) : null}
       </div>
       <Container>
         {data.products?.map((product) => {
