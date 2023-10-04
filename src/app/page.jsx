@@ -111,76 +111,83 @@ export default function Home() {
     <>
       <Carousel />
       {/* Set Limit */}
-      <div className="m-5 inline-flex">
-        <div className="py-3 ml-4 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
-          <p>Show Entries:</p>
-          <select
-            aria-label="select"
-            className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
-            onChange={(e) => handleLimit(e.target.value)}
-            defaultValue={"8"}
-          >
-            <option value={"4"} className="text-sm text-indigo-800">
-              4
-            </option>
-            <option value={"8"} className="text-sm text-indigo-800">
-              8
-            </option>
-            <option value={"12"} className="text-indigo-800">
-              12
-            </option>
-            <option value={"16"} className="text-indigo-800">
-              16
-            </option>
-            <option value={"20"} className="text-indigo-800">
-              20
-            </option>
-          </select>
+            <div className="flex items-center justify-center py-1 md:py-4 ">
+        <header className="text-primary text-3xl font-bold px-5 py-2.5 text-center mr-3 mb-1">
+          Our Products
+        </header>
+      </div>
+      <div className="flex flex-row-reverse ml-10">
+        <div className="my-5 mr-5 inline-flex">
+          <div className="py-2 ml-4 px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+            <p>Show Entries:</p>
+            <select
+              aria-label="select"
+              className="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+              onChange={(e) => handleLimit(e.target.value)}
+              defaultValue={"8"}
+            >
+              <option value={"4"} className="text-sm text-indigo-800">
+                4
+              </option>
+              <option value={"8"} className="text-sm text-indigo-800">
+                8
+              </option>
+              <option value={"12"} className="text-indigo-800">
+                12
+              </option>
+              <option value={"16"} className="text-indigo-800">
+                16
+              </option>
+              <option value={"20"} className="text-indigo-800">
+                20
+              </option>
+            </select>
+          </div>
         </div>
+        <div className="py-3 ml-4 px-4 flex flex-wrap items-center gap-4 text-sm font-medium leading-none  cursor-pointer rounded">
+          <form onSubmit={handleMinPriceSubmit}>
+            <div className="relative text-gray-600 focus-within:text-gray-400">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                <button
+                  type="submit"
+                  className="p-1 focus:outline-none focus:shadow-outline"
+                >
+                  <Image src="/icon/rupiah.svg" alt="" width={22} height={22} />
+                </button>
+              </span>
+              <input
+                // value={minPrice}
+                type="number"
+                name="q"
+                className="py-2 text-sm w-[180px] text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
+                placeholder="Minimum Price"
+                autoComplete="off"
+              />
+            </div>
+          </form>
+          <form onSubmit={handleMaxPriceSubmit}>
+            <div className="relative text-gray-600 focus-within:text-gray-400">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                <button
+                  type="submit"
+                  className="p-1 focus:outline-none focus:shadow-outline"
+                >
+                  <Image src="/icon/rupiah.svg" alt="" width={22} height={22} />
+                </button>
+              </span>
+              <input
+                // value={maxPrice}
+                type="number"
+                name="q"
+                className="py-2 w-[180px] text-sm text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
+                placeholder="Maximum Price"
+                autoComplete="off"
+              />
+            </div>
+          </form>
+        </div>
+        {/* delete Filter */}
       </div>
-      <div className="py-3 ml-4 px-4 flex flex-wrap items-center gap-4 text-sm font-medium leading-none  cursor-pointer rounded">
-        <form onSubmit={handleMinPriceSubmit}>
-          <div className="relative text-gray-600 focus-within:text-gray-400">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-              <button
-                type="submit"
-                className="p-1 focus:outline-none focus:shadow-outline"
-              >
-                <Image src="/icon/rupiah.svg" alt="" width={22} height={22} />
-              </button>
-            </span>
-            <input
-              // value={minPrice}
-              type="number"
-              name="q"
-              className="py-2 text-sm text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
-              placeholder="Minimum Price"
-              autoComplete="off"
-            />
-          </div>
-        </form>
-        <form onSubmit={handleMaxPriceSubmit}>
-          <div className="relative text-gray-600 focus-within:text-gray-400">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-              <button
-                type="submit"
-                className="p-1 focus:outline-none focus:shadow-outline"
-              >
-                <Image src="/icon/rupiah.svg" alt="" width={22} height={22} />
-              </button>
-            </span>
-            <input
-              // value={maxPrice}
-              type="number"
-              name="q"
-              className="py-2 text-sm text-gray-800 font-semibold bg-gray-200 rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900"
-              placeholder="Maximum Price"
-              autoComplete="off"
-            />
-          </div>
-        </form>
-      </div>
-      {/* delete Filter */}
       <div className="py-3 ml-4 px-4 inline-flex  flex-wrap items-center gap-4 text-sm font-medium leading-none  cursor-pointer rounded">
         {maxPrice > 0 ? (
           <div className=" text-gray-600 focus-within:text-gray-400">

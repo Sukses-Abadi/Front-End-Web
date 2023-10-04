@@ -37,7 +37,7 @@ export default async function Navbar() {
     }
   }
   return (
-    <nav className="flex bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <div className="flex flex-row bg-white w-full top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           href="/"
@@ -88,7 +88,7 @@ export default async function Navbar() {
         {isLoggedIn ? (
           <ClientNavbar />
         ) : (
-          <Link className=" btn btn-primary" href="/auth/login">
+          <Link className="btn btn-primary" href="/auth/login">
             Log In
           </Link>
         )}
@@ -97,7 +97,7 @@ export default async function Navbar() {
       {/* Start Toggle Navbar */}
       <div className="drawer-side">
         <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-        <ul className="menu p-4 w-80 min-h-full bg-base-200">
+        <ul className="menu p-4 w-96 min-h-full bg-base-200">
           {/* Sidebar content here */}
           {category.map((category, index) => {
             return (
@@ -173,6 +173,6 @@ export default async function Navbar() {
         </ul>
       </div>
       {/* End Toggle Navbar */}
-    </nav>
+    </div>
   );
 }
