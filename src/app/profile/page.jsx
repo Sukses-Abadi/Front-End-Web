@@ -95,7 +95,7 @@ export default function Profile(props) {
           body: formData,
         }
       );
-      console.log(image[0].photo);
+      // console.log(image[0].photo);
       let payload = {
         first_name: firstName,
         last_name: lastName,
@@ -136,7 +136,11 @@ export default function Profile(props) {
                 <Image
                   className="object-fill object-center"
                   src={
-                    filePreview ? filePreview : `${baseUrl}/${photo}` || profile
+                    filePreview
+                      ? filePreview
+                      : photo
+                      ? `${baseUrl}/${photo}`
+                      : profile
                   }
                   alt="photo"
                   width="800"
