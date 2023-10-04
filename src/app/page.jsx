@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [data, setData] = useState(null);
+  const [bestSeller, setBestSeller] = useState(null);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
   const [maxPrice, setMaxPrice] = useState("");
@@ -25,6 +26,10 @@ export default function Home() {
         cache: "no-store",
       });
       setData(data);
+      const response = await fetchData("api/products/best-seller", "GET", {
+        cache: "no-store",
+      });
+      setBestSeller(response.data);
     }
     fetchProduct();
   }, [page, limit, maxPrice, minPrice, setMaxPrice, setMinPrice]);
@@ -106,12 +111,27 @@ export default function Home() {
     setMinPrice(e.target.q.value);
   };
 
-  if (!data) return;
+  if (!data || !bestSeller) return;
+  console.log(data);
+  console.log(bestSeller);
   return (
     <>
+      <div className="mx-20 mt-7 text-left font-bold text-2xl text-primary">
+        {" "}
+        BEST SELLER
+      </div>
+      <div className="divider"></div>
+      <Container>
+        {/* <div className="inline-flex gap-5 ml-5 flex-wrap"> */}
+        {bestSeller.map((product) => {
+          return <Card key={product.id} product={product} />;
+        })}
+        {/* </div> */}
+      </Container>
+      <div className="divider"></div>
       <Carousel />
       {/* Set Limit */}
-            <div className="flex items-center justify-center py-1 md:py-4 ">
+      <div className="flex items-center justify-center py-1 md:py-4 ">
         <header className="text-primary text-3xl font-bold px-5 py-2.5 text-center mr-3 mb-1">
           Our Products
         </header>
