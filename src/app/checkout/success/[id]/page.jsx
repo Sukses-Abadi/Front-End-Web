@@ -3,7 +3,6 @@ import Link from "next/link";
 import React from "react";
 
 export default async function page({ params }) {
-  console.log(params);
   const body = { order_id: +params.id, status: "received" };
   const response = await fetchWithTokenServer("api/order/", "PUT", {
     body: JSON.stringify(body),
@@ -24,7 +23,7 @@ export default async function page({ params }) {
         Back to Homepage
       </Link>
       <h1 className=" min-h-[51vh] text-2xl font-bold font-mono m-20">
-        We appreciate your business! If you have any questions, please email
+        We appreciate your business! We are looking forward to future purchase!
       </h1>
     </section>
   );

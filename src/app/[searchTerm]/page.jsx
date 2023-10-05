@@ -20,7 +20,6 @@ export default function SearchResults({ params: { searchTerm } }) {
       `&limit=${limit}` +
       `&maxPrice=${maxPrice}` +
       `&minPrice=${minPrice}`;
-    // console.log(url);
     async function fetchProduct() {
       const { data } = await fetchData(url, "GET", {
         cache: "no-store",

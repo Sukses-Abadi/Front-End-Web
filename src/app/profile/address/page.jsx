@@ -34,8 +34,6 @@ export default function Address() {
           }
         );
 
-        console.log("test");
-
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
@@ -66,8 +64,6 @@ export default function Address() {
       setListAddress(address);
     }
   }, [user]);
-
-  // console.log(listAddress);
 
   return (
     <div className="flex flex-col h-full p-3">

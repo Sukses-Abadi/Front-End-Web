@@ -13,13 +13,11 @@ export default function Reviews({ product_id }) {
       `api/review?product_id=${product_id}` +
       `page=${page}` +
       `&limit=${limit}`;
-    console.log(url);
     const fetchProduct = async () => {
       try {
         const { data } = await fetchData(url, "GET", {
           cache: "no-store",
         });
-        console.log(data);
         setData(data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -95,7 +93,6 @@ export default function Reviews({ product_id }) {
   };
 
   if (!data) return;
-  console.log(data.limit);
   return (
     <div className="m-10 ">
       <div>Review</div>

@@ -119,7 +119,6 @@ export default function Page() {
     return pageButtons;
   };
   if (!data) return;
-  // console.log(data);
   const orders = data.orders;
 
   return (
@@ -289,7 +288,6 @@ export default function Page() {
                           {orderedProducts.map((orderedProduct) => {
                             const productDetails =
                               orderedProduct.ProductDetails;
-                            // console.log(productDetails)
                             const product = productDetails.product;
                             const photos = product.productGalleries;
                             return (

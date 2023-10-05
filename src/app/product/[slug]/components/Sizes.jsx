@@ -30,7 +30,6 @@ export function Sizes(props) {
   const handleColor = (product_details_id, stock) => {
     setSelectedProduct(product_details_id);
     setStock(stock);
-    console.log(stock);
   };
 
   const handleClick = (size) => {

@@ -95,7 +95,7 @@ export default function Profile(props) {
           body: formData,
         }
       );
-      // console.log(image[0].photo);
+
       let payload = {
         first_name: firstName,
         last_name: lastName,
@@ -104,7 +104,6 @@ export default function Profile(props) {
         phone: phone,
         photo: image[0].photo || photo,
       };
-      console.log(payload);
       const data = await fetchWithToken("api/user", getCookie(`accessToken`), {
         method: "PUT",
         body: JSON.stringify(payload),
@@ -117,7 +116,7 @@ export default function Profile(props) {
       setRefresh();
       router.refresh();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -112,8 +112,7 @@ export default function Home() {
   };
 
   if (!data || !bestSeller) return;
-  console.log(data);
-  console.log(bestSeller);
+
   return (
     <>
       <div className="mx-20 mt-7 text-left font-bold text-2xl text-primary">

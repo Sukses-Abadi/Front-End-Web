@@ -111,7 +111,6 @@ export default function IconTable({ order }) {
     );
 
     const session = await response.json();
-    console.log(session);
     if (session) {
       router.push(`${session.url}`);
     }

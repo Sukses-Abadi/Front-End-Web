@@ -165,7 +165,7 @@ export default function OrderDetails() {
         product_order_attributes: cart.CartProduct,
       };
     }
-    console.log(body);
+
     const response = await fetchWithToken(
       "api/order",
       getCookie(`accessToken`),
