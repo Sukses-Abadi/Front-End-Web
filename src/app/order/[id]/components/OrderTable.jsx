@@ -4,19 +4,22 @@ import React from "react";
 export default function OrderTable({ data }) {
   return (
     <div className="border-2 rounded-lg p-10 h-fit bg-slate-50 ">
-      <table className="  overflow-x-auto">
+      <table className="  overflow-x-auto flex-1">
         <thead className=" font-sans text-left font-bold ">
           <tr className="h-16">
-            <th key="item-summary" className=" min-w-[200px]  border-b-2 ">
+            <th
+              key="item-summary"
+              className=" w-[380px] min-w-[200px]  border-b-2"
+            >
               Items summary
             </th>
             <th key="qty" className=" border-b-2 ">
               QTY
             </th>
-            <th key="price" className="px-4  border-b-2 ">
+            <th key="price" className="px-4 w-[180px] border-b-2 ">
               Price
             </th>
-            <th key="total_price" className=" border-b-2 ">
+            <th key="total_price" className="w-[180px] border-b-2 ">
               Total Price
             </th>
           </tr>
