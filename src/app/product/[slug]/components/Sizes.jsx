@@ -48,10 +48,12 @@ export function Sizes(props) {
     }
     if (stock == 0) {
       toast.error("Item is out of stock, please select another item");
+      router.refresh();
       return;
     }
     if (stock < count) {
       toast.error("Stock insufficient");
+      router.refresh();
       return;
     }
     const data = {

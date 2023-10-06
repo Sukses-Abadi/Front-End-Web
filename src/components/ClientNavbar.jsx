@@ -53,6 +53,7 @@ export default function ClientNavbar(props) {
     setRefresh();
     logout();
     router.refresh();
+    router.push("/");
   };
   return (
     <div className="relative flex items-center justify-between max-auto">

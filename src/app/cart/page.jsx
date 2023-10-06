@@ -50,7 +50,7 @@ export default function Page() {
     if (isLoggedIn) {
       getData();
     }
-  }, [token, router, isLoggedIn, logout, rerender]);
+  }, [token, router, isLoggedIn, logout, rerender, refresh]);
 
   const handleDeleteItem = async (cartProductID) => {
     try {
