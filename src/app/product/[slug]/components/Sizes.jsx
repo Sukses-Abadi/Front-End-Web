@@ -42,7 +42,11 @@ export function Sizes(props) {
       toast.error("please login to your account");
       return;
     }
-    if (stock <= 0) {
+    if (!selectedProduct) {
+      toast.error(`Please choose size and color`);
+      return;
+    }
+    if (stock == 0) {
       toast.error("Item is out of stock, please select another item");
       return;
     }
@@ -57,9 +61,6 @@ export function Sizes(props) {
         price: price - discount,
       },
     };
-    if (!selectedProduct) {
-      toast.error(`Please choose size and color`);
-    }
     try {
       const response = await fetchWithToken("api/cart", token, {
         method: "PUT",
