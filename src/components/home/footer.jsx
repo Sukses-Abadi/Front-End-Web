@@ -20,7 +20,7 @@ export default async function Footer() {
               src={logo}
               width={250}
               height={50}
-              className="fill-current"
+              className="fill-current w-auto"
             />
           </Link>
           <p className="text-white text-md pt-2">

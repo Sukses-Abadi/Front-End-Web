@@ -42,6 +42,8 @@ export default async function Page(req) {
                     alt={`${data.name}`}
                     width={500}
                     height={600}
+                    priority
+                    placeholder="empty"
                   />
                 </section>
               ))}

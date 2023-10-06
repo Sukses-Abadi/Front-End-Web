@@ -165,14 +165,15 @@ export default function Reviews({ product_id }) {
                 <div className="flex gap-2">
                   <div className="  text-center rounded-full">
                     <Image
-                      alt=""
+                      width={40}
+                      height={40}
                       src={
                         !userPhoto
                           ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
                           : userPhotoUrl
                       }
-                      width={28}
-                      height={28}
+                      className="mr-2.5 w-auto rounded-full"
+                      alt=""
                     />
                   </div>
                   <span>{name}</span>

@@ -101,7 +101,7 @@ export default function ClientNavbar(props) {
       {/* Start Button Profile */}
       <div className="dropdown dropdown-bottom min-[473px]:dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-          <div className="w-10 rounded-full">
+          <div className=" rounded-full">
             <Image
               alt=""
               src={
@@ -111,6 +111,7 @@ export default function ClientNavbar(props) {
               }
               width={100}
               height={100}
+              className=""
             />
           </div>
         </label>

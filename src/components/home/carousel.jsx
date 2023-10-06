@@ -44,7 +44,7 @@ export default function Carousel() {
             i + 1 === activeSlide ? "" : "hidden"
           }`}
         >
-          <Image alt="" src={getSlide(i + 1)} className="w-full" />
+          <Image alt="" src={getSlide(i + 1)} className="w-full" priority />
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
             <a
               href={`#slide${i === 0 ? 4 : i}`}

@@ -7,13 +7,19 @@ import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { useAuthStore } from "@/zustand";
+import { useEffect } from "react";
 
 export default function Page() {
   const { token, setToken, isLoggedIn, login, logout } = useAuthStore();
   const router = useRouter();
-  if (isLoggedIn) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+
+    return () => {};
+  }, [router, isLoggedIn]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const username = e.target.username.value;

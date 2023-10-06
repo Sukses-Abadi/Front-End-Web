@@ -48,6 +48,7 @@ export default async function Navbar() {
             src={logo}
             width="auto"
             height="auto"
+            priority
           />
         </Link>
 

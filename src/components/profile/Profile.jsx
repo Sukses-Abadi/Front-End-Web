@@ -26,7 +26,6 @@ export default function Profile(props) {
           }
         );
 
-        console.log("test");
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");

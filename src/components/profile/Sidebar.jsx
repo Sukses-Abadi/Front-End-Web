@@ -32,13 +32,12 @@ export default function Sidebar({ children }) {
           }
         );
 
-        console.log("test");
         if (!getCookie("accessToken")) {
           logout();
           toast.info("Your session has expired");
         } else if (result.status === "success") {
           const user = result.data;
-          console.log(user);
+
           setUser(user);
         } else {
           toast.error("An error occurred. Please try again later.");
