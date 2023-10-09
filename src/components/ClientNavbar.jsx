@@ -88,7 +88,7 @@ export default function ClientNavbar(props) {
         >
           <div className="card-body">
             <span className="font-bold text-lg">{cartItemCount} Items</span>
-            <span className="text-info">Subtotal: Rp. {total_price}</span>
+            <span className="text-info">Subtotal: Rp{total_price}</span>
             <div className="card-actions">
               <Link href="/cart" className="btn btn-primary btn-block">
                 View cart

@@ -39,7 +39,7 @@ export function Sizes(props) {
 
   const handleAddToCart = async () => {
     if (!getCookie("accessToken")) {
-      toast.error("please login to your account");
+      toast.error("Please login to your account");
       return;
     }
     if (!selectedProduct) {

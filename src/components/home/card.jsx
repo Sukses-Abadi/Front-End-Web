@@ -16,7 +16,7 @@ export default function Card(props) {
     for (var i = 0; i < angkarev.length; i++)
       if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + ".";
     return (
-      "Rp. " +
+      "Rp" +
       rupiah
         .split("", rupiah.length - 1)
         .reverse()
@@ -95,7 +95,7 @@ export default function Card(props) {
               {convertToRupiah(cheapestPrice)}{" "}
               {product.discount ? (
                 <span className="badge badge-xs badge-primary py-1 bottom-2  relative">
-                  Rp. {product.discount} OFF
+                  Rp {product.discount} OFF
                 </span>
               ) : null}
             </span>
