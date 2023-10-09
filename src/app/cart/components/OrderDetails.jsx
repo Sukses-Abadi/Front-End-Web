@@ -196,7 +196,7 @@ export default function OrderDetails() {
       <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
       <div className="flex justify-between mt-10 mb-5">
         <span className="font-semibold text-sm uppercase">Total Price</span>
-        <span className="font-semibold text-sm">Rp. {cart.total_price}</span>
+        <span className="font-semibold text-sm">Rp{cart.total_price}</span>
       </div>
       <div className="my-3">
         <label className="font-medium  inline-block mb-3 text-sm uppercase">
@@ -298,7 +298,7 @@ export default function OrderDetails() {
                   value={element.service}
                   cost={cost.value}
                 >
-                  {element.service} | {element.description}, Cost:Rp.{" "}
+                  {element.service} | {element.description}, Cost:Rp{" "}
                   {cost.value} {cost.etd} days
                 </option>
               );
@@ -355,12 +355,12 @@ export default function OrderDetails() {
       <div className="border-t mt-8">
         <div className="flex font-semibold justify-between py-6 text-sm uppercase">
           <span>Shipping Cost</span>
-          <span>Rp. {shippingCost || 0}</span>
+          <span>Rp{shippingCost || 0}</span>
         </div>
         <div className="flex font-semibold justify-between py-6 text-sm uppercase">
           <span>Total cost</span>
           <span>
-            Rp.{" "}
+            Rp{" "}
             {shippingCost
               ? cart.total_payment + shippingCost
               : cart.total_payment}

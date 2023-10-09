@@ -279,7 +279,7 @@ export default function Page() {
                       <td className="py-3 px-6 text-left text-xs md:text-md">
                         <div className="flex items-center">
                           <div className="mr-2"></div>
-                          <span>Rp. {order.total_payment}</span>
+                          <span>Rp{order.total_payment}</span>
                         </div>
                       </td>
                       {/* PRODUCT */}

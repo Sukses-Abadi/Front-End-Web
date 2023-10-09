@@ -54,10 +54,10 @@ export default function OrderTable({ data }) {
                   x{qty}
                 </td>
                 <td className="px-4 font-mono font-semibold py-8 border-b-2">
-                  Rp. {price}
+                  Rp{price}
                 </td>
                 <td className="px-4 font-mono font-semibold py-8 border-b-2">
-                  Rp. {price * qty}
+                  Rp{price * qty}
                 </td>
               </tr>
             );

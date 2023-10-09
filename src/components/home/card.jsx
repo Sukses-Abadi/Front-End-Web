@@ -95,7 +95,7 @@ export default function Card(props) {
               {convertToRupiah(cheapestPrice)}{" "}
               {product.discount ? (
                 <span className="badge badge-xs badge-primary py-1 bottom-2  relative">
-                  Rp {product.discount} OFF
+                  Rp{product.discount} OFF
                 </span>
               ) : null}
             </span>

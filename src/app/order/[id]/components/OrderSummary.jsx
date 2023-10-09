@@ -61,19 +61,19 @@ export default function OrderSummary({ data }) {
       <div className="flex justify-between items-center py-2">
         <h1 className=" font-bold text-sm text-left ">Sub Total</h1>
         <span className="ml-10 font-semibold text-sm text-left">
-          Rp. {data.total_price}
+          Rp{data.total_price}
         </span>
       </div>
       <div className="flex justify-between items-center py-2">
         <h1 className=" font-bold text-sm text-left ">Delivery fee</h1>
         <span className="ml-10 font-semibold text-sm text-left">
-          Rp. {data.shipping_cost}
+          Rp{data.shipping_cost}
         </span>
       </div>
       <div className="flex justify-between items-center py-2">
         <h1 className=" font-bold  text-left ">Total Payment</h1>
         <span className="ml-10 font-semibold text-sm text-left">
-          Rp. {data.total_payment}
+          Rp{data.total_payment}
         </span>
       </div>
     </div>

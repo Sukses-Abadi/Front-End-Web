@@ -141,10 +141,10 @@ export function Sizes(props) {
             })
           : null}
         <span className="text-gray-500 mt-1">
-          Rp. {price}{" "}
+          Rp{price}{" "}
           {discount ? (
             <span className="badge relative bottom-1 badge-xs badge-primary">
-              ${discount} OFF
+              Rp{discount} OFF
             </span>
           ) : null}
         </span>
