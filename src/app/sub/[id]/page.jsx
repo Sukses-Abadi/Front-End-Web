@@ -286,13 +286,3 @@ export default function Page(req) {
     </>
   );
 }
-
-export async function generateStaticParams() {
-  const { data } = await fetchData("api/subcategory", "GET", {
-    cache: "no-store",
-  });
-
-  return data.map((product) => ({
-    id: product.id.toString(),
-  }));
-}
