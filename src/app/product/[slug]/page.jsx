@@ -6,6 +6,7 @@ import Image from "next/image";
 import DetailsComponent from "./components/DetailsComponent";
 import Link from "next/link";
 import Reviews from "./components/Reviews";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata(req) {
   const { slug } = req.params;
@@ -13,7 +14,10 @@ export async function generateMetadata(req) {
   const { data } = await fetchData(`api/products/${slug}`, "GET", {
     cache: "no-store",
   });
-
+  if (!data)
+    return {
+      title: "Product not found",
+    };
   return {
     title: `SA Apparel ${data?.name}`,
     description: `Collection of ${data.name} in SA. Apparel`,
@@ -24,7 +28,7 @@ export default async function Page(req) {
   const { data } = await fetchData(`api/products/${slug}`, "GET", {
     cache: "no-store",
   });
-
+  if (!data) return notFound();
   const photoGallery = data.productGalleries;
   return (
     <>
