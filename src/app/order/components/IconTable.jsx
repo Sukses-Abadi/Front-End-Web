@@ -99,16 +99,13 @@ export default function IconTable({ order }) {
       id: order.id,
       total_payment: order.total_payment,
     };
-    const response = await fetch(
-      "http://localhost:5000/api/create-checkout-session",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
 
     const session = await response.json();
     if (session) {

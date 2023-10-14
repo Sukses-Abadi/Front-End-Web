@@ -1,3 +1,5 @@
+import { baseUrl } from "./constant";
+
 const fetchData = async (api, method, revalidate, body) => {
   const options = {
     method: method,
@@ -8,7 +10,7 @@ const fetchData = async (api, method, revalidate, body) => {
   };
   // console.log(options);
   const data = await fetch(
-    `http://localhost:5000/${api}`,
+    `${baseUrl}/${api}`,
 
     revalidate,
 

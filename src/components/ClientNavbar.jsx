@@ -43,7 +43,6 @@ export default function ClientNavbar(props) {
 
   const userData = user;
   const userPhoto = userData.photo;
-  const userPhotoUrl = `http://localhost:5000/${userPhoto}`;
   const userCart = userData.cart;
   const total_price = userData.cart?.total_price || 0;
   const cartItemCount = userCart?.CartProduct.length;
@@ -108,7 +107,7 @@ export default function ClientNavbar(props) {
               src={
                 !userPhoto
                   ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                  : userPhotoUrl
+                  : userPhoto
               }
               width={100}
               height={100}

@@ -42,7 +42,7 @@ export default async function Page(req) {
                   {" "}
                   <Image
                     className="h-full w-full rounded-md object-cover max-w-lg mx-auto"
-                    src={`${baseUrl}/${element.photo}`}
+                    src={element.photo}
                     alt={`${data.name}`}
                     width={500}
                     height={600}

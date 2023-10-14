@@ -298,7 +298,7 @@ export default function Page() {
                               >
                                 <Image
                                   className="w-10 h-10 rounded-full border-gray-200 border transform hover:scale-125"
-                                  src={`${baseUrl}/${photos[0].photo}`}
+                                  src={`${photos[0].photo}`}
                                   alt={product.name}
                                   width={100}
                                   height={100}

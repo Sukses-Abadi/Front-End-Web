@@ -48,7 +48,7 @@ export default function Card(props) {
                 <div key={element.id} className="carousel-item h-auto">
                   <Image
                     className="object-contain object-center"
-                    src={`http://localhost:5000/${element.photo}`}
+                    src={`${element.photo}`}
                     alt="product image"
                     width={300}
                     height={300}

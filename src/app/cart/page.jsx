@@ -185,7 +185,7 @@ export default function Page() {
                     <div className="w-20">
                       <Image
                         className="h-24"
-                        src={`${baseUrl}/${photo[0].photo}`}
+                        src={`${photo[0].photo}`}
                         alt=""
                         width={100}
                         height={100}

@@ -101,11 +101,9 @@ export default function Reviews({ product_id }) {
         {data.reviews.map((review) => {
           const name = review.user.first_name;
           const userPhoto = review.user.photo;
-          const userPhotoUrl = `http://localhost:5000/${userPhoto}`;
           const date = review.created_at;
           const rating = review.rating;
           const reviewImage = review.image;
-          const image = `http:localhost:5000/${review.image}`;
           const text = review.review_text;
           const year = date.split("-")[0];
           function getMonthName(month) {
@@ -170,7 +168,7 @@ export default function Reviews({ product_id }) {
                       src={
                         !userPhoto
                           ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                          : userPhotoUrl
+                          : userPhoto
                       }
                       className="mr-2.5 w-auto rounded-full"
                       alt=""
@@ -185,7 +183,7 @@ export default function Reviews({ product_id }) {
                 </div>
               </div>
               {reviewImage ? (
-                <Image alt="" src={image} width={150} height={150} />
+                <Image alt="" src={reviewImage} width={150} height={150} />
               ) : null}
 
               <div>{text}</div>

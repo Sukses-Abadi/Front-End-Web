@@ -55,7 +55,7 @@ export default async function page({ params }) {
                 <Image
                   className="m-auto"
                   alt="Coolest Brand ver!"
-                  src={`${baseUrl}/${photo}`}
+                  src={`${photo}`}
                   width={500}
                   height={500}
                 />

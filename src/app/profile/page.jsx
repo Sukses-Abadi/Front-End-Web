@@ -132,15 +132,10 @@ export default function Profile(props) {
           <div className="flex pt-3 pb-2 px-2 place-content-center">
             <div className="avatar ">
               <div className="w-64 mask mask-squircle items-center">
+                {console.log(filePreview)}
                 <Image
                   className="object-fill object-center"
-                  src={
-                    filePreview
-                      ? filePreview
-                      : photo
-                      ? `${baseUrl}/${photo}`
-                      : profile
-                  }
+                  src={filePreview ? filePreview : photo ? photo : profile}
                   alt="photo"
                   width="800"
                   height="800"

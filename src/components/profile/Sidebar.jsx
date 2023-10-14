@@ -90,7 +90,7 @@ export default function Sidebar({ children }) {
         <div className="avatar">
           <div className="w-16 rounded-full">
             <Image
-              src={!photo ? profile : `${baseUrl}/${photo}`}
+              src={!photo ? profile : `${photo}`}
               alt="profile"
               width={100}
               height={100}
