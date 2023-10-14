@@ -131,7 +131,7 @@ export default function Profile(props) {
         <div className="max-w-sm bg-white border rounded-lg shadow">
           <div className="flex pt-3 pb-2 px-2 place-content-center">
             <div className="avatar ">
-              <div className="w-64 mask mask-squircle items-center">
+              <div className=" w-20 sm:w-28 md:w-44 mask mask-squircle items-center">
                 {console.log(filePreview)}
                 <Image
                   className="object-fill object-center"

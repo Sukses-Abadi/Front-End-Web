@@ -95,9 +95,6 @@ export default function AddressForm() {
               name="street"
               required
             />
-            <p className="text-gray-600 text-xs italic">
-              Make it as long and as crazy as you do like
-            </p>
           </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-2">

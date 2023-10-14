@@ -85,7 +85,7 @@ export default function Sidebar({ children }) {
   ];
 
   return (
-    <aside className="basis-1/4 w-full h-full border-2 rounded-l-lg shadow-md">
+    <aside className="basis-1/5 w-full h-full border-2 rounded-l-lg shadow-md">
       <div className="m-5 flex flex-nowrap items-center gap-6">
         <div className="avatar">
           <div className="w-16 rounded-full">
