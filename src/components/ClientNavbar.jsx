@@ -1,4 +1,5 @@
 "use client";
+import profile from "./assets/profile.jpg";
 import fetchWithToken from "@/lib/fetchWithToken";
 import { useAuthStore, useUserStore } from "@/zustand";
 
@@ -104,11 +105,7 @@ export default function ClientNavbar(props) {
           <div className=" rounded-full">
             <Image
               alt=""
-              src={
-                !userPhoto
-                  ? "https:cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                  : userPhoto
-              }
+              src={!userPhoto ? profile : userPhoto}
               width={100}
               height={100}
               className=""
